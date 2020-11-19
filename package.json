@@ -4,7 +4,7 @@
   "description": "ES6 Discord bot framework",
   "author": "Andrew Zigler <andrewzigler@gmail.com> (https://ko-fi.com/andrewzigler)",
   "main": "index.js",
-  "homepage": "https://azigler.github.io/esdi",
+  "homepage": "https://azigler.github.io/esdi/",
   "repository": {
     "type": "git",
     "url": "git://github.com/azigler/esdi.git"
@@ -19,7 +19,7 @@
     "lint": "eslint . --ext .js --fix --ignore-pattern '**/node_modules/**'",
     "merge-main-to-dev": "git checkout develop && git merge --no-ff main",
     "merge-dev-to-main": "git checkout main && git merge --no-ff develop",
-    "docs": "jsdoc -c ./config/.jsdoc.json -R ./config/.home.md -u docs",
+    "docs": "jsdoc -c ./config/.jsdoc.json -R ./config/.home.md -u config",
     "clean": "npm run clean:docs && npm run clean:data",
     "clean:docs": "rm -rf out && mkdir out && cd out && touch .gitkeep",
     "clean:data": "rm -rf data && mkdir data && cd data && touch .gitkeep"

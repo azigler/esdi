@@ -3,7 +3,7 @@
 <head>
     
     <meta charset="utf-8">
-    <title>controllers/EventController.js - Esdi Documentation</title>
+    <title>Tutorial: Adding a custom command - Esdi Documentation</title>
     
     <meta name="description" content="ES6 Discord bot framework" />
     
@@ -43,100 +43,59 @@
 
 <div id="main">
     
-    <h1 class="page-title">controllers/EventController.js</h1>
+    <h1 class="page-title">Tutorial: Adding a custom command</h1>
     
 
-    
-
-
-
-    
     <section>
-        <article>
-            <pre class="prettyprint source linenums"><code>/**
- * Controller for Events
- *
- * @class
- */
-class EventController {
-  /**
-   * Initializes a new EventController
-   *
-   * @param {Object} config configuration object
-   * @param {Object} config.server Esdi server instance
-   * @memberof EventController
-   */
-  init ({ server }) {
-    this.server = server
-  }
 
-  /**
-   * Starts the EventController
-   *
-   * @listens Esdi#start
-   * @memberof EventController
-   */
-  start () {
-    console.log('[#] Starting EventController...')
-  }
+<header>
+    
 
-  /**
-   * Stops the EventController
-   *
-   * @listens Esdi#stop
-   * @memberof EventController
-   */
-  stop () {
-    console.log('[#] Stopping EventController...')
-  }
+    <h2>Adding a custom command</h2>
+</header>
 
-  /**
-   * Called every Esdi server loop
-   *
-   * @listens Esdi#loop
-   * @memberof EventController
-   */
-  loop () {
-    // saves updated users to the database
-    this.server.controllers.get('UserController').forEach(user => {
-      if (user.__changed) {
-        this.server.controllers.get('DatabaseController').updateDoc({
-          db: 'user',
-          id: user.id,
-          payload: {
-            guilds: user.guilds.map(g => { return g.id }),
-            username: user.username,
-            timestamp: new Date()
-          }
-        })
-        delete user.__changed
-      }
-    })
-  }
-
-  /**
-   * Registers Events to the provided Discord Client
-   *
-   * @param {Client} client Discord Client object
-   * @memberof EventController
-   */
-  registerDiscordEvents (client) {
-    // TODO: expand type options
-    this.server.events.forEach(event => {
-      if (!event.name || !event.func || event.type !== 'discord') return
-      client.on(event.name, event.func.bind(client.botController.server))
-    })
+<article>
+    <ol>
+<li>In your project folder, make a new folder called <code>commands/</code>.</li>
+<li>In the <code>commands/</code> folder, create a <code>hello.js</code> file with the following contents:</li>
+</ol>
+<pre class="prettyprint source lang-js"><code>module.exports = {
+  name: 'hello',
+  aliases: ['greeting'],
+  description: 'Greets the command user.',
+  execute ({ command, message, args, server }) {
+    message.reply(', hello!')
   }
 }
 
-// factory
-module.exports = new EventController()
 </code></pre>
-        </article>
-    </section>
+<p>Let's break down each property of the command configuration object:</p>
+<pre class="prettyprint source lang-js"><code>name: 'hello'
+</code></pre>
+<p>The <code>name</code> property is the name of the command, which must be unique. You can overwrite default commands by simply reusing the command name in your own local command file. The bot will listen for this string in order to execute the command.</p>
+<pre class="prettyprint source lang-js"><code>aliases: ['greeting']
+</code></pre>
+<p>The <code>aliases</code> property is optional and allows you to designate any strings that will serve as an alias for the command <code>name</code>. In this case, the user can also fire this command with the <code>greeting</code> alias. Currently, aliases do not have to be unique and using an alias will fire the first matching record in the <a href="Esdi.html"><code>Esdi</code> instance</a>. If an alias is the same as another command's <code>name</code>, the command using it as a <code>name</code> will take priority.</p>
+<pre class="prettyprint source lang-js"><code>description: 'Greets the command user.'
+</code></pre>
+<p>The <code>description</code> property is also optional and allows you to describe the command. This is used by the default <code>help</code> command.</p>
+<pre class="prettyprint source lang-js"><code>execute ({ message, args, server }) {
+  message.reply(', hello!')
+}
+</code></pre>
+<p>The <code>execute</code> function is the substance of your command. This function fires when the command is invoked. You can use the properties ( <code>message</code>, <code>args</code>, and <code>server</code>) that are passed in an object to this function. <code>message</code> refers to the <a href="https://discord.js.org/#/docs/main/stable/class/Message">discord.js Message object</a>, <code>args</code> refers to the string of arguments following the command, and <code>server</code> refers to the <a href="Esdi.html"><code>Esdi</code> instance</a>. You can use <code>this</code> to refer to the <a href="Command.html"><code>Command</code> object</a> representing this loaded command.</p>
+<p>To learn more about the command configuration options, check out the <a href="Command.html"><code>Command</code> documentation</a>.</p>
+<ol start="3">
+<li>Restart your Esdi server.</li>
+<li>In your server, fire the command. Use the bot prefix (e.g., <code>!</code>) together with the <code>hello</code> command or <code>greeting</code> alias to see your new custom command in action:</li>
+</ol>
+<p><img src="https://user-images.githubusercontent.com/7295363/99583718-cdd52d80-2998-11eb-972c-9f24a5453da7.png" alt=""></p>
+<ol start="5">
+<li>Continue developing your command, or make a brand new one! You can use anything from the <a href="https://discord.js.org/#/docs/main/stable/class/Message">discord.js Message object</a> (which has access to everything about your <a href="https://discord.js.org/#/docs/main/stable/class/Client">discord.js Client</a>) and the <a href="Esdi.html">Esdi instance</a>. You can also implement functionality from own your applications or third-party APIs. You don't even have to restart your server while building. Use the <code>reload</code> command (e.g., <code>!reload &lt;command&gt;</code>) to reload your command file on the fly once it's initially loaded. Your creativity is the limit!</li>
+</ol>
+</article>
 
-
-
+</section>
 
     
     

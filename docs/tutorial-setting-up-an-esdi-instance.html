@@ -3,7 +3,7 @@
 <head>
     
     <meta charset="utf-8">
-    <title>controllers/EventController.js - Esdi Documentation</title>
+    <title>Tutorial: Setting up an Esdi instance - Esdi Documentation</title>
     
     <meta name="description" content="ES6 Discord bot framework" />
     
@@ -43,100 +43,59 @@
 
 <div id="main">
     
-    <h1 class="page-title">controllers/EventController.js</h1>
+    <h1 class="page-title">Tutorial: Setting up an Esdi instance</h1>
     
 
-    
-
-
-
-    
     <section>
-        <article>
-            <pre class="prettyprint source linenums"><code>/**
- * Controller for Events
- *
- * @class
- */
-class EventController {
-  /**
-   * Initializes a new EventController
-   *
-   * @param {Object} config configuration object
-   * @param {Object} config.server Esdi server instance
-   * @memberof EventController
-   */
-  init ({ server }) {
-    this.server = server
-  }
 
-  /**
-   * Starts the EventController
-   *
-   * @listens Esdi#start
-   * @memberof EventController
-   */
-  start () {
-    console.log('[#] Starting EventController...')
-  }
+<header>
+    
 
-  /**
-   * Stops the EventController
-   *
-   * @listens Esdi#stop
-   * @memberof EventController
-   */
-  stop () {
-    console.log('[#] Stopping EventController...')
-  }
+    <h2>Setting up an Esdi instance</h2>
+</header>
 
-  /**
-   * Called every Esdi server loop
-   *
-   * @listens Esdi#loop
-   * @memberof EventController
-   */
-  loop () {
-    // saves updated users to the database
-    this.server.controllers.get('UserController').forEach(user => {
-      if (user.__changed) {
-        this.server.controllers.get('DatabaseController').updateDoc({
-          db: 'user',
-          id: user.id,
-          payload: {
-            guilds: user.guilds.map(g => { return g.id }),
-            username: user.username,
-            timestamp: new Date()
-          }
-        })
-        delete user.__changed
-      }
-    })
-  }
+<article>
+    <p>Getting started with your own Esdi bot is very simple. Let's assume you're starting with nothing and setting up a project from scratch. Complete the following steps:</p>
+<ol>
+<li>Make a folder for your new project (e.g., <code>your-project-folder/</code>).</li>
+<li>In your project folder, run <code>npm init</code> to set up your application.</li>
+<li>Install the <code>esdi</code> package with <code>npm install --save esdi</code>.</li>
+<li>Create an <code>index.js</code> file with the following contents:</li>
+</ol>
+<pre class="prettyprint source lang-js"><code>// import Esdi package
+const Esdi = require('esdi')
 
-  /**
-   * Registers Events to the provided Discord Client
-   *
-   * @param {Client} client Discord Client object
-   * @memberof EventController
-   */
-  registerDiscordEvents (client) {
-    // TODO: expand type options
-    this.server.events.forEach(event => {
-      if (!event.name || !event.func || event.type !== 'discord') return
-      client.on(event.name, event.func.bind(client.botController.server))
-    })
-  }
-}
+// initialize Esdi bot
+const server = new Esdi({
+  discordToken: 'YOUR-DISCORD-BOT-TOKEN'
+})
 
-// factory
-module.exports = new EventController()
+// load local commands, controllers, events, and models
+server.load(__dirname)
+
+// start Esdi bot
+server.start()
 </code></pre>
-        </article>
-    </section>
+<ol start="5">
+<li>Replace <code>discordToken</code> with your <a href="https://discord.com/developers/applications">Discord application bot user</a> token. If you do not yet have an application, check out <a href="https://discordjs.guide/preparations/setting-up-a-bot-application.html">this guide</a>. You can also add a <code>.env</code> file to the root of your project with a <code>DISCORD_TOKEN</code> property (e.g., <code>DISCORD_TOKEN='YOUR-DISCORD-BOT-TOKEN'</code>). <strong>You should not reveal your bot token to anyone!</strong></li>
+<li>Retrieve your <a href="https://discord.com/developers/applications">Discord application client ID</a> and use it to create an invite link to add your bot to your Discord server. For convenience, you can use this link (with your application client ID) to add your bot with <strong>Administrator</strong> permissions: <a href="https://discord.com/oauth2/authorize?client_id=YOUR-APPLICATION-CLIENT-ID&amp;scope=bot&amp;permissions=8">https://discord.com/oauth2/authorize?client_id=YOUR-APPLICATION-CLIENT-ID&amp;scope=bot&amp;permissions=8</a></li>
+<li>In your project folder, run <code>node .</code> to start the application. The bot will join your Discord server.</li>
+</ol>
+<p>Since an Esdi bot is a standalone package, you can seamlessly integrate it into other Node applications or use it on its own. If you have plans to customize your bot, you can use the folder structure below in the root of your project folder to add custom extension files:</p>
+<pre class="prettyprint source"><code>your-project-folder/
+    ├── commands/
+    │   └── ... add your custom commands here
+    ├── controllers/
+    │   └── ... add your custom controllers here
+    ├── events/
+    │   └── ... add your custom events here
+    └── models/
+        └── ... add your custom models here
+</code></pre>
+<p>Next, let's <a href="tutorial-adding-a-custom-command.html">add a custom command</a> to our new Esdi bot.</p>
+</article>
 
-
-
+</section>
 
     
     

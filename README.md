@@ -11,7 +11,7 @@
 [![npm](https://img.shields.io/npm/v/esdi?logo=npm&style=social)](https://www.npmjs.org/package/esdi)
 
 [![License](https://img.shields.io/badge/license-MIT-EEE.svg?style=popout-square)](./LICENSE.md)
-[![Documentation](https://img.shields.io/badge/everything-documented-EEE.svg?style=popout-square)](https://azigler.github.io/esdi)
+[![Documentation](https://img.shields.io/badge/everything-documented-EEE.svg?style=popout-square)](https://azigler.github.io/esdi/)
 [![ES6 Powered](https://img.shields.io/badge/ES6-powered-EEE.svg?style=popout-square)](http://es6-features.org/)
 
 [![Contributing Guide](https://img.shields.io/badge/contributing-guide-EEE.svg?style=popout-square)](./.github/CONTRIBUTING.md)
@@ -74,7 +74,7 @@ If you would like to add the official Esdi bot to a server instead of hosting yo
 
 ## Documentation :bookmark_tabs:
 
-You can read the latest Esdi documentation [here](https://azigler.github.io/esdi).
+You can read the latest Esdi documentation [here](https://azigler.github.io/esdi/).
 
 There are also tutorials available. For example, you can learn how to add a custom command [here](https://azigler.github.io/esdi/tutorial-adding-a-custom-command.html).
 
