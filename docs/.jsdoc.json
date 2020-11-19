@@ -1,0 +1,60 @@
+{
+  "source": {
+    "include": ["."],
+    "exclude": ["node_modules"]
+  },
+  "opts": {
+    "recurse": true,
+    "template": "node_modules/docdash",
+    "tutorials": "./docs"
+  },
+  "templates": {
+    "default": {
+      "staticFiles": {
+        "include": [
+            "./docs/script.js",
+            "./docs/style.css"
+        ]
+      }
+    }
+  },
+  "plugins": [
+    "plugins/markdown"
+  ],
+  "docdash": {
+    "meta": {
+        "title": "Esdi Documentation",
+        "description": "ES6 Discord bot framework"
+    },
+    "openGraph": {
+      "title": "Esdi Documentation",
+      "type": "website",
+      "image": "https://user-images.githubusercontent.com/7295363/97830418-bf410380-1c81-11eb-95cc-1b7b15d8d7eb.jpg",
+      "site_name": "Esdi Documentation",
+      "url": "https://azigler.github.io/esdi"
+    },
+    "scripts": [
+      "./script.js",
+      "./style.css"
+    ],
+    "search": true,
+    "menu": {
+        "GitHub": {
+            "href":"https://www.github.com/azigler/esdi",
+            "target":"_blank"
+        },
+        "npm": {
+            "href":"https://www.npmjs.com/package/esdi",
+            "target":"_blank"
+        },
+        "Discord": {
+          "href":"https://discord.gg/HTSYNQrXam",
+          "target":"_blank"
+        },
+        "Ko-fi": {
+            "href":"https://ko-fi.com/andrewzigler",
+            "target":"_blank"
+        }
+    }
+  }
+}
