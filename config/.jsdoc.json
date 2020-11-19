@@ -6,14 +6,15 @@
   "opts": {
     "recurse": true,
     "template": "node_modules/docdash",
-    "tutorials": "./docs"
+    "tutorials": "./config",
+    "destination": "./docs/"
   },
   "templates": {
     "default": {
       "staticFiles": {
         "include": [
-            "./docs/script.js",
-            "./docs/style.css"
+            "./config/script.js",
+            "./config/style.css"
         ]
       }
     }

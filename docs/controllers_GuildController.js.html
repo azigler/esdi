@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8">
+    <title>controllers/GuildController.js - Esdi Documentation</title>
+    
+    <meta name="description" content="ES6 Discord bot framework" />
+    
+    
+    
+    <meta property="og:title" content="Esdi Documentation"/>
+    <meta property="og:type" content="website"/>
+    <meta property="og:image" content="https://user-images.githubusercontent.com/7295363/97830418-bf410380-1c81-11eb-95cc-1b7b15d8d7eb.jpg"/>
+    <meta property="og:site_name" content="Esdi Documentation"/>
+    <meta property="og:url" content="https://azigler.github.io/esdi"/>
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <script src="scripts/nav.js" defer></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    <input type="text" id="nav-search" placeholder="Search" />
+    
+    <h2><a href="index.html">Home</a></h2><h2><a href="https://www.github.com/azigler/esdi" target="_blank" >GitHub</a></h2><h2><a href="https://www.npmjs.com/package/esdi" target="_blank" >npm</a></h2><h2><a href="https://discord.gg/HTSYNQrXam" target="_blank" >Discord</a></h2><h2><a href="https://ko-fi.com/andrewzigler" target="_blank" >Ko-fi</a></h2><h3>Classes</h3><ul><li><a href="BotController.html">BotController</a><ul class='methods'><li data-type='method'><a href="BotController.html#init">init</a></li><li data-type='method'><a href="BotController.html#login">login</a></li><li data-type='method'><a href="BotController.html#start">start</a></li><li data-type='method'><a href="BotController.html#stop">stop</a></li></ul></li><li><a href="Command.html">Command</a></li><li><a href="CommandController.html">CommandController</a><ul class='methods'><li data-type='method'><a href="CommandController.html#executeCommand">executeCommand</a></li><li data-type='method'><a href="CommandController.html#findCommand">findCommand</a></li><li data-type='method'><a href="CommandController.html#init">init</a></li><li data-type='method'><a href="CommandController.html#start">start</a></li><li data-type='method'><a href="CommandController.html#stop">stop</a></li></ul></li><li><a href="DatabaseController.html">DatabaseController</a><ul class='methods'><li data-type='method'><a href="DatabaseController.html#fetchDoc">fetchDoc</a></li><li data-type='method'><a href="DatabaseController.html#init">init</a></li><li data-type='method'><a href="DatabaseController.html#loadDb">loadDb</a></li><li data-type='method'><a href="DatabaseController.html#start">start</a></li><li data-type='method'><a href="DatabaseController.html#stop">stop</a></li><li data-type='method'><a href="DatabaseController.html#stopSyncing">stopSyncing</a></li><li data-type='method'><a href="DatabaseController.html#updateDoc">updateDoc</a></li></ul></li><li><a href="Esdi.html">Esdi</a><ul class='methods'><li data-type='method'><a href="Esdi.html#load">load</a></li><li data-type='method'><a href="Esdi.html#start">start</a></li><li data-type='method'><a href="Esdi.html#stop">stop</a></li></ul></li><li><a href="Event.html">Event</a></li><li><a href="EventController.html">EventController</a><ul class='methods'><li data-type='method'><a href="EventController.html#init">init</a></li><li data-type='method'><a href="EventController.html#loop">loop</a></li><li data-type='method'><a href="EventController.html#registerDiscordEvents">registerDiscordEvents</a></li><li data-type='method'><a href="EventController.html#start">start</a></li><li data-type='method'><a href="EventController.html#stop">stop</a></li></ul></li><li><a href="Guild.html">Guild</a></li><li><a href="GuildController.html">GuildController</a><ul class='methods'><li data-type='method'><a href="GuildController.html#addGuild">addGuild</a></li><li data-type='method'><a href="GuildController.html#fetchInitialGuilds">fetchInitialGuilds</a></li><li data-type='method'><a href="GuildController.html#init">init</a></li><li data-type='method'><a href="GuildController.html#removeGuild">removeGuild</a></li><li data-type='method'><a href="GuildController.html#start">start</a></li><li data-type='method'><a href="GuildController.html#stop">stop</a></li></ul></li><li><a href="User.html">User</a><ul class='methods'><li data-type='method'><a href="User.html#addGuild">addGuild</a></li><li data-type='method'><a href="User.html#isInGuild">isInGuild</a></li><li data-type='method'><a href="User.html#removeGuild">removeGuild</a></li></ul></li><li><a href="UserController.html">UserController</a><ul class='methods'><li data-type='method'><a href="UserController.html#fetchGuildMembers">fetchGuildMembers</a></li><li data-type='method'><a href="UserController.html#init">init</a></li><li data-type='method'><a href="UserController.html#start">start</a></li><li data-type='method'><a href="UserController.html#stop">stop</a></li></ul></li></ul><h3>Events</h3><ul><li><a href="Esdi.html#event:loop">loop</a></li><li><a href="Esdi.html#event:start">start</a></li><li><a href="Esdi.html#event:stop">stop</a></li></ul>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">controllers/GuildController.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>const Guild = require('./../models/Guild')
+
+/**
+ * Controller for Discord Guilds
+ *
+ * @class
+ * @extends Map
+ */
+class GuildController extends Map {
+  /**
+   * Initializes a new GuildController
+   *
+   * @param {Object} config configuration object
+   * @param {Object} config.server Esdi server instance
+   * @memberof GuildController
+   */
+  init ({ server }) {
+    this.server = server
+  }
+
+  /**
+   * Starts the GuildController
+   *
+   * @listens Esdi#start
+   * @memberof GuildController
+   */
+  start () {
+    console.log('[#] Starting GuildController...')
+  }
+
+  /**
+   * Stops the GuildController
+   *
+   * @listens Esdi#stop
+   * @memberof GuildController
+   */
+  stop () {
+    console.log('[#] Stopping GuildController...')
+    this.clear()
+  }
+
+  /**
+   * Adds a Guild to the GuildController
+   *
+   * @param {Guild} guild Discord Guild object
+   * @memberof GuildController
+   */
+  addGuild (guild) {
+    console.log(`[+] Joined ${guild.name}`)
+
+    this.set(guild.id, new Guild(guild))
+
+    this.server.controllers.get('UserController').fetchGuildMembers(guild)
+  }
+
+  /**
+   * Removes a Guild from the GuildController
+   *
+   * @param {Guild} guild Discord Guild object
+   * @memberof GuildController
+   */
+  removeGuild (guild) {
+    console.log(`[-] Left ${guild.name}`)
+
+    this.delete(guild.id)
+
+    this.server.controllers.get('UserController').forEach(user => {
+      if (!user.isInGuild(guild)) return
+      user.removeGuild(guild)
+    })
+  }
+
+  /**
+   * Fetches the Guilds to which the bot is connected (and also fetches GuildMembers)
+   *
+   * @param {Client} client Discord client object
+   * @memberof GuildController
+   */
+  fetchInitialGuilds (client) {
+    client.guilds.cache.map(guild => {
+      this.addGuild(guild)
+    })
+  }
+}
+
+// factory
+module.exports = new GuildController()
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+    
+    
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a> on Wed Nov 18 2020 21:10:41 GMT-0800 (Pacific Standard Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+<script src="scripts/search.js" defer></script>
+
+
+
+    <script src="./script.js"></script>
+    
+    <link type="text/css" rel="stylesheet" href="./style.css">
+    
+</body>
+</html>
