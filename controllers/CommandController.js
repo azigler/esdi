@@ -49,7 +49,6 @@ class CommandController {
    * @memberof CommandController
    */
   findCommand (commandName) {
-    // TODO: require aliases to be unique
     return this.server.commands.get(commandName) || this.server.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName))
   }
 
@@ -64,7 +63,6 @@ class CommandController {
    * @memberof CommandController
    */
   executeCommand ({ command, args, message }) {
-    // TODO: expand permission options
     if (command.ownerOnly && (message.author.id !== message.guild.ownerID)) {
       return message.reply(`only the server owner can use the \`${command.name}\` command.`)
     }
@@ -87,7 +85,6 @@ class CommandController {
       this.cooldowns.set(command.name, new discordJs.Collection())
     }
 
-    // TODO: expand cooldown increment options
     const now = Date.now()
     const timestamps = this.cooldowns.get(command.name)
     const cooldownAmount = (command.cooldown) * 1000

@@ -96,7 +96,9 @@ class Esdi extends require('events') {
    * @memberof Esdi
    */
   loop () {
-    console.log(`[#] Looping @ ${new Date()}`)
+    if (process.argv.includes('-v')) {
+      console.log(`[#] Looping @ ${new Date()}`)
+    }
     this.emit('loop')
   }
 

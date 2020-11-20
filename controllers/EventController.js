@@ -66,7 +66,6 @@ class EventController {
    * @memberof EventController
    */
   registerDiscordEvents (client) {
-    // TODO: expand type options
     this.server.events.forEach(event => {
       if (!event.name || !event.func || event.type !== 'discord') return
       client.on(event.name, event.func.bind(client.botController.server))

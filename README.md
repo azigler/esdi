@@ -102,6 +102,7 @@ If you have further questions, [join the Esdi Community on Discord](https://disc
 - [ ] Expand command cooldowns
 - [ ] Expand command permissions
 - [ ] Add more server management functionality
+- [ ] Add webhook middleware
 
 ## Credits :horse_racing:
 
