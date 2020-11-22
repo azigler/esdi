@@ -3,7 +3,7 @@
 <head>
     
     <meta charset="utf-8">
-    <title>models/Event.js - Esdi Documentation</title>
+    <title>events/guildMemberAdd.js - Esdi Documentation</title>
     
     <meta name="description" content="ES6 Discord bot framework" />
     
@@ -43,7 +43,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">models/Event.js</h1>
+    <h1 class="page-title">events/guildMemberAdd.js</h1>
     
 
     
@@ -53,32 +53,35 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>/**
- * Event (e.g., {@link external:Client|Client} event)
+            <pre class="prettyprint source linenums"><code>const User = require('./../models/User')
+
+/**
+ * Emitted whenever a user joins a guild
  *
- * @class
- * @see external:Client
+ * @see https://discord.js.org/#/docs/main/stable/class/Client?scrollTo=guildMemberAdd
+ * @event external:Client#event:"Client#guildMemberAdd"
  */
-class Event {
-  /**
-   * Initializes a new Event
-   *
-   * @param {Object} config Event configuration object
-   * @param {String} config.name Event name
-   * @param {Function} config.func Event function
-   * @param {String} [config.type = 'discord'] Event type
-   * @param {String} sourcePath full path of Event source file
-   * @constructor
-   */
-  constructor ({ name, func, type = 'discord' }, sourcePath) {
-    this.name = name
-    this.func = func
-    this.type = type
-    this.sourcePath = sourcePath
+
+/**
+ * Adds a {@link User} to a {@link Guild}
+ *
+ * @type {Event}
+ * @listens external:Client#event:"Client#guildMemberAdd"
+ * @see external:Client
+ * @memberof Event
+ * @name guildMemberAdd
+ * @static
+ */
+module.exports = {
+  name: 'guildMemberAdd',
+  func (member) {
+    if (!this.controllers.get('UserController').get(member.id)) {
+      this.controllers.get('UserController').set(member.user.id, new User(this, member))
+    } else {
+      this.controllers.get('UserController').get(member.user.id).addGuild(member.guild)
+    }
   }
 }
-
-module.exports = Event
 </code></pre>
         </article>
     </section>

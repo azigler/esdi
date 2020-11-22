@@ -3,7 +3,7 @@
 <head>
     
     <meta charset="utf-8">
-    <title>models/Event.js - Esdi Documentation</title>
+    <title>commands/reload.js - Esdi Documentation</title>
     
     <meta name="description" content="ES6 Discord bot framework" />
     
@@ -43,7 +43,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">models/Event.js</h1>
+    <h1 class="page-title">commands/reload.js</h1>
     
 
     
@@ -53,32 +53,41 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>/**
- * Event (e.g., {@link external:Client|Client} event)
+            <pre class="prettyprint source linenums"><code>const Command = require('./../models/Command')
+
+/**
+ * Reloads a {@link Command} from its source file
  *
- * @class
- * @see external:Client
+ * @type {Command}
+ * @memberof Command
+ * @name reload
+ * @static
  */
-class Event {
-  /**
-   * Initializes a new Event
-   *
-   * @param {Object} config Event configuration object
-   * @param {String} config.name Event name
-   * @param {Function} config.func Event function
-   * @param {String} [config.type = 'discord'] Event type
-   * @param {String} sourcePath full path of Event source file
-   * @constructor
-   */
-  constructor ({ name, func, type = 'discord' }, sourcePath) {
-    this.name = name
-    this.func = func
-    this.type = type
-    this.sourcePath = sourcePath
+module.exports = {
+  name: 'reload',
+  description: 'Reloads a command from its source file. Useful for rapid development without restarting the server.',
+  args: true,
+  ownerOnly: true,
+  usage: '&lt;command>',
+  execute ({ message, args, server }) {
+    const commandName = args.shift().toLowerCase()
+
+    const command = server.controllers.get('CommandController').findCommand(commandName)
+    if (!command) return message.channel.send(`There is no command with a name or alias matching \`${commandName}\`, ${message.author}.`)
+
+    const sourcePath = command.sourcePath
+    delete require.cache[require.resolve(sourcePath)]
+
+    try {
+      const newCommand = new Command(require(sourcePath), command.sourcePath)
+      server.commands.set(newCommand.name, newCommand)
+      message.channel.send(`Command \`${command.name}\` was successfully reloaded, ${message.author}.`)
+    } catch (error) {
+      console.error(error)
+      message.channel.send(`There was an error while reloading the \`${command.name}\` command, ${message.author}.`)
+    }
   }
 }
-
-module.exports = Event
 </code></pre>
         </article>
     </section>

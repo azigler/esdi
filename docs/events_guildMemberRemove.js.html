@@ -3,7 +3,7 @@
 <head>
     
     <meta charset="utf-8">
-    <title>models/Event.js - Esdi Documentation</title>
+    <title>events/guildMemberRemove.js - Esdi Documentation</title>
     
     <meta name="description" content="ES6 Discord bot framework" />
     
@@ -43,7 +43,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">models/Event.js</h1>
+    <h1 class="page-title">events/guildMemberRemove.js</h1>
     
 
     
@@ -54,31 +54,28 @@
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>/**
- * Event (e.g., {@link external:Client|Client} event)
+ * Emitted whenever a member leaves a guild, or is kicked
  *
- * @class
- * @see external:Client
+ * @see https://discord.js.org/#/docs/main/stable/class/Client?scrollTo=guildMemberRemove
+ * @event external:Client#event:"Client#guildMemberRemove"
  */
-class Event {
-  /**
-   * Initializes a new Event
-   *
-   * @param {Object} config Event configuration object
-   * @param {String} config.name Event name
-   * @param {Function} config.func Event function
-   * @param {String} [config.type = 'discord'] Event type
-   * @param {String} sourcePath full path of Event source file
-   * @constructor
-   */
-  constructor ({ name, func, type = 'discord' }, sourcePath) {
-    this.name = name
-    this.func = func
-    this.type = type
-    this.sourcePath = sourcePath
+
+/**
+ * Removes a {@link User} from a {@link Guild}
+ *
+ * @type {Event}
+ * @listens external:Client#event:"Client#guildMemberRemove"
+ * @see external:Client
+ * @memberof Event
+ * @name guildMemberRemove
+ * @static
+ */
+module.exports = {
+  name: 'guildMemberRemove',
+  func (member) {
+    this.controllers.get('UserController').get(member.user.id).removeGuild(member.guild)
   }
 }
-
-module.exports = Event
 </code></pre>
         </article>
     </section>

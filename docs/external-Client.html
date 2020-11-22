@@ -3,7 +3,7 @@
 <head>
     
     <meta charset="utf-8">
-    <title>models/Event.js - Esdi Documentation</title>
+    <title>Client - Esdi Documentation</title>
     
     <meta name="description" content="ES6 Discord bot framework" />
     
@@ -43,45 +43,611 @@
 
 <div id="main">
     
-    <h1 class="page-title">models/Event.js</h1>
+    <h1 class="page-title">Client</h1>
     
 
     
 
 
 
-    
-    <section>
-        <article>
-            <pre class="prettyprint source linenums"><code>/**
- * Event (e.g., {@link external:Client|Client} event)
- *
- * @class
- * @see external:Client
- */
-class Event {
-  /**
-   * Initializes a new Event
-   *
-   * @param {Object} config Event configuration object
-   * @param {String} config.name Event name
-   * @param {Function} config.func Event function
-   * @param {String} [config.type = 'discord'] Event type
-   * @param {String} sourcePath full path of Event source file
-   * @constructor
-   */
-  constructor ({ name, func, type = 'discord' }, sourcePath) {
-    this.name = name
-    this.func = func
-    this.type = type
-    this.sourcePath = sourcePath
-  }
-}
 
-module.exports = Event
-</code></pre>
-        </article>
-    </section>
+<section>
+
+<header>
+    
+        <h2>
+        Client
+        </h2>
+        
+    
+</header>
+
+<article>
+    
+        <div class="container-overview">
+        
+            
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="controllers_BotController.js.html">controllers/BotController.js</a>, <a href="controllers_BotController.js.html#line34">line 34</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><a href="https://discord.js.org/#/docs/main/stable/class/Client">https://discord.js.org/#/docs/main/stable/class/Client</a></li>
+        </ul>
+    </dd>
+    
+
+    
+</dl>
+
+
+
+
+            
+                <div class="description usertext"><p>discord.js Client</p></div>
+            
+
+            
+        
+        </div>
+    
+
+    
+
+    
+
+    
+    
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Events</h3>
+
+        
+            
+
+    
+
+    <h4 class="name" id="guildCreate">event:Client#guildCreate</h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="events_guildCreate.js.html">events/guildCreate.js</a>, <a href="events_guildCreate.js.html#line1">line 1</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><a href="https://discord.js.org/#/docs/main/stable/class/Client?scrollTo=guildCreate">https://discord.js.org/#/docs/main/stable/class/Client?scrollTo=guildCreate</a></li>
+        </ul>
+    </dd>
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    <p>Emitted whenever the client joins a guild</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Listeners of This Event:</h5>
+<ul>
+    <li><a href="Event.html#.guildCreate">Event.guildCreate</a></li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="guildDelete">event:Client#guildDelete</h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="events_guildDelete.js.html">events/guildDelete.js</a>, <a href="events_guildDelete.js.html#line1">line 1</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><a href="https://discord.js.org/#/docs/main/stable/class/Client?scrollTo=guildDelete">https://discord.js.org/#/docs/main/stable/class/Client?scrollTo=guildDelete</a></li>
+        </ul>
+    </dd>
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    <p>Emitted whenever a guild kicks the client or the guild is deleted/left</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Listeners of This Event:</h5>
+<ul>
+    <li><a href="Event.html#.guildDelete">Event.guildDelete</a></li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="guildMemberAdd">event:Client#guildMemberAdd</h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="events_guildMemberAdd.js.html">events/guildMemberAdd.js</a>, <a href="events_guildMemberAdd.js.html#line3">line 3</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><a href="https://discord.js.org/#/docs/main/stable/class/Client?scrollTo=guildMemberAdd">https://discord.js.org/#/docs/main/stable/class/Client?scrollTo=guildMemberAdd</a></li>
+        </ul>
+    </dd>
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    <p>Emitted whenever a user joins a guild</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Listeners of This Event:</h5>
+<ul>
+    <li><a href="Event.html#.guildMemberAdd">Event.guildMemberAdd</a></li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="guildMemberRemove">event:Client#guildMemberRemove</h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="events_guildMemberRemove.js.html">events/guildMemberRemove.js</a>, <a href="events_guildMemberRemove.js.html#line1">line 1</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><a href="https://discord.js.org/#/docs/main/stable/class/Client?scrollTo=guildMemberRemove">https://discord.js.org/#/docs/main/stable/class/Client?scrollTo=guildMemberRemove</a></li>
+        </ul>
+    </dd>
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    <p>Emitted whenever a member leaves a guild, or is kicked</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Listeners of This Event:</h5>
+<ul>
+    <li><a href="Event.html#.guildMemberRemove">Event.guildMemberRemove</a></li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="ready">event:Client#ready</h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="events_ready.js.html">events/ready.js</a>, <a href="events_ready.js.html#line1">line 1</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><a href="https://discord.js.org/#/docs/main/stable/class/Client?scrollTo=ready">https://discord.js.org/#/docs/main/stable/class/Client?scrollTo=ready</a></li>
+        </ul>
+    </dd>
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    <p>Emitted when the client becomes ready to start working</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Listeners of This Event:</h5>
+<ul>
+    <li><a href="Event.html#.ready">Event.ready</a></li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+        
+    
+</article>
+
+</section>
 
 
 

@@ -3,7 +3,7 @@
 <head>
     
     <meta charset="utf-8">
-    <title>models/Event.js - Esdi Documentation</title>
+    <title>models/Hook.js - Esdi Documentation</title>
     
     <meta name="description" content="ES6 Discord bot framework" />
     
@@ -43,7 +43,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">models/Event.js</h1>
+    <h1 class="page-title">models/Hook.js</h1>
     
 
     
@@ -54,31 +54,30 @@
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>/**
- * Event (e.g., {@link external:Client|Client} event)
+ * Hook (e.g., webhook)
  *
  * @class
- * @see external:Client
  */
-class Event {
+class Hook {
   /**
-   * Initializes a new Event
+   * Initializes a new Hook
    *
-   * @param {Object} config Event configuration object
-   * @param {String} config.name Event name
-   * @param {Function} config.func Event function
-   * @param {String} [config.type = 'discord'] Event type
-   * @param {String} sourcePath full path of Event source file
+   * @param {Object} config Hook configuration object
+   * @param {String} config.name Hook name
+   * @param {String} [config.description = ''] Hook description
+   * @param {Function} config.init function to configure the Hook
+   * @param {String} sourcePath full path of Hook source file
    * @constructor
    */
-  constructor ({ name, func, type = 'discord' }, sourcePath) {
+  constructor ({ name, description = '', init }, sourcePath) {
     this.name = name
-    this.func = func
-    this.type = type
+    this.description = description
+    this.init = init
     this.sourcePath = sourcePath
   }
 }
 
-module.exports = Event
+module.exports = Hook
 </code></pre>
         </article>
     </section>
