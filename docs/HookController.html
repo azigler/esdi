@@ -86,7 +86,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="controllers_HookController.js.html">controllers/HookController.js</a>, <a href="controllers_HookController.js.html#line6">line 6</a>
+        <a href="controllers_HookController.js.html">controllers/HookController.js</a>, <a href="controllers_HookController.js.html#line9">line 9</a>
     </li></ul></dd>
     
 
@@ -178,7 +178,7 @@
 
     
 
-    <h4 class="name" id="configureGitHubRedeploy"><span class="type-signature"></span>configureGitHubRedeploy<span class="signature">(initConfig)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="configureGitHubRedeploy"><span class="type-signature"></span>configureGitHubRedeploy<span class="signature">(config)</span><span class="type-signature"></span></h4>
 
     
 
@@ -190,7 +190,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="controllers_HookController.js.html">controllers/HookController.js</a>, <a href="controllers_HookController.js.html#line45">line 45</a>
+        <a href="controllers_HookController.js.html">controllers/HookController.js</a>, <a href="controllers_HookController.js.html#line63">line 63</a>
     </li></ul></dd>
     
 
@@ -237,7 +237,7 @@
 
 
 <div class="description usertext">
-    <p>Wrapper method that configures <a href="Hook.html#.github-redeploy">Hook.github-redeploy</a></p>
+    <p>Wrapper method that configures <a href="Hook.html#.github-redeploy">github-redeploy</a></p>
 </div>
 
 
@@ -275,7 +275,7 @@
 
         <tr>
             
-                <td class="name"><code>initConfig</code></td>
+                <td class="name"><code>config</code></td>
             
 
             <td class="type">
@@ -291,7 +291,7 @@
 
             
 
-            <td class="description last"><p><code>initConfig</code> for <a href="Hook.html#.github-redeploy">Hook.github-redeploy</a> <code>init</code> function</p></td>
+            <td class="description last"><p><code>config</code> for <a href="Hook.html#.github-redeploy">github-redeploy</a></p></td>
         </tr>
 
     
@@ -333,7 +333,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="controllers_HookController.js.html">controllers/HookController.js</a>, <a href="controllers_HookController.js.html#line14">line 14</a>
+        <a href="controllers_HookController.js.html">controllers/HookController.js</a>, <a href="controllers_HookController.js.html#line20">line 20</a>
     </li></ul></dd>
     
 
@@ -441,7 +441,11 @@
         <th>Type</th>
 
         
+        <th>Attributes</th>
+        
 
+        
+        <th>Default</th>
         
 
         <th class="last">Description</th>
@@ -466,10 +470,142 @@
             </td>
 
             
+                <td class="attributes">
+                
 
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
             
 
             <td class="description last"><p>Esdi server instance</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>hookServerPort</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    <code>8587</code>
+                
+                </td>
+            
+
+            <td class="description last"><p>port for <a href="Hook.html">Hook</a> server</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>hookServerHost</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    <code>'localhost'</code>
+                
+                </td>
+            
+
+            <td class="description last"><p>hostname for <a href="Hook.html">Hook</a> server</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>hookServerTls</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+|
+
+<span class="param-type">Boolean</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    <code>false</code>
+                
+                </td>
+            
+
+            <td class="description last"><p><code>false</code> for HTTP, or object with paths to <code>key</code> and <code>cert</code> files for TLS</p></td>
         </tr>
 
     
@@ -518,7 +654,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="controllers_HookController.js.html">controllers/HookController.js</a>, <a href="controllers_HookController.js.html#line24">line 24</a>
+        <a href="controllers_HookController.js.html">controllers/HookController.js</a>, <a href="controllers_HookController.js.html#line36">line 36</a>
     </li></ul></dd>
     
 
@@ -610,7 +746,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="controllers_HookController.js.html">controllers/HookController.js</a>, <a href="controllers_HookController.js.html#line34">line 34</a>
+        <a href="controllers_HookController.js.html">controllers/HookController.js</a>, <a href="controllers_HookController.js.html#line51">line 51</a>
     </li></ul></dd>
     
 
@@ -705,7 +841,7 @@
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a> on Sat Nov 21 2020 21:46:46 GMT-0800 (Pacific Standard Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a> on Sun Nov 22 2020 12:00:57 GMT-0800 (Pacific Standard Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
 </footer>
 
 <script>prettyPrint();</script>
