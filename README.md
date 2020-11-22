@@ -45,7 +45,7 @@ const server = new Esdi({
   discordToken: 'YOUR-DISCORD-BOT-TOKEN'
 })
 
-// load local commands, controllers, events, and models
+// load local commands, controllers, events, hooks, and models
 server.load(__dirname)
 
 // start Esdi bot
