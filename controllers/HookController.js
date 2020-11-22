@@ -1,3 +1,6 @@
+const Hapi = require('@hapi/hapi')
+const fs = require('fs')
+
 /**
  * Controller for {@link Hook|Hooks} (e.g., webhooks)
  *
@@ -9,10 +12,19 @@ class HookController {
    *
    * @param {Object} config configuration object
    * @param {Object} config.server Esdi server instance
+   * @param {Number} [config.hookServerPort = 8587] port for {@link Hook} server
+   * @param {String} [config.hookServerHost = 'localhost'] hostname for {@link Hook} server
+   * @param {Object|Boolean} [config.hookServerTls = false] `false` for HTTP, or object with paths to `key` and `cert` files for TLS
    * @memberof HookController
    */
-  init ({ server }) {
+  init ({ server, hookServerPort = 8587, hookServerHost = 'localhost', hookServerTls = false }) {
     this.server = server
+    this.hookServerPort = hookServerPort
+    this.hookServer = Hapi.server({
+      port: hookServerPort,
+      host: hookServerHost,
+      tls: hookServerTls ? { key: fs.readFileSync(hookServerTls.key), cert: fs.readFileSync(hookServerTls.cert) } : false
+    })
   }
 
   /**
@@ -23,6 +35,11 @@ class HookController {
    */
   start () {
     console.log('[#] Starting HookController...')
+    this.hookServer.start()
+    this.server.hooks.forEach(hook => {
+      if (hook.type === 'global') return
+      this.hookServer.route(hook.hook())
+    })
   }
 
   /**
@@ -33,17 +50,19 @@ class HookController {
    */
   stop () {
     console.log('[#] Stopping HookController...')
+    this.hookServer.stop()
   }
 
   /**
-   * Wrapper method that configures {@link Hook.github-redeploy}
+   * Wrapper method that configures {@link Hook.github-redeploy|github-redeploy}
    *
-   * @param {Object} initConfig `initConfig` for {@link Hook.github-redeploy} `init` function
+   * @param {Object} config `config` for {@link Hook.github-redeploy|github-redeploy}
    * @see Hook.github-redeploy
    * @memberof HookController
    */
-  configureGitHubRedeploy (initConfig) {
-    this.server.hooks.get('github-redeploy').init(initConfig)
+  configureGitHubRedeploy (config) {
+    this.hookServer.route(this.server.hooks.get('github-redeploy').hook(config))
+    console.log(`[H] Listening for GitHub webhooks on port: ${this.hookServerPort}...`)
   }
 }
 

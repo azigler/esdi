@@ -62,6 +62,8 @@ your-project-folder/
     │   └── ... add your custom controllers here
     ├── events/
     │   └── ... add your custom events here
+    ├── hooks/
+    │   └── ... add your custom hooks here
     └── models/
         └── ... add your custom models here
 ```
@@ -85,20 +87,25 @@ If you have further questions, [join the Esdi Community on Discord](https://disc
 - Obeys a multitude of commands
 - Listens to common Discord events (e.g., someone joining a server)
 - Supports local (PouchDB) and remote (CouchDB) databases
+- Serves as middleware for webhooks
 - Stands alone or integrates with pre-existing applications
 - Usable for any purpose: server management, games, third-party API integration, or something totally unique!
-- Extensible with custom commands, controllers, events, and models
+- Extensible with custom commands, controllers, events, hooks, and models
 
 ## Current Roadmap :chart_with_upwards_trend:
 
-- [x] Release `1.0.0`
+- [x] Release [`v1.0.0`](https://github.com/azigler/esdi/releases/tag/v1.0.0)
 - [x] Publish npm package
 - [x] Enhance GitHub repository
 - [x] Set up JSDoc on GitHub Pages
 - [x] Configure community Discord server
-- [x] Add webhook middleware
-- [x] Release `1.1.0`
-- [ ] Add more tutorials for customizing Esdi
+- [x] Implement global webhooks
+- [x] Add `github-redeploy` Hook
+- [x] Release [`v1.1.0`](https://github.com/azigler/esdi/releases/tag/v1.1.0)
+- [x] Implement channel webhooks
+- [ ] Add `ko-fi` Hook
+- [ ] Write webhook tutorials
+- [ ] Release v1.2.0
 - [ ] Add support for timed interval events
 - [ ] Require command aliases to be unique
 - [ ] Expand command cooldowns
