@@ -96,13 +96,14 @@ If you have further questions, [join the Esdi Community on Discord](https://disc
 - [x] Enhance GitHub repository
 - [x] Set up JSDoc on GitHub Pages
 - [x] Configure community Discord server
+- [x] Add webhook middleware
+- [x] Release `1.1.0`
 - [ ] Add more tutorials for customizing Esdi
 - [ ] Add support for timed interval events
 - [ ] Require command aliases to be unique
 - [ ] Expand command cooldowns
 - [ ] Expand command permissions
 - [ ] Add more server management functionality
-- [ ] Add webhook middleware
 
 ## Credits :horse_racing:
 
