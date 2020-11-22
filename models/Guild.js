@@ -1,5 +1,5 @@
 /**
- * Discord Guild
+ * Wrapper class for {@link external:Guild|discord.js Guild}
  *
  * @class
  */
@@ -7,13 +7,17 @@ class Guild {
   /**
    * Initializes a new Guild
    *
-   * @param {Guild} guild Discord Guild object
+   * @param {external:Guild} guild discord.js Guild
    * @constructor
    */
   constructor (guild) {
     this.name = guild.name
     this.id = guild.id
 
+    /**
+     * @external Guild
+     * @see https://discord.js.org/#/docs/main/stable/class/Guild
+     */
     this.discordGuild = guild
   }
 }

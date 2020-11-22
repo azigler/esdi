@@ -1,7 +1,7 @@
 const Guild = require('./../models/Guild')
 
 /**
- * Controller for Discord Guilds
+ * Controller for {@link Guild|Guilds}
  *
  * @class
  * @extends Map
@@ -42,7 +42,7 @@ class GuildController extends Map {
   /**
    * Adds a Guild to the GuildController
    *
-   * @param {Guild} guild Discord Guild object
+   * @param {external:Guild} guild discord.js Guild
    * @memberof GuildController
    */
   addGuild (guild) {
@@ -56,7 +56,7 @@ class GuildController extends Map {
   /**
    * Removes a Guild from the GuildController
    *
-   * @param {Guild} guild Discord Guild object
+   * @param {external:Guild} guild discord.js Guild
    * @memberof GuildController
    */
   removeGuild (guild) {
@@ -73,7 +73,7 @@ class GuildController extends Map {
   /**
    * Fetches the Guilds to which the bot is connected (and also fetches GuildMembers)
    *
-   * @param {Client} client Discord client object
+   * @param {external:Client} client discord.js Client
    * @memberof GuildController
    */
   fetchInitialGuilds (client) {

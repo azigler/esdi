@@ -38,6 +38,8 @@
       "./script.js",
       "./style.css"
     ],
+    "removeQuotes": "all",
+    "static": true,
     "search": true,
     "menu": {
         "GitHub": {

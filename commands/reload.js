@@ -1,5 +1,13 @@
 const Command = require('./../models/Command')
 
+/**
+ * Reloads a {@link Command} from its source file
+ *
+ * @type {Command}
+ * @memberof Command
+ * @name reload
+ * @static
+ */
 module.exports = {
   name: 'reload',
   description: 'Reloads a command from its source file. Useful for rapid development without restarting the server.',

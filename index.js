@@ -63,6 +63,7 @@ class Esdi extends require('events') {
     this.commands = new discordJs.Collection()
     this.models = new Map()
     this.events = new Set()
+    this.hooks = new Map()
 
     // if enabled, load default files
     if (!loadDefaultFiles) return
@@ -83,6 +84,7 @@ class Esdi extends require('events') {
       this._loadType('controllers', dir)
       this._loadType('commands', dir)
       this._loadType('events', dir)
+      this._loadType('hooks', dir)
     // otherwise, load specified type
     } else {
       this._loadType(type, dir)
@@ -96,7 +98,9 @@ class Esdi extends require('events') {
    * @memberof Esdi
    */
   loop () {
-    console.log(`[#] Looping @ ${new Date()}`)
+    if (process.argv.includes('-v')) {
+      console.log(`[#] Looping @ ${new Date()}`)
+    }
     this.emit('loop')
   }
 
@@ -156,6 +160,15 @@ class Esdi extends require('events') {
               const sourcePath = path.resolve(dir, 'events', file)
 
               this.events.add(new Event(require(sourcePath), sourcePath))
+              continue
+            }
+
+            if (type === 'hooks') {
+              const Hook = this.models.get('Hook')
+              console.log(`[+] Loaded ${filename} <hook> from ${path.resolve(dir, 'hooks')}`)
+              const sourcePath = path.resolve(dir, 'hooks', file)
+
+              this.hooks.set(filename, new Hook(require(sourcePath), sourcePath))
               continue
             }
 

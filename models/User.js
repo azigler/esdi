@@ -1,5 +1,5 @@
 /**
- * Discord User
+ * Wrapper class for {@link external:User|discord.js User} and {@link external:GuildMember|discord.js GuildMember}
  *
  * @class
  */
@@ -8,7 +8,7 @@ class User {
    * Initializes a new User
    *
    * @param {Esdi} server Esdi server instance
-   * @param {GuildMember} guildMember Discord GuildMember object
+   * @param {external:GuildMember} guildMember discord.js GuildMember
    * @constructor
    */
   constructor (server, guildMember) {
@@ -16,10 +16,20 @@ class User {
     this.id = guildMember.user.id
     this.guilds = []
     this.server = server
-    this.discordUser = guildMember.user
-    this.discordGuildMember = guildMember
-    this.botLabel = `${this.isBot ? ' [BOT]' : ''}`
 
+    /**
+     * @external User
+     * @see https://discord.js.org/#/docs/main/stable/class/User
+     */
+    this.discordUser = guildMember.user
+
+    /**
+     * @external GuildMember
+     * @see https://discord.js.org/#/docs/main/stable/class/GuildMember
+     */
+    this.discordGuildMember = guildMember
+
+    this.botLabel = `${this.isBot ? ' [BOT]' : ''}`
     this.addGuild(guildMember.guild)
   }
 
@@ -53,7 +63,7 @@ class User {
   /**
    * Adds a Guild to this User
    *
-   * @param {Guild} guild Discord Guild object
+   * @param {external:Guild} guild discord.js Guild
    * @memberof User
    */
   addGuild (guild) {
@@ -71,7 +81,7 @@ class User {
   /**
    * Removes a Guild from this User (and deletes self if last Guild removed)
    *
-   * @param {Guild} guild Discord Guild object
+   * @param {external:Guild} guild discord.js Guild
    * @memberof User
    */
   removeGuild (guild) {

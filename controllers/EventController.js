@@ -1,5 +1,5 @@
 /**
- * Controller for Events
+ * Controller for {@link Event|Events}
  *
  * @class
  */
@@ -36,7 +36,7 @@ class EventController {
   }
 
   /**
-   * Called every Esdi server loop
+   * Called every {@link Esdi} server loop
    *
    * @listens Esdi#loop
    * @memberof EventController
@@ -60,13 +60,12 @@ class EventController {
   }
 
   /**
-   * Registers Events to the provided Discord Client
+   * Registers Events to the provided discord.js Client
    *
-   * @param {Client} client Discord Client object
+   * @param {external:Client} client discord.js Client
    * @memberof EventController
    */
   registerDiscordEvents (client) {
-    // TODO: expand type options
     this.server.events.forEach(event => {
       if (!event.name || !event.func || event.type !== 'discord') return
       client.on(event.name, event.func.bind(client.botController.server))

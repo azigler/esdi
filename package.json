@@ -1,6 +1,6 @@
 {
   "name": "esdi",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "ES6 Discord bot framework",
   "author": "Andrew Zigler <andrewzigler@gmail.com> (https://ko-fi.com/andrewzigler)",
   "main": "index.js",
@@ -12,26 +12,40 @@
   "engines": {
     "node": ">=12.18.2"
   },
+  "bugs": {
+    "url": "https://github.com/azigler/esdi/issues",
+    "email": "andrewzigler@gmail.com"
+  },
   "license": "MIT",
+  "keywords": [
+    "bot",
+    "bot-framework",
+    "discord",
+    "discord-bot",
+    "discordjs",
+    "es6"
+  ],
   "scripts": {
     "dev": "nodemon ./scripts/dev.js",
-    "run": "node ./scripts/dev.js",
+    "start": "node ./scripts/dev.js",
+    "start:verbose": "node ./scripts/dev.js -v",
     "lint": "eslint . --ext .js --fix --ignore-pattern '**/node_modules/**'",
-    "merge-main-to-dev": "git checkout develop && git merge --no-ff main",
-    "merge-dev-to-main": "git checkout main && git merge --no-ff develop",
+    "merge-main-to-dev": "git checkout dev && git merge --no-ff main",
+    "merge-dev-to-main": "git checkout main && git merge --no-ff dev",
     "docs": "jsdoc -c ./config/.jsdoc.json -R ./config/.home.md -u config",
     "clean": "npm run clean:docs && npm run clean:data",
-    "clean:docs": "rm -rf out && mkdir out && cd out && touch .gitkeep",
+    "clean:docs": "rm -rf docs && mkdir docs && cd docs && touch .gitkeep",
     "clean:data": "rm -rf data && mkdir data && cd data && touch .gitkeep"
   },
   "dependencies": {
+    "@hapi/hapi": "^20.0.2",
     "discord.js": "^12.4.1",
     "dotenv": "^8.2.0",
     "pouchdb": "^7.2.2"
   },
   "devDependencies": {
     "docdash": "^1.2.0",
-    "eslint": "^7.13.0",
+    "eslint": "^7.14.0",
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-standard": "^4.1.0",
     "jsdoc": "^3.6.6",

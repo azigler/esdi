@@ -2,7 +2,7 @@ const PouchDB = require('pouchdb')
 const fs = require('fs')
 
 /**
- * Controller for CouchDB (remote) and PouchDB (local) databases
+ * Controller for {@link https://couchdb.apache.org/|CouchDB} (remote) and {@link https://pouchdb.com/|PouchDB} (local) databases
  *
  * @class
  * @extends Map
