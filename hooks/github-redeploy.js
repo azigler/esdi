@@ -9,21 +9,22 @@ const crypto = require('crypto')
  * @name github-redeploy
  * @prop {Object} config Hook configuration object
  * @prop {String} config.repo GitHub repository URL
- * @prop {String|Boolean} [config.secret=false] `false` for no secret (unrecommended), or string for GitHub webhook secret
+ * @prop {String|Boolean} [config.secret = false] `false` for no secret (unrecommended), or string for GitHub webhook secret
  * @prop {String} config.command command to invoke after rebuild (e.g., `pm2 restart esdi`)
  * @prop {String} config.path project directory
+ * @prop {Boolean} [config.reset = false] invoke `git reset --hard` to force update
  * @static
  */
 module.exports = {
   name: 'github-redeploy',
   description: 'Redeploys the Esdi instance after receiving a GitHub webhook.',
-  hook ({ repo, secret = false, command, path } = {}) {
+  hook ({ repo, secret = false, command, path, reset = false } = {}) {
     return {
       method: 'POST',
       path: '/github-redeploy',
       handler: (request, h) => {
         function _exec () {
-          exec(`cd ${path} git pull ${repo} && npm install && ${command}`)
+          exec(`cd ${path} git fetch ${repo} && ${reset ? 'git reset --hard && ' : ''}npm install && ${command}`)
             .stdout.on('data', function (data) {
               console.log(data)
             })
