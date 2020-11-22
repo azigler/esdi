@@ -1,5 +1,5 @@
 /**
- * Controller for hooks (e.g., webhooks)
+ * Controller for {@link Hook|Hooks} (e.g., webhooks)
  *
  * @class
  */
@@ -36,13 +36,14 @@ class HookController {
   }
 
   /**
-   * Sets up a Hook to redeploy the instance when a GitHub repository has a new commit
+   * Wrapper method that configures {@link Hook.github-redeploy}
    *
-   * @param {Object} config properties for the `github-redeploy` Hook
-   * @memberof EventController
+   * @param {Object} initConfig `initConfig` for {@link Hook.github-redeploy} `init` function
+   * @see Hook.github-redeploy
+   * @memberof HookController
    */
-  configureGitHubHook (config) {
-    this.server.hooks.get('github-redeploy').init(config)
+  configureGitHubRedeploy (initConfig) {
+    this.server.hooks.get('github-redeploy').init(initConfig)
   }
 }
 
