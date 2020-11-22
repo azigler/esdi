@@ -1,3 +1,11 @@
+/**
+ * Lists all {@link Command|Commands} or gets help for a specific {@link Command}
+ *
+ * @type {Command}
+ * @memberof Command
+ * @name help
+ * @static
+ */
 module.exports = {
   name: 'help',
   description: 'Lists all bot commands or gets help for a specific command.',

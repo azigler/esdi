@@ -1,7 +1,8 @@
 /**
- * Event
+ * Event (e.g., {@link external:Client|Client} event)
  *
  * @class
+ * @see external:Client
  */
 class Event {
   /**

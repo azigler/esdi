@@ -1,7 +1,7 @@
 const discordJs = require('discord.js')
 
 /**
- * Controller for Discord bot Commands
+ * Controller for Discord bot {@link Command|Commands}
  *
  * @class
  */

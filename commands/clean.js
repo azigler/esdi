@@ -1,3 +1,11 @@
+/**
+ * Deletes the most recent messages in the current channel (10 by default, 100 maximum)
+ *
+ * @type {Command}
+ * @memberof Command
+ * @name clean
+ * @static
+ */
 module.exports = {
   name: 'clean',
   aliases: ['purge', 'delete'],

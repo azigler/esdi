@@ -1,7 +1,7 @@
 const User = require('./../models/User')
 
 /**
- * Controller for Discord Users
+ * Controller for {@link User|Users}
  *
  * @class
  * @extends Map
@@ -42,7 +42,7 @@ class UserController extends Map {
   /**
    * Fetches an array of GuildMembers belonging to a Guild
    *
-   * @param {Guild} guild Discord Guild object
+   * @param {external:Guild} guild discord.js Guild
    * @memberof UserController
    */
   fetchGuildMembers (guild) {

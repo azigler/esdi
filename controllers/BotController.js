@@ -1,7 +1,7 @@
 const Discord = require('discord.js')
 
 /**
- * Controller for Discord bot
+ * Controller for {@link https://discord.js.org/#/docs/main/stable/general/welcome|discord.js}
  *
  * @class
  * @extends Map
@@ -13,7 +13,7 @@ class BotController extends Map {
    * @param {Object} config configuration object
    * @param {Object} config.server Esdi server instance
    * @param {String} [config.discordToken = process.env.DISCORD_TOKEN] token for Discord bot
-   * @param {String} [config.botPrefix = '!'] prefix for Discord bot commands
+   * @param {String} [config.botPrefix = '!'] prefix for {@link Command|Commands}
    * @memberof BotController
    */
   init ({ server, discordToken = process.env.DISCORD_TOKEN, botPrefix = '!' }) {
@@ -31,6 +31,11 @@ class BotController extends Map {
   start () {
     console.log('[#] Starting BotController...')
 
+    /**
+     * discord.js Client
+     * @external Client
+     * @see https://discord.js.org/#/docs/main/stable/class/Client
+     */
     this.client = new Discord.Client()
     this.client.botController = this
 
@@ -66,7 +71,7 @@ class BotController extends Map {
   }
 
   /**
-   * Logs in the Discord bot with its token
+   * Logs in the {@link external:Client|Client} with a token
    *
    * @memberof BotController
    */
