@@ -40,7 +40,7 @@ class HookController {
     this.hookServer.start()
     this.server.hooks.forEach(hook => {
       if (hook.type === 'global') return
-      this.hookServer.route(hook.hook())
+      this.hookServer.route(hook.hook({ server: this.server }))
     })
   }
 
