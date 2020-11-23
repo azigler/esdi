@@ -20,6 +20,8 @@ class HookController {
   init ({ server, hookServerPort = 8587, hookServerHost = 'localhost', hookServerTls = false }) {
     this.server = server
     this.hookServerPort = hookServerPort
+    this.hookServerHost = hookServerHost
+    this.hookServerTls = hookServerTls
     this.hookServer = Hapi.server({
       port: hookServerPort,
       host: hookServerHost,
@@ -62,7 +64,7 @@ class HookController {
    */
   configureGitHubRedeploy (config) {
     this.hookServer.route(this.server.hooks.get('github-redeploy').hook(config))
-    console.log(`[H] Listening for GitHub webhooks on port: ${this.hookServerPort}...`)
+    console.log(`[H] github-redeploy Hook installed -> (POST) http${this.hookServerTls ? 's' : ''}://${this.hookServerHost}:${this.hookServerPort}/github-redeploy`)
   }
 }
 
