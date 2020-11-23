@@ -105,7 +105,7 @@ If you have further questions, [join the Esdi Community on Discord](https://disc
 - [x] Implement channel webhooks
 - [ ] Add `ko-fi` Hook
 - [ ] Write webhook tutorials
-- [ ] Release v1.2.0
+- [ ] Release `v1.2.0`
 - [ ] Add support for timed interval events
 - [ ] Require command aliases to be unique
 - [ ] Expand command cooldowns

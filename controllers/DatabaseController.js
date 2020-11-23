@@ -115,7 +115,7 @@ class DatabaseController extends Map {
    * @param {Object} config configuration object
    * @param {String} config.db database name
    * @param {String} config.id document `_id`
-   * @param {Object} config.payload payload for updating document
+   * @param {Object} config.payload payload for document
    * @memberof DatabaseController
    */
   updateDoc ({ db, id, payload }) {
