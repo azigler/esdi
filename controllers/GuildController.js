@@ -11,7 +11,7 @@ class GuildController extends Map {
    * Initializes a new GuildController
    *
    * @param {Object} config configuration object
-   * @param {Object} config.server Esdi server instance
+   * @param {Esdi} config.server Esdi server instance
    * @memberof GuildController
    */
   init ({ server }) {

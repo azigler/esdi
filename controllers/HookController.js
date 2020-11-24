@@ -11,7 +11,7 @@ class HookController {
    * Initializes a new HookController
    *
    * @param {Object} config configuration object
-   * @param {Object} config.server Esdi server instance
+   * @param {Esdi} config.server Esdi server instance
    * @param {Number} [config.hookServerPort = 8587] port for {@link Hook} server
    * @param {String} [config.hookServerHost = 'localhost'] hostname for {@link Hook} server
    * @param {Object|Boolean} [config.hookServerTls = false] `false` for HTTP, or object with paths to `key` and `cert` files for TLS
@@ -20,6 +20,8 @@ class HookController {
   init ({ server, hookServerPort = 8587, hookServerHost = 'localhost', hookServerTls = false }) {
     this.server = server
     this.hookServerPort = hookServerPort
+    this.hookServerHost = hookServerHost
+    this.hookServerTls = hookServerTls
     this.hookServer = Hapi.server({
       port: hookServerPort,
       host: hookServerHost,
@@ -38,7 +40,7 @@ class HookController {
     this.hookServer.start()
     this.server.hooks.forEach(hook => {
       if (hook.type === 'global') return
-      this.hookServer.route(hook.hook())
+      this.hookServer.route(hook.init({ server: this.server }))
     })
   }
 
@@ -56,13 +58,13 @@ class HookController {
   /**
    * Wrapper method that configures {@link Hook.github-redeploy|github-redeploy}
    *
-   * @param {Object} config `config` for {@link Hook.github-redeploy|github-redeploy}
+   * @param {Object} config `initConfig` for {@link Hook.github-redeploy|github-redeploy}
    * @see Hook.github-redeploy
    * @memberof HookController
    */
   configureGitHubRedeploy (config) {
-    this.hookServer.route(this.server.hooks.get('github-redeploy').hook(config))
-    console.log(`[H] Listening for GitHub webhooks on port: ${this.hookServerPort}...`)
+    this.hookServer.route(this.server.hooks.get('github-redeploy').init(config))
+    console.log(`[H] github-redeploy Hook installed -> (POST) http${this.hookServerTls ? 's' : ''}://${this.hookServerHost}:${this.hookServerPort}/hook/github-redeploy`)
   }
 }
 

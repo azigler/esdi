@@ -8,7 +8,7 @@ class EventController {
    * Initializes a new EventController
    *
    * @param {Object} config configuration object
-   * @param {Object} config.server Esdi server instance
+   * @param {Esdi} config.server Esdi server instance
    * @memberof EventController
    */
   init ({ server }) {

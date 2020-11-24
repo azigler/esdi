@@ -12,7 +12,7 @@ class DatabaseController extends Map {
    * Initializes a new DatabaseController
    *
    * @param {Object} config configuration object
-   * @param {Object} config.server Esdi server instance
+   * @param {Esdi} config.server Esdi server instance
    * @param {String} [config.dbAddress = 'local'] address of remote database, or `local` for local database
    * @param {String} [config.dbPort = 5984] port of remote database
    * @param {String} [config.dbNamespace = 'esdi_'] namespace prefix for database names
@@ -80,7 +80,7 @@ class DatabaseController extends Map {
       include_docs: true
     }).on('change', function (change) {
       if (change.doc._rev.split('-')[0] === '1') return
-      console.log(`[~] Updated "${change.id}" document in ${name} database:`)
+      console.log(`[~] "${change.id}" document in ${name} database updated:`)
       console.log(change.doc)
     }).on('complete', function (info) {
       console.log(`=/= No longer syncing ${name} database!`)
@@ -115,7 +115,7 @@ class DatabaseController extends Map {
    * @param {Object} config configuration object
    * @param {String} config.db database name
    * @param {String} config.id document `_id`
-   * @param {Object} config.payload payload for updating document
+   * @param {Object} config.payload payload for document
    * @memberof DatabaseController
    */
   updateDoc ({ db, id, payload }) {

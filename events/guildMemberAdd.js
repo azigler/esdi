@@ -15,6 +15,7 @@ const User = require('./../models/User')
  * @see external:Client
  * @memberof Event
  * @name guildMemberAdd
+ * @prop {external:GuildMember} member discord.js GuildMember
  * @static
  */
 module.exports = {

@@ -11,7 +11,7 @@ class UserController extends Map {
    * Initializes a new UserController
    *
    * @param {Object} config configuration object
-   * @param {Object} config.server Esdi server instance
+   * @param {Esdi} config.server Esdi server instance
    * @memberof UserController
    */
   init ({ server }) {

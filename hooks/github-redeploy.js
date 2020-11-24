@@ -7,22 +7,23 @@ const crypto = require('crypto')
  * @type {Hook}
  * @memberof Hook
  * @name github-redeploy
- * @prop {Object} config Hook configuration object
- * @prop {String} config.repo GitHub repository URL
- * @prop {String|Boolean} [config.secret = false] `false` for no secret (unrecommended), or string for GitHub webhook secret
- * @prop {String} config.command command to invoke after rebuild (e.g., `pm2 restart esdi`)
- * @prop {String} config.path project directory
- * @prop {Boolean} [config.reset = false] invoke `git reset --hard` to force update
+ * @prop {Object} initConfig `init` function configuration object
+ * @prop {String} initConfig.repo GitHub repository URL
+ * @prop {String|Boolean} [initConfig.secret = false] `false` for no secret (unrecommended), or string for GitHub webhook secret
+ * @prop {String} initConfig.command command to invoke after rebuild (e.g., `pm2 restart esdi`)
+ * @prop {String} initConfig.path project directory
+ * @prop {Boolean} [initConfig.reset = false] invoke `git reset --hard` to force update
  * @static
  */
 module.exports = {
   name: 'github-redeploy',
   description: 'Redeploys the Esdi instance after receiving a GitHub webhook.',
-  hook ({ repo, secret = false, command, path, reset = false } = {}) {
+  init ({ repo, secret = false, command, path, reset = false } = {}) {
     return {
       method: 'POST',
-      path: '/github-redeploy',
+      path: '/hook/github-redeploy',
       handler: (request, h) => {
+        // helper function that executes the redeploy
         function _exec () {
           exec(`cd ${path} git fetch ${repo} && ${reset ? 'git reset --hard && ' : ''}npm install && ${command}`)
             .stdout.on('data', function (data) {
@@ -30,15 +31,21 @@ module.exports = {
             })
           return `Redeployed from repository @ ${new Date()}`
         }
+
+        // helper function that rejects unauthorized requests
+        function _unauthorized () {
+          return h.response('Unauthorized').code(401)
+        }
+
         if (secret) {
           if (!request.headers['x-hub-signature']) {
-            return h.response('Unauthorized').code(401)
+            return _unauthorized()
           }
           const sig = `sha1=${crypto.createHmac('sha1', secret).update(JSON.stringify(request.payload)).digest('hex')}`
           if (crypto.timingSafeEqual(Buffer.from(sig), Buffer.from(request.headers['x-hub-signature']))) {
             return _exec()
           } else {
-            return h.response('Unauthorized').code(401)
+            return _unauthorized()
           }
         } else {
           return _exec()

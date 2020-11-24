@@ -10,7 +10,7 @@ class CommandController {
    * Initializes a new CommandController
    *
    * @param {Object} config configuration object
-   * @param {Object} config.server Esdi server instance
+   * @param {Esdi} config.server Esdi server instance
    * @memberof CommandController
    */
   init ({ server }) {

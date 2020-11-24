@@ -3,7 +3,7 @@
 <head>
     
     <meta charset="utf-8">
-    <title>controllers/HookController.js - Esdi Documentation</title>
+    <title>Message - Esdi Documentation</title>
     
     <meta name="description" content="ES6 Discord bot framework" />
     
@@ -43,91 +43,112 @@
 
 <div id="main">
     
-    <h1 class="page-title">controllers/HookController.js</h1>
+    <h1 class="page-title">Message</h1>
     
 
     
 
 
 
+
+<section>
+
+<header>
     
-    <section>
-        <article>
-            <pre class="prettyprint source linenums"><code>const Hapi = require('@hapi/hapi')
-const fs = require('fs')
+        <h2>
+        Message
+        </h2>
+        
+    
+</header>
 
-/**
- * Controller for {@link Hook|Hooks} (e.g., webhooks)
- *
- * @class
- */
-class HookController {
-  /**
-   * Initializes a new HookController
-   *
-   * @param {Object} config configuration object
-   * @param {Esdi} config.server Esdi server instance
-   * @param {Number} [config.hookServerPort = 8587] port for {@link Hook} server
-   * @param {String} [config.hookServerHost = 'localhost'] hostname for {@link Hook} server
-   * @param {Object|Boolean} [config.hookServerTls = false] `false` for HTTP, or object with paths to `key` and `cert` files for TLS
-   * @memberof HookController
-   */
-  init ({ server, hookServerPort = 8587, hookServerHost = 'localhost', hookServerTls = false }) {
-    this.server = server
-    this.hookServerPort = hookServerPort
-    this.hookServerHost = hookServerHost
-    this.hookServerTls = hookServerTls
-    this.hookServer = Hapi.server({
-      port: hookServerPort,
-      host: hookServerHost,
-      tls: hookServerTls ? { key: fs.readFileSync(hookServerTls.key), cert: fs.readFileSync(hookServerTls.cert) } : false
-    })
-  }
+<article>
+    
+        <div class="container-overview">
+        
+            
 
-  /**
-   * Starts the HookController
-   *
-   * @listens Esdi#start
-   * @memberof HookController
-   */
-  start () {
-    console.log('[#] Starting HookController...')
-    this.hookServer.start()
-    this.server.hooks.forEach(hook => {
-      if (hook.type === 'global') return
-      this.hookServer.route(hook.init({ server: this.server }))
-    })
-  }
+<dl class="details">
 
-  /**
-   * Stops the HookController
-   *
-   * @listens Esdi#stop
-   * @memberof HookController
-   */
-  stop () {
-    console.log('[#] Stopping HookController...')
-    this.hookServer.stop()
-  }
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="controllers_BotController.js.html">controllers/BotController.js</a>, <a href="controllers_BotController.js.html#line42">line 42</a>
+    </li></ul></dd>
+    
 
-  /**
-   * Wrapper method that configures {@link Hook.github-redeploy|github-redeploy}
-   *
-   * @param {Object} config `initConfig` for {@link Hook.github-redeploy|github-redeploy}
-   * @see Hook.github-redeploy
-   * @memberof HookController
-   */
-  configureGitHubRedeploy (config) {
-    this.hookServer.route(this.server.hooks.get('github-redeploy').init(config))
-    console.log(`[H] github-redeploy Hook installed -> (POST) http${this.hookServerTls ? 's' : ''}://${this.hookServerHost}:${this.hookServerPort}/hook/github-redeploy`)
-  }
-}
+    
 
-// factory
-module.exports = new HookController()
-</code></pre>
-        </article>
-    </section>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><a href="https://discord.js.org/#/docs/main/stable/class/Message">https://discord.js.org/#/docs/main/stable/class/Message</a></li>
+        </ul>
+    </dd>
+    
+
+    
+</dl>
+
+
+
+
+            
+                <div class="description usertext"><p>discord.js Message</p></div>
+            
+
+            
+        
+        </div>
+    
+
+    
+
+    
+
+    
+    
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
 
 
 

@@ -6,6 +6,10 @@ const Command = require('./../models/Command')
  * @type {Command}
  * @memberof Command
  * @name reload
+ * @prop {Object} executeConfig `execution` function configuration object
+ * @prop {external:Message} executeConfig.message discord.js Message
+ * @prop {String[]} executeConfig.args Array of space-separated strings following the command
+ * @prop {Esdi} executeConfig.server Esdi server instance
  * @static
  */
 module.exports = {
