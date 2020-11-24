@@ -4,6 +4,8 @@ const crypto = require('crypto')
 /**
  * Redeploys the {@link Esdi} instance after receiving a {@link https://docs.github.com/en/free-pro-team@latest/developers/webhooks-and-events/about-webhooks|GitHub webhook}
  *
+ * `POST: /hook/github-redeploy`
+ *
  * @type {Hook}
  * @memberof Hook
  * @name github-redeploy
