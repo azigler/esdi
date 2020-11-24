@@ -1,3 +1,7 @@
+nav {
+  padding-bottom: 4rem;
+}
+
 nav a:hover {
   text-decoration: underline;
 }

@@ -11,7 +11,7 @@ class BotController extends Map {
    * Initializes a new BotController
    *
    * @param {Object} config configuration object
-   * @param {Object} config.server Esdi server instance
+   * @param {Esdi} config.server Esdi server instance
    * @param {String} [config.discordToken = process.env.DISCORD_TOKEN] token for Discord bot
    * @param {String} [config.botPrefix = '!'] prefix for {@link Command|Commands}
    * @memberof BotController
@@ -39,6 +39,11 @@ class BotController extends Map {
     this.client = new Discord.Client()
     this.client.botController = this
 
+    /**
+     * discord.js Message
+     * @external Message
+     * @see https://discord.js.org/#/docs/main/stable/class/Message
+     */
     this.client.on('message', message => {
       if (!message.content.startsWith(this.prefix) || message.author.bot) return
 

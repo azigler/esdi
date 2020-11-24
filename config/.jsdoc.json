@@ -13,8 +13,8 @@
     "default": {
       "staticFiles": {
         "include": [
-            "./config/script.js",
-            "./config/style.css"
+            "./config/jsdoc.js",
+            "./config/jsdoc.css"
         ]
       }
     }
@@ -35,8 +35,8 @@
       "url": "https://azigler.github.io/esdi"
     },
     "scripts": [
-      "./script.js",
-      "./style.css"
+      "./jsdoc.js",
+      "./jsdoc.css"
     ],
     "removeQuotes": "all",
     "static": true,

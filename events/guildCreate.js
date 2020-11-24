@@ -13,6 +13,7 @@
  * @see external:Client
  * @memberof Event
  * @name guildCreate
+ * @prop {external:Guild} guild discord.js Guild
  * @static
  */
 module.exports = {
