@@ -28,7 +28,7 @@
   "scripts": {
     "dev": "nodemon ./scripts/dev.js",
     "start": "node ./scripts/dev.js",
-    "start:verbose": "node ./scripts/dev.js -v",
+    "start:verbose": "node ./scripts/dev.js --verbose",
     "lint": "eslint . --ext .js --fix --ignore-pattern '**/node_modules/**'",
     "merge-main-to-dev": "git checkout dev && git merge --no-ff main",
     "merge-dev-to-main": "git checkout main && git merge --no-ff dev",
