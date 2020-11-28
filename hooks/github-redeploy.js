@@ -27,10 +27,16 @@ module.exports = {
       handler: (request, h) => {
         // helper function that executes the redeploy
         function _exec () {
-          exec(`cd ${path} git fetch ${repo} && ${reset ? 'git reset --hard && ' : ''}npm install && ${command}`)
-            .stdout.on('data', function (data) {
-              console.log(data)
-            })
+          const proc = exec(`cd ${path} git fetch ${repo} && ${reset ? 'git reset --hard' : 'git pull'} && npm install && ${command}`)
+
+          proc.stdout.on('data', function (data) {
+            console.log(data)
+          })
+
+          proc.stderr.on('data', function (error) {
+            console.log(error)
+          })
+
           return `Redeployed from repository @ ${new Date()}`
         }
 
