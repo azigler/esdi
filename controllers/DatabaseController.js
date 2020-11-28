@@ -126,18 +126,21 @@ class DatabaseController extends Map {
             _id: data.docId,
             ...payload
           })
+            .then(() => { return this.fetchDoc({ db, id }) })
         }
         if (data.status === 404 && data.reason === 'missing') {
           return this.get(db).DB.put({
             _id: id,
             ...payload
           })
+            .then(() => { return this.fetchDoc({ db, id }) })
         }
         return this.get(db).DB.put({
           _id: data._id,
           _rev: data._rev,
           ...payload
         })
+          .then(() => { return this.fetchDoc({ db, id }) })
       })
       .catch(er => { return er })
   }

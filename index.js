@@ -100,7 +100,7 @@ class Esdi extends require('events') {
    * @memberof Esdi
    */
   loop () {
-    if (process.argv.includes('-v')) {
+    if (process.argv.includes('--verbose')) {
       console.log(`[#] Looping @ ${new Date()}`)
     }
     this.emit('loop')

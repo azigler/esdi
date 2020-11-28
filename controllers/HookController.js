@@ -64,7 +64,7 @@ class HookController {
    */
   configureGitHubRedeploy (config) {
     this.hookServer.route(this.server.hooks.get('github-redeploy').init(config))
-    console.log(`[H] github-redeploy Hook installed -> (POST) http${this.hookServerTls ? 's' : ''}://${this.hookServerHost}:${this.hookServerPort}/hook/github-redeploy`)
+    console.log(`[H] github-redeploy Hook configured -> (POST) http${this.hookServerTls ? 's' : ''}://${this.hookServerHost}:${this.hookServerPort}/hook/github-redeploy`)
   }
 }
 
