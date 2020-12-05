@@ -135,9 +135,16 @@ class DatabaseController extends Map {
           })
             .then(() => { return this.fetchDoc({ db, id }) })
         }
+
+        // keep pre-existing data
+        const dataPayload = { ...data }
+        delete dataPayload._id
+        delete dataPayload._rev
+
         return this.get(db).DB.put({
           _id: data._id,
           _rev: data._rev,
+          ...dataPayload,
           ...payload
         })
           .then(() => { return this.fetchDoc({ db, id }) })
