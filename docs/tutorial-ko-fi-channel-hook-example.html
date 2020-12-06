@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8">
+    <title>Tutorial: Ko-fi channel Hook example - Esdi Documentation</title>
+    
+    <meta name="description" content="ES6 Discord bot framework" />
+    
+    
+    
+    <meta property="og:title" content="Esdi Documentation"/>
+    <meta property="og:type" content="website"/>
+    <meta property="og:image" content="https://user-images.githubusercontent.com/7295363/97830418-bf410380-1c81-11eb-95cc-1b7b15d8d7eb.jpg"/>
+    <meta property="og:site_name" content="Esdi Documentation"/>
+    <meta property="og:url" content="https://azigler.github.io/esdi"/>
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <script src="scripts/nav.js" defer></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    <input type="text" id="nav-search" placeholder="Search" />
+    
+    <h2><a href="index.html">Home</a></h2><h2><a href="https://www.github.com/azigler/esdi" target="_blank" >GitHub</a></h2><h2><a href="https://www.npmjs.com/package/esdi" target="_blank" >npm</a></h2><h2><a href="https://discord.gg/HTSYNQrXam" target="_blank" >Discord</a></h2><h2><a href="https://ko-fi.com/andrewzigler" target="_blank" >Ko-fi</a></h2><h3>Classes</h3><ul><li><a href="BotController.html">BotController</a><ul class='methods'><li data-type='method'><a href="BotController.html#init">init</a></li><li data-type='method'><a href="BotController.html#login">login</a></li><li data-type='method'><a href="BotController.html#start">start</a></li><li data-type='method'><a href="BotController.html#stop">stop</a></li></ul></li><li><a href="Command.html">Command</a><ul class='members'><li data-type='member'><a href="Command.html#.clean">clean</a></li><li data-type='member'><a href="Command.html#.help">help</a></li><li data-type='member'><a href="Command.html#.hook">hook</a></li><li data-type='member'><a href="Command.html#.ping">ping</a></li><li data-type='member'><a href="Command.html#.reload">reload</a></li></ul></li><li><a href="CommandController.html">CommandController</a><ul class='methods'><li data-type='method'><a href="CommandController.html#executeCommand">executeCommand</a></li><li data-type='method'><a href="CommandController.html#findCommand">findCommand</a></li><li data-type='method'><a href="CommandController.html#init">init</a></li><li data-type='method'><a href="CommandController.html#start">start</a></li><li data-type='method'><a href="CommandController.html#stop">stop</a></li></ul></li><li><a href="DatabaseController.html">DatabaseController</a><ul class='methods'><li data-type='method'><a href="DatabaseController.html#fetchDoc">fetchDoc</a></li><li data-type='method'><a href="DatabaseController.html#init">init</a></li><li data-type='method'><a href="DatabaseController.html#loadDb">loadDb</a></li><li data-type='method'><a href="DatabaseController.html#start">start</a></li><li data-type='method'><a href="DatabaseController.html#stop">stop</a></li><li data-type='method'><a href="DatabaseController.html#stopSyncing">stopSyncing</a></li><li data-type='method'><a href="DatabaseController.html#updateDoc">updateDoc</a></li></ul></li><li><a href="Esdi.html">Esdi</a><ul class='methods'><li data-type='method'><a href="Esdi.html#load">load</a></li><li data-type='method'><a href="Esdi.html#start">start</a></li><li data-type='method'><a href="Esdi.html#stop">stop</a></li></ul></li><li><a href="Event.html">Event</a><ul class='members'><li data-type='member'><a href="Event.html#.guildCreate">guildCreate</a></li><li data-type='member'><a href="Event.html#.guildDelete">guildDelete</a></li><li data-type='member'><a href="Event.html#.guildMemberAdd">guildMemberAdd</a></li><li data-type='member'><a href="Event.html#.guildMemberRemove">guildMemberRemove</a></li><li data-type='member'><a href="Event.html#.ready">ready</a></li></ul></li><li><a href="EventController.html">EventController</a><ul class='methods'><li data-type='method'><a href="EventController.html#init">init</a></li><li data-type='method'><a href="EventController.html#loop">loop</a></li><li data-type='method'><a href="EventController.html#registerDiscordEvents">registerDiscordEvents</a></li><li data-type='method'><a href="EventController.html#start">start</a></li><li data-type='method'><a href="EventController.html#stop">stop</a></li></ul></li><li><a href="Guild.html">Guild</a></li><li><a href="GuildController.html">GuildController</a><ul class='methods'><li data-type='method'><a href="GuildController.html#addGuild">addGuild</a></li><li data-type='method'><a href="GuildController.html#fetchInitialGuilds">fetchInitialGuilds</a></li><li data-type='method'><a href="GuildController.html#init">init</a></li><li data-type='method'><a href="GuildController.html#removeGuild">removeGuild</a></li><li data-type='method'><a href="GuildController.html#start">start</a></li><li data-type='method'><a href="GuildController.html#stop">stop</a></li></ul></li><li><a href="Hook.html">Hook</a><ul class='members'><li data-type='member'><a href="Hook.html#.github-redeploy">github-redeploy</a></li><li data-type='member'><a href="Hook.html#.ko-fi">ko-fi</a></li></ul></li><li><a href="HookController.html">HookController</a><ul class='methods'><li data-type='method'><a href="HookController.html#checkHookEnabledForChannel">checkHookEnabledForChannel</a></li><li data-type='method'><a href="HookController.html#configureGitHubRedeploy">configureGitHubRedeploy</a></li><li data-type='method'><a href="HookController.html#fetchWebhookForChannelHook">fetchWebhookForChannelHook</a></li><li data-type='method'><a href="HookController.html#init">init</a></li><li data-type='method'><a href="HookController.html#start">start</a></li><li data-type='method'><a href="HookController.html#stop">stop</a></li></ul></li><li><a href="User.html">User</a><ul class='methods'><li data-type='method'><a href="User.html#addGuild">addGuild</a></li><li data-type='method'><a href="User.html#isInGuild">isInGuild</a></li><li data-type='method'><a href="User.html#removeGuild">removeGuild</a></li></ul></li><li><a href="UserController.html">UserController</a><ul class='methods'><li data-type='method'><a href="UserController.html#fetchGuildMembers">fetchGuildMembers</a></li><li data-type='method'><a href="UserController.html#init">init</a></li><li data-type='method'><a href="UserController.html#start">start</a></li><li data-type='method'><a href="UserController.html#stop">stop</a></li></ul></li></ul><h3>Externals</h3><ul><li><a href="external-Client.html">Client</a></li><li><a href="external-Guild.html">Guild</a></li><li><a href="external-GuildMember.html">GuildMember</a></li><li><a href="external-Message.html">Message</a></li><li><a href="external-User.html">User</a></li></ul><h3>Events</h3><ul><li><a href="Esdi.html#event:loop">loop</a></li><li><a href="Esdi.html#event:start">start</a></li><li><a href="Esdi.html#event:stop">stop</a></li><li><a href="external-Client.html#event:event:Client#guildCreate">Client#guildCreate</a></li><li><a href="external-Client.html#event:event:Client#guildDelete">Client#guildDelete</a></li><li><a href="external-Client.html#event:event:Client#guildMemberAdd">Client#guildMemberAdd</a></li><li><a href="external-Client.html#event:event:Client#guildMemberRemove">Client#guildMemberRemove</a></li><li><a href="external-Client.html#event:event:Client#ready">Client#ready</a></li></ul><h3>Tutorials</h3><ul><li><a href="tutorial-adding-a-custom-command.html">Adding a custom command</a></li><li><a href="tutorial-github-redeploy-global-hook-example.html">GitHub redeploy global Hook example</a></li><li><a href="tutorial-ko-fi-channel-hook-example.html">Ko-fi channel Hook example</a></li><li><a href="tutorial-setting-up-an-esdi-instance.html">Setting up an Esdi instance</a></li></ul>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">Tutorial: Ko-fi channel Hook example</h1>
+    
+
+    <section>
+
+<header>
+    
+
+    <h2>Ko-fi channel Hook example</h2>
+</header>
+
+<article>
+    <p>A channel Hook is tied to a specific channel that the Esdi bot can see. For this example, we're going to look at a Hook that posts a message embed when a <a href="https://ko-fi.com/">Ko-fi</a> donation webhook is received.</p>
+<p>The <a href="Hook.html#.ko-fi"><code>ko-fi</code> Hook</a> is included in <a href="https://github.com/azigler/esdi/releases/tag/v1.2.0"><code>v1.2.0</code></a> and higher, and you can see the code for it <a href="hooks_ko-fi.js.html">here</a>. Please review to this code as we look at the different parts of the channel Hook.</p>
+<p>A channel Hook is a little more complex than a global Hook. In addition to an <code>init()</code> function (which returns a <a href="https://hapi.dev/tutorials/routing/">hapi route object</a>), it also has <code>enabled()</code> and <code>disabled()</code> functions that handle the toggling of the Hook for a specified channel. Since a channel Hook is tied to a specific channel, each channel can independently toggle the Hook on and off (as opposed to a global Hook, which can only be turned on for the whole server).</p>
+<p>The same as global Hooks, the <code>init()</code> method can take any set of arguments needed to produce the desired result. Let's look at the arguments this particular <code>init()</code> method takes:</p>
+<pre class="prettyprint source lang-js"><code>init({ server }) { // ... }
+</code></pre>
+<p>Since this Hook only ever needs to interact with members of the Esdi server, only the server is passed to this function. And in return, like a global Hook, the <code>init()</code> method returns a <a href="https://hapi.dev/tutorials/routing/">hapi route object</a>. The object has three required properties: <code>method</code>, <code>path</code>, and <code>handler</code>. Let's look at this object's properties:</p>
+<pre class="prettyprint source lang-js"><code>{
+  method: 'POST',
+  path: '/hook/ko-fi/{channel}',
+  handler: async (request, h) => { // ... }
+}
+</code></pre>
+<p>The <code>method</code> property can be any valid HTTP method, or an array of methods. The <code>path</code> property is the relative URL endpoint for this Hook <em>for a corresponding channel</em>. This small detail is important and distinguises a channel Hook from a global Hook. Since a channel Hook is tied to a specific channel, any incoming webhook should make a corresponding request to the channel's endpoint on the Hook server. In this case, the <code>handler()</code> function is triggered by a <code>POST</code> request on the Hook server's <code>/hook/ko-fi/{channel}</code> path. The <code>{channel}</code> parameter is a <a href="https://hapi.dev/api/?v=20.0.3#path-parameters">hapi path paremeter</a>. In our example, <code>{channel}</code> becomes <code>request.params.channel</code> in the <code>handler()</code> function, allowing us to filter the request to the specified channel.</p>
+<p>You can easily get any channel's ID by right clicking the channel name in Discord and selecting &quot;Copy ID&quot; in the context menu. Like this:</p>
+<p><img src="https://user-images.githubusercontent.com/7295363/101292269-41fa3880-37c3-11eb-8bc4-0687b7ebfedc.png" alt=""></p>
+<p>For example, if you had a channel with the ID <code>777755555555555555</code> then you should configure your <a href="https://ko-fi.com/manage/webhooks">Ko-fi webhook</a> to send to <code>http://my-esdi-server.com:8587/hook/ko-fi/777755555555555555</code>. Here's an example configuration on Ko-fi:</p>
+<p><img src="https://user-images.githubusercontent.com/7295363/101292221-019aba80-37c3-11eb-956c-addb5c26f7ca.png" alt=""></p>
+<p>Once your Ko-fi webhook is set up, you need to enable the channel Hook in a corresponding channel. That's why we have the <a href="Command.html#.hook"><code>hook</code></a> command. This command lists all enabled Hooks for this channel (e.g., <code>!hook</code>), toggles the one provided (e.g., <code>!hook ko-fi</code>), or lists all Hooks that can be enabled (e.g., <code>!hook list</code>). In this example, in the channel with the ID <code>777755555555555555</code>, you would use the <code>!hook ko-fi</code> command to toggle on the <a href="Hook.html#.ko-fi"><code>ko-fi</code> Hook</a> for the channel like so:</p>
+<p><img src="https://user-images.githubusercontent.com/7295363/101294770-8a6b2380-37ce-11eb-90d8-f6e478eca80b.png" alt=""></p>
+<p>Enabling the Hook will add a corresponding webhook on the Discord channel. But even if this webhook is deleted on Discord, if an incoming request is received then Esdi will automatically remake the webhook on demand while the Hook is enabled. When a Hook is enabled, its <code>enabled()</code> function is fired. <strong>For a channel Hook, the <code>enabled()</code> function is required and must return a <a href="https://discord.js.org/#/docs/main/stable/class/Webhook">discord.js Webhook</a>.</strong></p>
+<p>If you want to disable the channel Hook later on, you can simply use the <code>!hook ko-fi</code> command again:</p>
+<p><img src="https://user-images.githubusercontent.com/7295363/101294774-8c34e700-37ce-11eb-9bfb-d1a9c0fdf2a3.png" alt=""></p>
+<p>The <a href="Hook.html#.ko-fi"><code>ko-fi</code> Hook</a> doesn't have a <code>disabled()</code> because there is no further clean-up to do in this case. <strong>When a Hook is disabled, Esdi will automatically delete the corresponding <a href="https://discord.js.org/#/docs/main/stable/class/Webhook">discord.js Webhook</a>.</strong></p>
+<p><strong>If the Hook isn't enabled, then any corresponding requests on that endpoint will be disregarded. Don't forget to enable your Hook!</strong></p>
+<p>Continuing on to the substance of the channel Hook, the <code>handler()</code> function is where the incoming webhook is, well, handled. Let's look at the <code>handler()</code> function for <a href="Hook.html#.ko-fi"><code>ko-fi</code></a>:</p>
+<pre class="prettyprint source lang-js"><code>handler: async (request, h) => {
+  // check if channel exists and is enabled
+  const checkChannel = await server.controllers.get('HookController').checkHookEnabledForChannel({
+    h,
+    server,
+    channelId: request.params.channel,
+    hookName: 'ko-fi'
+  })
+  // fetch information for channel
+  let msg,
+    channel,
+    hookData,
+    channelWebhookId
+  if (Array.isArray(checkChannel)) {
+    [msg,
+      channel,
+      hookData,
+      channelWebhookId] = checkChannel
+  } else {
+    return checkChannel
+  }
+  // fetch channel's webhook for Ko-fi Hook or make a new one
+  let channelHook = await server.controllers.get('HookController').fetchWebhookForChannelHook({
+    h,
+    request,
+    server,
+    channel,
+    channelWebhookId,
+    hookData,
+    enable: this.enable
+  })
+  if (Array.isArray(channelHook)) {
+    channelHook = channelHook[0]
+  } else {
+    return channelHook
+  }
+  // validate payload
+  const kofiSchema = joi.object({
+    message_id: joi.string()
+      .length(36),
+    timestamp: joi.date(),
+    type: joi.string()
+      .pattern(/(Donation|Commission|Shop Order)/),
+    is_public: joi.boolean(),
+    from_name: joi.string(),
+    message: joi.string()
+      .allow(''),
+    amount: joi.string(),
+    url: joi.string()
+      .uri(),
+    email: joi.string()
+      .allow(null),
+    currency: joi.string()
+      .allow(null),
+    is_subscription_payment: joi.boolean(),
+    is_first_subscription_payment: joi.boolean(),
+    kofi_transaction_id: joi.string()
+  })
+  if (!request.payload ||
+        !request.payload.data ||
+        kofiSchema.validate(JSON.parse(request.payload.data)).error) {
+    msg = `Ko-fi Hook for Channel&lt;${request.params.channel}> was rejected due to invalid payload`
+    console.log(msg, kofiSchema.validate(JSON.parse(request.payload.data)))
+    return h.response(msg).code(400)
+  }
+  // parse payload
+  const parsed = JSON.parse(request.payload.data)
+  // check if payload is private
+  let isPrivate
+  if (parsed.is_public === false) {
+    parsed.from_name = 'Anonymous'
+    parsed.message = ''
+    msg = `Private ko-fi Hook for Channel&lt;${request.params.channel}> was handled`
+    isPrivate = true
+  }
+  // prepare fields for message embed
+  const embedFields = [
+    {
+      name: '**Name**',
+      value: parsed.from_name,
+      inline: true
+    },
+    {
+      name: '**Amount**',
+      value: donationAmount(parsed),
+      inline: true
+    }
+  ]
+  if (parsed.message.length > 0) {
+    embedFields.push({
+      name: '**Message**',
+      value: parsed.message
+    })
+  }
+  // build message embed
+  const embed = new MessageEmbed(
+    {
+      title: '☕ New Ko-fi contribution',
+      description: `${donationAmount(parsed)} from ${parsed.from_name}`,
+      url: parsed.url,
+      color: 2730976,
+      timestamp: parsed.timestamp,
+      thumbnail: {
+        url: 'https://user-images.githubusercontent.com/7295363/99930265-49bad700-2d05-11eb-9057-1a013c45ee2c.png'
+      },
+      footer: {
+        icon_url: 'https://user-images.githubusercontent.com/7295363/97830418-bf410380-1c81-11eb-95cc-1b7b15d8d7eb.jpg',
+        text: 'Ko-fi Hook by Esdi 🤍'
+      },
+      fields: embedFields
+    }
+  )
+  // if webhook is public, set result message
+  if (!isPrivate) {
+    msg = `Ko-fi Hook for Channel&lt;${request.params.channel}> was handled`
+  }
+  // send the message embed
+  channelHook.send({ embeds: [embed] })
+  // announce handling the request successfully
+  console.log(msg)
+  return h.response(msg).code(200)
+}
+</code></pre>
+<p>This handler first uses the <code><a href="HookController.html#checkHookEnabledForChannel">HookController#checkHookEnabledForChannel</a></code> method to see if the channel has the Hook enabled. Then it uses the <code><a href="HookController.html#fetchWebhookForChannelHook">HookController#fetchWebhookForChannelHook</a></code> method to get the <a href="https://discord.js.org/#/docs/main/stable/class/Webhook">discord.js Webhook</a> for the Hook.</p>
+<p>Then the handler uses <a href="https://www.npmjs.com/package/joi">joi</a> to validate the incoming payload. This checks to make sure the incoming data is formatted correctly for the rest of the handler.</p>
+<p>Ko-fi requires that donation webhooks with their <code>is_public</code> property set to <code>false</code> hide the included <code>message</code>, so this handler checks for that and removes it if the property is <code>false</code>.</p>
+<p>Finally, the handler builds the <a href="https://discord.js.org/#/docs/main/stable/class/MessageEmbed">discord.js MessageEmbed</a> for the <a href="https://discord.js.org/#/docs/main/stable/class/Webhook">discord.js Webhook</a> we fetched above. Once created, it posts the embed on the channel. This one looks like this:</p>
+<p><img src="https://user-images.githubusercontent.com/7295363/101294768-863f0600-37ce-11eb-8ee2-1410531f6db7.png" alt=""></p>
+<p>You can use this particular Hook to post a message embed when a <a href="https://ko-fi.com/">Ko-fi</a> donation webhook is received. Otherwise, you can use this as a guide for your own channel Hook ideas!</p>
+</article>
+
+</section>
+
+    
+    
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a> on Sun Dec 06 2020 15:16:44 GMT-0800 (Pacific Standard Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+<script src="scripts/search.js" defer></script>
+
+
+
+    <script src="./jsdoc.js"></script>
+    
+    <link type="text/css" rel="stylesheet" href="./jsdoc.css">
+    
+</body>
+</html>

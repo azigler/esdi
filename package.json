@@ -1,6 +1,6 @@
 {
   "name": "esdi",
-  "version": "1.1.4",
+  "version": "1.2.0",
   "description": "ES6 Discord bot framework",
   "author": "Andrew Zigler <andrewzigler@gmail.com> (https://ko-fi.com/andrewzigler)",
   "main": "index.js",
@@ -30,8 +30,8 @@
     "start": "node ./scripts/dev.js",
     "start:verbose": "node ./scripts/dev.js --verbose",
     "lint": "eslint . --ext .js --fix --ignore-pattern '**/node_modules/**'",
-    "merge-main-to-dev": "git checkout dev && git merge --no-ff main",
-    "merge-dev-to-main": "git checkout main && git merge --no-ff dev",
+    "merge:main-to-dev": "git checkout dev && git merge --no-ff main",
+    "merge:dev-to-main": "git checkout main && git merge --no-ff dev",
     "docs": "jsdoc -c ./config/.jsdoc.json -R ./config/.home.md -u config",
     "clean": "npm run clean:docs && npm run clean:data",
     "clean:docs": "rm -rf docs && mkdir docs && cd docs && touch .gitkeep",
@@ -39,15 +39,15 @@
   },
   "dependencies": {
     "@hapi/hapi": "^20.0.3",
-    "discord.js": "^12.5.0",
+    "discord.js": "^12.5.1",
     "dotenv": "^8.2.0",
+    "joi": "^17.3.0",
     "pouchdb": "^7.2.2"
   },
   "devDependencies": {
     "docdash": "^1.2.0",
-    "eslint": "^7.14.0",
+    "eslint": "^7.15.0",
     "eslint-plugin-import": "^2.22.1",
-    "eslint-plugin-standard": "^4.1.0",
     "jsdoc": "^3.6.6",
     "standard": "^16.0.3"
   },

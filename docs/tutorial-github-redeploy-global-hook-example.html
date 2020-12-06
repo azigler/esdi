@@ -3,7 +3,7 @@
 <head>
     
     <meta charset="utf-8">
-    <title>controllers/HookController.js - Esdi Documentation</title>
+    <title>Tutorial: GitHub redeploy global Hook example - Esdi Documentation</title>
     
     <meta name="description" content="ES6 Discord bot framework" />
     
@@ -43,226 +43,91 @@
 
 <div id="main">
     
-    <h1 class="page-title">controllers/HookController.js</h1>
+    <h1 class="page-title">Tutorial: GitHub redeploy global Hook example</h1>
     
 
-    
-
-
-
-    
     <section>
-        <article>
-            <pre class="prettyprint source linenums"><code>const Hapi = require('@hapi/hapi')
-const fs = require('fs')
 
-/**
- * Controller for {@link Hook|Hooks} (e.g., webhooks)
- *
- * @class
- */
-class HookController {
-  /**
-   * Initializes a new HookController
-   *
-   * @param {Object} config configuration object
-   * @param {Esdi} config.server Esdi server instance
-   * @param {Number} [config.hookServerPort = 8587] port for {@link Hook} server
-   * @param {String} [config.hookServerHost = 'localhost'] hostname for {@link Hook} server
-   * @param {Object|Boolean} [config.hookServerTls = false] `false` for HTTP, or object with paths to `key` and `cert` files for TLS
-   * @memberof HookController
-   */
-  init ({ server, hookServerPort = 8587, hookServerHost = 'localhost', hookServerTls = false }) {
-    this.server = server
-    this.hookServerPort = hookServerPort
-    this.hookServerHost = hookServerHost
-    this.hookServerTls = hookServerTls
+<header>
+    
 
-    this.hookServer = Hapi.server({
-      port: hookServerPort,
-      host: hookServerHost,
-      tls: hookServerTls ? { key: fs.readFileSync(hookServerTls.key), cert: fs.readFileSync(hookServerTls.cert) } : false
+    <h2>GitHub redeploy global Hook example</h2>
+</header>
+
+<article>
+    <p>A global Hook is tied to the Esdi server itself, not any particular channel. <strong>All global Hooks are disabled by default and must fire their <code>init()</code> function to become enabled.</strong> For this example, we're going to look at a Hook that redeploys the Esdi instance after receiving a GitHub webhook.</p>
+<p>The <a href="Hook.html#.github-redeploy"><code>github-redeploy</code> Hook</a> is included in <a href="https://github.com/azigler/esdi/releases/tag/v1.1.0"><code>v1.1.0</code></a> and higher, and you can see the code for it <a href="hooks_github-redeploy.js.html">here</a>. Please refer to this code as we look at the different parts of the global Hook.</p>
+<p><strong>By the way, if you just want to use the pre-existing <a href="Hook.html#.github-redeploy"><code>github-redeploy</code> Hook</a>, implement the <code><a href="HookController.html#configureGitHubRedeploy">HookController#configureGitHubRedeploy</a></code> method to fire after starting the server.</strong> The following is an example:</p>
+<pre class="prettyprint source lang-js"><code>// ... setup
+
+server.start()
+
+server.controllers.get('HookController').configureGitHubRedeploy({
+  repo: 'your-url-to-github-repo',
+  command: 'pm2 restart esdi-dev',
+  path: '~/esdi-dev',
+  secret: 'your-github-webhook-secret'
+})
+</code></pre>
+<p>The <code><a href="HookController.html#configureGitHubRedeploy">HookController#configureGitHubRedeploy</a></code> method is just a wrapper around <code>init()</code> for <a href="Hook.html#.github-redeploy"><code>github-redeploy</code></a>.</p>
+<p>Now, on to examining <a href="Hook.html#.github-redeploy"><code>github-redeploy</code></a>. The Hook has a function called <code>init()</code> that will return a <a href="https://hapi.dev/tutorials/routing/">hapi route object</a> to configure the Hook for the server.</p>
+<p>The <code>init()</code> method can take any set of arguments that the developer (that's you) might need to have the desired result. Long story short: pass in what you need. If you need nothing, pass in nothing (e.g., <code>init()</code>). Let's look at the arguments this particular <code>init()</code> method takes:</p>
+<pre class="prettyprint source lang-js"><code>init({ repo, secret, command, path, reset }) { // ... }
+</code></pre>
+<p>The <code>repo</code> argument is the GitHub repository URL. If your repository is private, then you will need to include authentication in the URL (e.g., if your username is <code>andrew</code>, your password is <code>sunflower</code>, and your private repository is <code>my-esdi</code> then <code>repo</code> should be <code>https://andrew:sunflower@github.com/andrew/my-esdi</code>). If you need to escape any special characters in your password (e.g., <code>!</code>) then be sure to escape them with a slash (e.g., <code>\!</code>).</p>
+<p>Next, if you have a secret for your GitHub webhook (recommended), include it as <code>secret</code> <em>(optional)</em>.</p>
+<p>The <code>command</code> argument is the terminal command you want to fire to redeploy your server (e.g., <code>pm2 restart esdi</code>).</p>
+<p>The project directory is <code>path</code> and <code>reset</code> <em>(optional)</em> decides whether or not to invoke <code>git reset --hard</code> for a force update. This is a personal preference. If you are actively developing on your live server directory files, then you should keep <code>reset</code> as <code>false</code>, which it is by default. Setting it to <code>true</code> means the repository files will reset to match the most updated version of the repository, which will overwrite any local pending changings.</p>
+<p>These corresponding arguments demonstrate how the <code><a href="HookController.html#configureGitHubRedeploy">HookController#configureGitHubRedeploy</a></code> method is just a wrapper around <code>init()</code> for <a href="Hook.html#.github-redeploy"><code>github-redeploy</code></a>, as mentioned above.</p>
+<p>As described previously, the <code>init()</code> method returns the <a href="https://hapi.dev/tutorials/routing/">hapi route object</a>. This object has three required properties: <code>method</code>, <code>path</code>, and <code>handler()</code>. Let's look at this object's properties:</p>
+<pre class="prettyprint source lang-js"><code>{
+  method: 'POST',
+  path: '/hook/github-redeploy',
+  handler: (request, h) => { // ... }
+}
+</code></pre>
+<p>The <code>method</code> property can be any valid HTTP method, or an array of methods. The <code>path</code> property is the relative URL endpoint for this Hook. This would be the relative Hook server path to which any corresponding third-party webhook should send its request. In this case, the <code>handler()</code> function is triggered by a <code>POST</code> request on the Hook server's <code>/hook/github-redeploy</code> path.</p>
+<p>The <code>handler()</code> function is where the magic happens. This is the function that fires when the <code>path</code> receives the specified <code>method</code>. Let's look at the <code>handler()</code> function for <a href="Hook.html#.github-redeploy"><code>github-redeploy</code></a>:</p>
+<pre class="prettyprint source lang-js"><code>handler: (request, h) => {
+  // helper function that executes the redeploy
+  function _exec () {
+    const proc = exec(`cd ${path} git fetch ${repo} && ${reset ? 'git reset --hard' : 'git pull'} && npm install && ${command}`)
+    proc.stdout.on('data', function (data) {
+      console.log(data)
     })
-  }
-
-  /**
-   * Starts the HookController
-   *
-   * @listens Esdi#start
-   * @memberof HookController
-   */
-  start () {
-    console.log('[#] Starting HookController...')
-    this.hookServer.start()
-    this.server.hooks.forEach(hook => {
-      if (hook.type === 'global') return
-      this.hookServer.route(hook.init({ server: this.server }))
+    proc.stderr.on('data', function (error) {
+      console.log(error)
     })
+    return `Redeployed from repository @ ${new Date()}`
   }
-
-  /**
-   * Stops the HookController
-   *
-   * @listens Esdi#stop
-   * @memberof HookController
-   */
-  stop () {
-    console.log('[#] Stopping HookController...')
-    this.hookServer.stop()
+  // helper function that rejects unauthorized requests
+  function _unauthorized () {
+    return h.response('Unauthorized').code(401)
   }
-
-  /**
-   * Wrapper method that configures {@link Hook.github-redeploy|github-redeploy}
-   *
-   * @param {Object} config `initConfig` for {@link Hook.github-redeploy|github-redeploy}
-   * @see Hook.github-redeploy
-   * @memberof HookController
-   */
-  configureGitHubRedeploy (config) {
-    this.hookServer.route(this.server.hooks.get('github-redeploy').init(config))
-    console.log(`[H] github-redeploy Hook configured -> (POST) http${this.hookServerTls ? 's' : ''}://${this.hookServerHost}:${this.hookServerPort}/hook/github-redeploy`)
-  }
-
-  /**
-  * Returns an array of Hook properties if the Hook is enabled for the provided channel
-  *
-  * @param {Object} config configuration object
-  * @param {Object} config.h hapi response toolkit
-  * @param {Esdi} config.server Esdi server instance
-  * @param {String} config.channelId discord.js Channel ID
-  * @param {String} config.hookName {@link Hook} name
-  * @returns {Object|Array} hapi response object or array of Hook properties
-  * @memberof HookController
-  */
-  async checkHookEnabledForChannel ({ h, server, channelId, hookName }) {
-    const client = server.controllers.get('BotController').client
-
-    let msg,
-      channel,
-      hookData,
-      channelWebhookId
-
-    // check if bot can see channel
-    try {
-      channel = await client.channels.fetch(channelId)
-    } catch (e) {
-      msg = `Bot doesn't know about Channel&lt;${channelId}> for ${hookName} Hook`
-      console.log(msg, e)
-      return h.response(msg).code(400)
+  if (secret) {
+    if (!request.headers['x-hub-signature']) {
+      return _unauthorized()
     }
-
-    // check if Hook is enabled for channel
-    try {
-      // fetch Hook data from database
-      hookData = await server.controllers.get('DatabaseController').fetchDoc({ db: 'hook', id: hookName })
-
-      // helper function that handles if Hook is not enabled for channel
-      const rejectNotEnabled = (msg) => {
-        msg = `${hookName} Hook is not enabled for Channel&lt;${channelId}>`
-        console.log(msg)
-        return h.response(msg).code(400)
-      }
-
-      // check each registered webhook in the database to see if enabled for this channel
-      if (hookData.channelHookPairs) {
-        const channels = hookData.channelHookPairs.map(h => h[0])
-
-        // if Hook is not enabled for this channel, reject request
-        if (!channels.find(c => c === channel.id)) {
-          // user helper function above
-          return rejectNotEnabled()
-          // otherwise, save webhook ID for use
-        } else {
-          [, channelWebhookId] = hookData.channelHookPairs.find(h => h[0] === channelId)
-        }
-        // otherwise, reject request
-      } else {
-        // use helper function above
-        return rejectNotEnabled()
-      }
-    } catch (e) {
-      msg = `An error occurred while fetching database document for ${hookName} Hook`
-      console.log(msg, e)
-      return h.response(msg).code(400)
+    const sig = `sha1=${crypto.createHmac('sha1', secret).update(JSON.stringify(request.payload)).digest('hex')}`
+    if (crypto.timingSafeEqual(Buffer.from(sig), Buffer.from(request.headers['x-hub-signature']))) {
+      return _exec()
+    } else {
+      return _unauthorized()
     }
-
-    return [msg,
-      channel,
-      hookData,
-      channelWebhookId]
-  }
-
-  /**
-  * Fetches a corresponding webhook for a channel's Hook
-  *
-  * @param {Object} config configuration object
-  * @param {Object} config.h hapi response toolkit
-  * @param {Object} config.request hapi request object
-  * @param {Esdi} config.server Esdi server instance
-  * @param {external:Channel} config.channel discord.js Channel
-  * @param {String} config.channelWebhookId discord.js Webhook ID
-  * @param {Object} config.hookData {@link Hook} database document
-  * @param {Function} config.enable function that enables the Hook for a discord.js Channel
-  * @returns {Object|Array} hapi response object or array containing corresponding discord.js Webhook
-  * @memberof HookController
-  */
-  async fetchWebhookForChannelHook ({ h, request, server, channel, channelWebhookId, hookData, enable }) {
-    let msg,
-      channelHook
-
-    // fetch channel webhooks
-    try {
-      channelHook = await channel.fetchWebhooks()
-      channelHook = channelHook.find(hook => hook.id === channelWebhookId)
-    } catch (e) {
-      msg = `An error occurred while evaluating ${hookData._id} Hook and fetching webhooks for Channel&lt;${request.params.channel}>`
-      console.log(msg, e)
-      return h.response(msg).code(400)
-    }
-
-    // if channel webhook is missing, initialize and use it
-    if (!channelHook) {
-      try {
-        channelHook = await enable({ server, channel })
-
-        // check if enabling returned a webhook before proceeding
-        if (channelHook.constructor.name !== 'Webhook') {
-          msg = `The result of enabling ${hookData._id} Hook for for Channel&lt;${request.params.channel}> was not a valid webhook`
-          console.log(msg)
-          return h.response(msg).code(200)
-        }
-
-        // make sure this channel is filtered out of the pair array
-        const CHPs = hookData.channelHookPairs.filter(p => p[0] !== channel.id)
-
-        // update database with new webhook ID
-        server.controllers.get('DatabaseController').updateDoc({
-          db: 'hook',
-          id: hookData._id,
-          payload: {
-            ...hookData.payload,
-            channelHookPairs: [...CHPs, [request.params.channel, channelHook.id]]
-          }
-        })
-      } catch (e) {
-        msg = `An error occurred while fetching webhooks for Channel&lt;${request.params.channel}>`
-        console.log(msg, e)
-        return h.response(msg).code(400)
-      }
-    }
-
-    return [channelHook]
+  } else {
+    return _exec()
   }
 }
-
-// factory
-module.exports = new HookController()
 </code></pre>
-        </article>
-    </section>
+<p>This <code>handler()</code> function first checks to see if the incoming payload has encryption and attempts to decrypt it, if so. If the payload is valid, it updates the local repository (<code>git fetch</code>), reinstalls packages (<code>npm install</code>) and executes a command (or a series of commands) to redeploy the server (<code>${command}</code>).</p>
+<p>In order for this to work, you need to set up a corresponding <a href="https://docs.github.com/en/free-pro-team@latest/developers/webhooks-and-events/about-webhooks">webhook on GitHub</a>. On your repository, go to &quot;Settings&quot; then go to &quot;Webhooks&quot;. Click the &quot;Add webhook&quot; button and set up a new webhook that points to your public Esdi server and its port, at the corresponding <code>path</code> from above (e.g., <code> http://my-esdi-server.com:8587/hook/github-redeploy</code>).</p>
+<p>Change the &quot;Application type&quot; to <code>application/json</code>. If you're using a <code>secret</code> in your configuration (recommended), then add it here. If your Hook server is using TLS then make sure to direct the traffic to <code>https</code> and enable SSL verification on the webhook. For most use cases, you want to set &quot;Which events would you like to trigger this webhook?&quot; to &quot;Just the <code>push</code> event.&quot; Here's an example configuration:</p>
+<p><img src="https://user-images.githubusercontent.com/7295363/101291333-e927a180-37bc-11eb-839f-490da4f2df91.png" alt=""></p>
+<p>You can use this particular Hook to automatically redeploy your server while developing your own Esdi bot. Depending on your setup, this can be useful for automatically keeping your live bot in sync with your codebase. Otherwise, you can use this as a guide for your own global Hook ideas!</p>
+<p>Next, let's <a href="tutorial-ko-fi-channel-hook-example.html">enable the <code>ko-fi</code> channel Hook</a> for one of our channels.</p>
+</article>
 
-
-
+</section>
 
     
     

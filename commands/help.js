@@ -14,7 +14,7 @@ module.exports = {
   name: 'help',
   description: 'Lists all bot commands or gets help for a specific command.',
   aliases: ['commands'],
-  usage: '[command]',
+  usage: '[<Command name>]',
   execute ({ message, args, server }) {
     const prefix = server.controllers.get('BotController').prefix
     const data = []

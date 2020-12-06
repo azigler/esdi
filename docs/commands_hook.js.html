@@ -3,7 +3,7 @@
 <head>
     
     <meta charset="utf-8">
-    <title>controllers/HookController.js - Esdi Documentation</title>
+    <title>commands/hook.js - Esdi Documentation</title>
     
     <meta name="description" content="ES6 Discord bot framework" />
     
@@ -43,7 +43,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">controllers/HookController.js</h1>
+    <h1 class="page-title">commands/hook.js</h1>
     
 
     
@@ -53,210 +53,202 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>const Hapi = require('@hapi/hapi')
-const fs = require('fs')
-
-/**
- * Controller for {@link Hook|Hooks} (e.g., webhooks)
+            <pre class="prettyprint source linenums"><code>/**
+ * Lists all enabled {@link Hook|Hooks} for this channel, toggles the one provided, or lists all Hooks that can be enabled
  *
- * @class
+ * @type {Command}
+ * @memberof Command
+ * @name hook
+ * @static
  */
-class HookController {
-  /**
-   * Initializes a new HookController
-   *
-   * @param {Object} config configuration object
-   * @param {Esdi} config.server Esdi server instance
-   * @param {Number} [config.hookServerPort = 8587] port for {@link Hook} server
-   * @param {String} [config.hookServerHost = 'localhost'] hostname for {@link Hook} server
-   * @param {Object|Boolean} [config.hookServerTls = false] `false` for HTTP, or object with paths to `key` and `cert` files for TLS
-   * @memberof HookController
-   */
-  init ({ server, hookServerPort = 8587, hookServerHost = 'localhost', hookServerTls = false }) {
-    this.server = server
-    this.hookServerPort = hookServerPort
-    this.hookServerHost = hookServerHost
-    this.hookServerTls = hookServerTls
+module.exports = {
+  name: 'hook',
+  ownerOnly: true,
+  usage: '[&lt;Hook name>]/[list]',
+  aliases: ['hooks'],
+  description: 'Lists all enabled Hooks for this channel, toggles the one provided, or lists all Hooks that can be enabled.',
+  async execute ({ args, server, message }) {
+    const prefix = server.controllers.get('BotController').prefix
 
-    this.hookServer = Hapi.server({
-      port: hookServerPort,
-      host: hookServerHost,
-      tls: hookServerTls ? { key: fs.readFileSync(hookServerTls.key), cert: fs.readFileSync(hookServerTls.cert) } : false
-    })
-  }
+    const HOOK_TOGGLE_TXT = `Use \`${prefix}hook &lt;Hook name>\` to toggle a Hook.`
+    const HOOK_TXT = `Use \`${prefix}hook\` to see all Hooks enabled for this channel. ${HOOK_TOGGLE_TXT}`
+    const HOOK_LIST_TXT = `Use \`${prefix}hook list\` to see the Hooks you can enable. ${HOOK_TOGGLE_TXT}`
 
-  /**
-   * Starts the HookController
-   *
-   * @listens Esdi#start
-   * @memberof HookController
-   */
-  start () {
-    console.log('[#] Starting HookController...')
-    this.hookServer.start()
-    this.server.hooks.forEach(hook => {
-      if (hook.type === 'global') return
-      this.hookServer.route(hook.init({ server: this.server }))
-    })
-  }
+    // if no arguments provided, list all Hooks enabled for this channel
+    if (args.length === 0) {
+      const enabledHooks = []
 
-  /**
-   * Stops the HookController
-   *
-   * @listens Esdi#stop
-   * @memberof HookController
-   */
-  stop () {
-    console.log('[#] Stopping HookController...')
-    this.hookServer.stop()
-  }
+      // get all loaded Hooks and their database documents
+      for (const h of server.hooks.values()) {
+        // only consider channel type Hooks
+        if (h.type !== 'channel') continue
 
-  /**
-   * Wrapper method that configures {@link Hook.github-redeploy|github-redeploy}
-   *
-   * @param {Object} config `initConfig` for {@link Hook.github-redeploy|github-redeploy}
-   * @see Hook.github-redeploy
-   * @memberof HookController
-   */
-  configureGitHubRedeploy (config) {
-    this.hookServer.route(this.server.hooks.get('github-redeploy').init(config))
-    console.log(`[H] github-redeploy Hook configured -> (POST) http${this.hookServerTls ? 's' : ''}://${this.hookServerHost}:${this.hookServerPort}/hook/github-redeploy`)
-  }
+        // fetch this Hook's database document
+        const doc = await server.controllers.get('DatabaseController').fetchDoc({ db: 'hook', id: h.name })
+        const channels = doc.channelHookPairs.map(h => h[0])
 
-  /**
-  * Returns an array of Hook properties if the Hook is enabled for the provided channel
-  *
-  * @param {Object} config configuration object
-  * @param {Object} config.h hapi response toolkit
-  * @param {Esdi} config.server Esdi server instance
-  * @param {String} config.channelId discord.js Channel ID
-  * @param {String} config.hookName {@link Hook} name
-  * @returns {Object|Array} hapi response object or array of Hook properties
-  * @memberof HookController
-  */
-  async checkHookEnabledForChannel ({ h, server, channelId, hookName }) {
-    const client = server.controllers.get('BotController').client
-
-    let msg,
-      channel,
-      hookData,
-      channelWebhookId
-
-    // check if bot can see channel
-    try {
-      channel = await client.channels.fetch(channelId)
-    } catch (e) {
-      msg = `Bot doesn't know about Channel&lt;${channelId}> for ${hookName} Hook`
-      console.log(msg, e)
-      return h.response(msg).code(400)
-    }
-
-    // check if Hook is enabled for channel
-    try {
-      // fetch Hook data from database
-      hookData = await server.controllers.get('DatabaseController').fetchDoc({ db: 'hook', id: hookName })
-
-      // helper function that handles if Hook is not enabled for channel
-      const rejectNotEnabled = (msg) => {
-        msg = `${hookName} Hook is not enabled for Channel&lt;${channelId}>`
-        console.log(msg)
-        return h.response(msg).code(400)
+        // get all channels with this Hook enabled
+        for (const c of channels) {
+          // if found, know that this Hook is enabled for this channel
+          if (message.channel.id === c) {
+            enabledHooks.push(`\`\`\`${h.name} - ${h.description}\`\`\``)
+          }
+        }
       }
 
-      // check each registered webhook in the database to see if enabled for this channel
-      if (hookData.channelHookPairs) {
+      // if there are Hooks enabled for this channel, announce them
+      if (enabledHooks.length > 0) {
+        enabledHooks.unshift('**Hooks enabled for this channel:**')
+        enabledHooks.push(HOOK_LIST_TXT)
+        message.channel.send(enabledHooks, { split: true })
+      // otherwise, provide help about enabling Hooks
+      } else {
+        message.channel.send(`There are no Hooks enabled for this channel. ${HOOK_LIST_TXT}`)
+      }
+    // if the argument provided is 'list', show a list of Hooks that can be enabled for this channel
+    } else if (args[0].toLowerCase() === 'list') {
+      const availableHooks = []
+
+      // get all loaded Hooks and their database documents
+      for (const h of server.hooks.values()) {
+        // only consider channel type Hooks
+        if (h.type !== 'channel') continue
+
+        // fetch this Hook's database document
+        const doc = await server.controllers.get('DatabaseController').fetchDoc({ db: 'hook', id: h.name })
+        const channels = doc.channelHookPairs.map(h => h[0])
+
+        let enabled = false
+        // get all channels with this Hook enabled
+        for (const c of channels) {
+          // if found, know that this Hook is enabled for this channel
+          if (message.channel.id === c) {
+            enabled = true
+          }
+        }
+
+        // if the Hook is not already enabled, add it to the array of available Hooks
+        if (!enabled) {
+          availableHooks.push(`\`\`\`${h.name} - ${h.description}\`\`\``)
+        }
+      }
+
+      // if there are Hooks that can be enabled, announce them
+      if (availableHooks.length > 0) {
+        availableHooks.unshift('**Hooks available for this channel:**')
+        availableHooks.push(HOOK_TXT)
+        message.channel.send(availableHooks, { split: true })
+      // otherwise, announce none available
+      } else {
+        message.channel.send(`There are no Hooks available for this channel. ${HOOK_TXT}`)
+      }
+    // otherwise, toggle the provided Hook
+    } else {
+      const hook = server.hooks.get(args[0])
+
+      // stop if Hook not found
+      if (!hook) return message.reply('that Hook does not exist.')
+
+      // stop if Hook is not a channel type
+      if (hook.type !== 'channel') return message.reply('that Hook cannot be enabled for a channel.')
+
+      let msg
+
+      try {
+        let hookData,
+          channelHook,
+          channelWebhookId
+
+        // fetch this Hook's database document
+        hookData = await server.controllers.get('DatabaseController').fetchDoc({ db: 'hook', id: hook.name })
+
+        // if the document is deleted or missing, initialize it
+        if (hookData.status === 404 || !hookData.channelHookPairs) {
+          hookData = await server.controllers.get('DatabaseController').updateDoc({
+            db: 'hook',
+            id: hook.name,
+            payload: {
+              ...hookData.payload,
+              channelHookPairs: []
+            }
+          })
+        }
+
+        // get all channels with this Hook enabled
         const channels = hookData.channelHookPairs.map(h => h[0])
 
-        // if Hook is not enabled for this channel, reject request
-        if (!channels.find(c => c === channel.id)) {
-          // user helper function above
-          return rejectNotEnabled()
-          // otherwise, save webhook ID for use
-        } else {
-          [, channelWebhookId] = hookData.channelHookPairs.find(h => h[0] === channelId)
-        }
-        // otherwise, reject request
-      } else {
-        // use helper function above
-        return rejectNotEnabled()
-      }
-    } catch (e) {
-      msg = `An error occurred while fetching database document for ${hookName} Hook`
-      console.log(msg, e)
-      return h.response(msg).code(400)
-    }
+        // if Hook is enabled for this channel, disable it
+        if (channels.find(c => c === message.channel.id)) {
+          // do any Hook-specific cleanup before disabling the Hook for this channel
+          await hook.disable({ server, channel: message.channel })
 
-    return [msg,
-      channel,
-      hookData,
-      channelWebhookId]
-  }
+          // get the Hook's webhook ID from the document
+          channelWebhookId = hookData.channelHookPairs.find(p => p[0] === message.channel.id)[1]
 
-  /**
-  * Fetches a corresponding webhook for a channel's Hook
-  *
-  * @param {Object} config configuration object
-  * @param {Object} config.h hapi response toolkit
-  * @param {Object} config.request hapi request object
-  * @param {Esdi} config.server Esdi server instance
-  * @param {external:Channel} config.channel discord.js Channel
-  * @param {String} config.channelWebhookId discord.js Webhook ID
-  * @param {Object} config.hookData {@link Hook} database document
-  * @param {Function} config.enable function that enables the Hook for a discord.js Channel
-  * @returns {Object|Array} hapi response object or array containing corresponding discord.js Webhook
-  * @memberof HookController
-  */
-  async fetchWebhookForChannelHook ({ h, request, server, channel, channelWebhookId, hookData, enable }) {
-    let msg,
-      channelHook
-
-    // fetch channel webhooks
-    try {
-      channelHook = await channel.fetchWebhooks()
-      channelHook = channelHook.find(hook => hook.id === channelWebhookId)
-    } catch (e) {
-      msg = `An error occurred while evaluating ${hookData._id} Hook and fetching webhooks for Channel&lt;${request.params.channel}>`
-      console.log(msg, e)
-      return h.response(msg).code(400)
-    }
-
-    // if channel webhook is missing, initialize and use it
-    if (!channelHook) {
-      try {
-        channelHook = await enable({ server, channel })
-
-        // check if enabling returned a webhook before proceeding
-        if (channelHook.constructor.name !== 'Webhook') {
-          msg = `The result of enabling ${hookData._id} Hook for for Channel&lt;${request.params.channel}> was not a valid webhook`
-          console.log(msg)
-          return h.response(msg).code(200)
-        }
-
-        // make sure this channel is filtered out of the pair array
-        const CHPs = hookData.channelHookPairs.filter(p => p[0] !== channel.id)
-
-        // update database with new webhook ID
-        server.controllers.get('DatabaseController').updateDoc({
-          db: 'hook',
-          id: hookData._id,
-          payload: {
-            ...hookData.payload,
-            channelHookPairs: [...CHPs, [request.params.channel, channelHook.id]]
+          // fetch this channel's webhooks and delete the one with the above ID
+          channelHook = await message.channel.fetchWebhooks()
+          channelHook = channelHook.find(hook => hook.id === channelWebhookId)
+          if (channelHook) {
+            channelHook.delete()
           }
-        })
+
+          // update the database document to remove the channel and webhook ID pair
+          const payload = hookData.channelHookPairs.filter(p => p[1] !== channelWebhookId)
+          server.controllers.get('DatabaseController').updateDoc({
+            db: 'hook',
+            id: hook.name,
+            payload: {
+              ...hookData.payload,
+              channelHookPairs: [...(payload)]
+            }
+          })
+
+          // announce successfully disabling
+          msg = `The \`${hook.name}\` Hook is now **disabled** for this channel.`
+          message.channel.send(msg)
+          msg = `${hook.name} Hook is now disabled for Channel&lt;${message.channel.id}>`
+          console.log(msg)
+
+        // otherwise, enable the Hook for this channel
+        } else {
+          // enable the Hook for this channel
+          const newlyEnabledHook = await hook.enable({ server, channel: message.channel })
+
+          // check if enabling returned a webhook before proceeding
+          if (newlyEnabledHook.constructor.name !== 'Webhook') {
+            msg = `The result of enabling ${hookData._id} Hook for for Channel&lt;${message.channel.id}> was not a valid webhook`
+
+            message.channel.send(msg)
+            msg = `${hook.name} Hook is now enabled for Channel&lt;${message.channel.id}>`
+            return console.log(msg)
+          }
+
+          // update the database document to add this channel and webhook ID pair
+          const payload = hookData.channelHookPairs.filter(p => p[0] !== message.channel.id)
+          server.controllers.get('DatabaseController').updateDoc({
+            db: 'hook',
+            id: hook.name,
+            payload: {
+              ...hookData.payload,
+              channelHookPairs: [...(payload), [message.channel.id, newlyEnabledHook.id]]
+            }
+          })
+
+          // announce successfully enabling
+          msg = `The \`${hook.name}\` Hook is now **enabled** for this channel.`
+          message.channel.send(msg)
+          msg = `${hook.name} Hook is now enabled for Channel&lt;${message.channel.id}>`
+          console.log(msg)
+        }
       } catch (e) {
-        msg = `An error occurred while fetching webhooks for Channel&lt;${request.params.channel}>`
+        msg = `An error occurred while toggling \`${hook.name}\` Hook for this channel.`
+        message.channel.send(msg)
+        msg = `An error occurred while toggling ${hook.name} Hook for Channel&lt;${message.channel.id}>`
         console.log(msg, e)
-        return h.response(msg).code(400)
       }
     }
-
-    return [channelHook]
   }
 }
-
-// factory
-module.exports = new HookController()
 </code></pre>
         </article>
     </section>

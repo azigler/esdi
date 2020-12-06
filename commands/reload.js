@@ -17,7 +17,7 @@ module.exports = {
   description: 'Reloads a command from its source file. Useful for rapid development without restarting the server.',
   args: true,
   ownerOnly: true,
-  usage: '<command>',
+  usage: '<Command name>',
   execute ({ message, args, server }) {
     const commandName = args.shift().toLowerCase()
 
