@@ -4,5 +4,11 @@
   },
   "adding-a-custom-command": {
     "title": "Adding a custom command"
-}
+  },
+  "github-redeploy-global-hook-example": {
+    "title": "GitHub redeploy global Hook example"
+  },
+  "ko-fi-channel-hook-example": {
+    "title": "Ko-fi channel Hook example"
+  }
 }

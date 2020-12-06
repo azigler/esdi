@@ -78,7 +78,7 @@ If you would like to add the official Esdi bot to a server instead of hosting yo
 
 You can read the latest Esdi documentation [here](https://azigler.github.io/esdi/).
 
-There are also tutorials available. For example, you can learn how to add a custom command [here](https://azigler.github.io/esdi/tutorial-adding-a-custom-command.html).
+There are also tutorials available. For example, you can learn how to [add a custom commands](https://azigler.github.io/esdi/tutorial-adding-a-custom-command.html). There are also resources for handling webhooks from third-party services like [GitHub](https://azigler.github.io/esdi/tutorial-github-redeploy-global-hook-example.html) and [Ko-fi](https://azigler.github.io/esdi/tutorial-ko-fi-channel-hook-example.html).
 
 If you have further questions, [join the Esdi Community on Discord](https://discord.gg/HTSYNQrXam)!
 
@@ -103,9 +103,9 @@ If you have further questions, [join the Esdi Community on Discord](https://disc
 - [x] Add `github-redeploy` Hook
 - [x] Release [`v1.1.0`](https://github.com/azigler/esdi/releases/tag/v1.1.0)
 - [x] Implement channel webhooks
-- [ ] Add `ko-fi` Hook
-- [ ] Write webhook tutorials
-- [ ] Release `v1.2.0`
+- [x] Add `ko-fi` Hook
+- [x] Write webhook tutorials
+- [x] Release [`v1.2.0`](https://github.com/azigler/esdi/releases/tag/v1.2.0)
 - [ ] Add support for timed interval events
 - [ ] Require command aliases to be unique
 - [ ] Expand command cooldowns
