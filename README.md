@@ -1,6 +1,6 @@
 ![](https://pbs.twimg.com/profile_banners/68520657/1524094166/1500x500)
 
-# Esdi ![](https://user-images.githubusercontent.com/7295363/101442233-c0dc9780-38cf-11eb-8423-32366a2aec12.gif)
+# Esdi ![](https://user-images.githubusercontent.com/7295363/101524119-6169a080-393e-11eb-8006-6816e2c5f413.gif)
 
 > ES6 Discord bot framework
 
@@ -100,15 +100,17 @@ If you have further questions, [join the Esdi Community on Discord](https://disc
 - [x] Set up JSDoc on GitHub Pages
 - [x] Configure community Discord server
 - [x] Implement global webhooks
-- [x] Add `github-redeploy` Hook
+- [x] Add `github-redeploy` global Hook
 - [x] Release [`v1.1.0`](https://github.com/azigler/esdi/releases/tag/v1.1.0)
 - [x] Implement channel webhooks
-- [x] Add `ko-fi` Hook
+- [x] Add `ko-fi` channel Hook
 - [x] Write webhook tutorials
 - [x] Release [`v1.2.0`](https://github.com/azigler/esdi/releases/tag/v1.2.0)
-- [ ] Add support for timed interval events
+- [ ] Implement channel events
+- [ ] Add `victory-garden` channel Event
 - [ ] Require command aliases to be unique
 - [ ] Expand command cooldowns
+- [ ] Expand channel event intervals
 - [ ] Expand command permissions
 - [ ] Add more server management functionality
 
