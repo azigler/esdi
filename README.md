@@ -1,6 +1,6 @@
 ![](https://pbs.twimg.com/profile_banners/68520657/1524094166/1500x500)
 
-# Esdi
+# Esdi ![](https://user-images.githubusercontent.com/7295363/101442233-c0dc9780-38cf-11eb-8423-32366a2aec12.gif)
 
 > ES6 Discord bot framework
 
