@@ -143,7 +143,6 @@ module.exports = {
             db: 'hook',
             id: hook.name,
             payload: {
-              ...hookData.payload,
               channelHookPairs: [...(payload)]
             }
           })
@@ -174,7 +173,6 @@ module.exports = {
             db: 'hook',
             id: hook.name,
             payload: {
-              ...hookData.payload,
               channelHookPairs: [...(payload), [message.channel.id, newlyEnabledHook.id]]
             }
           })
