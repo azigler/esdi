@@ -9,7 +9,7 @@
 module.exports = {
   name: 'hook',
   ownerOnly: true,
-  usage: '[<Hook name>]/[list]',
+  usage: '[<hook name>]/[list]',
   aliases: ['hooks'],
   description: 'Lists all enabled Hooks for this channel, toggles the one provided, or lists all Hooks that can be enabled.',
   async execute ({ args, server, message }) {
@@ -18,6 +18,19 @@ module.exports = {
     const HOOK_TOGGLE_TXT = `Use \`${prefix}hook <Hook name>\` to toggle a Hook.`
     const HOOK_TXT = `Use \`${prefix}hook\` to see all Hooks enabled for this channel. ${HOOK_TOGGLE_TXT}`
     const HOOK_LIST_TXT = `Use \`${prefix}hook list\` to see the Hooks you can enable. ${HOOK_TOGGLE_TXT}`
+
+    // helper function that initializes the database document if missing
+    const initializeIfMissing = async (hook, doc) => {
+      if (doc.status === 404 || !doc.channelHookPairs) {
+        return await server.controllers.get('DatabaseController').updateDoc({
+          db: 'hook',
+          id: hook.name,
+          payload: {
+            channelHookPairs: []
+          }
+        })
+      }
+    }
 
     // if no arguments provided, list all Hooks enabled for this channel
     if (args.length === 0) {
@@ -30,6 +43,10 @@ module.exports = {
 
         // fetch this Hook's database document
         const doc = await server.controllers.get('DatabaseController').fetchDoc({ db: 'hook', id: h.name })
+
+        // if missing, initialize this Hook's database document
+        initializeIfMissing(h, doc)
+
         const channels = doc.channelHookPairs.map(h => h[0])
 
         // get all channels with this Hook enabled
@@ -61,6 +78,10 @@ module.exports = {
 
         // fetch this Hook's database document
         const doc = await server.controllers.get('DatabaseController').fetchDoc({ db: 'hook', id: h.name })
+
+        // if missing, initialize this Hook's database document
+        initializeIfMissing(h, doc)
+
         const channels = doc.channelHookPairs.map(h => h[0])
 
         let enabled = false
@@ -100,24 +121,14 @@ module.exports = {
       let msg
 
       try {
-        let hookData,
-          channelHook,
+        let channelHook,
           channelWebhookId
 
         // fetch this Hook's database document
-        hookData = await server.controllers.get('DatabaseController').fetchDoc({ db: 'hook', id: hook.name })
+        const hookData = await server.controllers.get('DatabaseController').fetchDoc({ db: 'hook', id: hook.name })
 
-        // if the document is deleted or missing, initialize it
-        if (hookData.status === 404 || !hookData.channelHookPairs) {
-          hookData = await server.controllers.get('DatabaseController').updateDoc({
-            db: 'hook',
-            id: hook.name,
-            payload: {
-              ...hookData.payload,
-              channelHookPairs: []
-            }
-          })
-        }
+        // if missing, initialize this Hook's database document
+        initializeIfMissing(hook, hookData)
 
         // get all channels with this Hook enabled
         const channels = hookData.channelHookPairs.map(h => h[0])

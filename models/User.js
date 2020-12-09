@@ -16,31 +16,19 @@ class User {
     this.id = guildMember.user.id
     this.guilds = []
     this.server = server
+    this.botLabel = `${guildMember.user.bot ? ' [BOT]' : ''}`
+
+    this.addGuild(guildMember.guild)
 
     /**
      * @external User
      * @see https://discord.js.org/#/docs/main/stable/class/User
      */
-    this.discordUser = guildMember.user
-
     /**
      * @external GuildMember
      * @see https://discord.js.org/#/docs/main/stable/class/GuildMember
      */
-    this.discordGuildMember = guildMember
-
-    this.botLabel = `${this.isBot ? ' [BOT]' : ''}`
-    this.addGuild(guildMember.guild)
-  }
-
-  /**
-   * Whether this User is a bot
-   *
-   * @readonly
-   * @memberof User
-   */
-  get isBot () {
-    return this.discordUser.bot
+    this.discordUser = guildMember.user
   }
 
   /**
@@ -72,9 +60,9 @@ class User {
     this.__changed = true
 
     if (this.guilds.length === 1) {
-      console.log(`[++] Now seeing ${this.username} in ${guild.name} (1 now mutual)${this.botLabel}`)
+      console.log(`[++] Now seeing ${this.username} in ${guild.name} (1 server now mutual)${this.botLabel}`)
     } else {
-      console.log(`[+++] Also seeing ${this.username} now in ${guild.name} (${this.guilds.length} now mutual)${this.botLabel}`)
+      console.log(`[+++] Now also seeing ${this.username} in ${guild.name} (${this.guilds.length} servers now mutual)${this.botLabel}`)
     }
   }
 
@@ -88,8 +76,10 @@ class User {
     this.guilds = this.guilds.filter(g => g.id !== guild.id)
     this.__changed = true
 
-    if (this.guilds.length > 0) {
-      console.log(`[--] No longer seeing ${this.username} in ${guild.name} (${this.guilds.length} now mutual)${this.botLabel}`)
+    if (this.guilds.length === 1) {
+      console.log(`[--] No longer seeing ${this.username} in ${guild.name} (1 server now mutual)${this.botLabel}`)
+    } if (this.guilds.length > 1) {
+      console.log(`[--] No longer seeing ${this.username} in ${guild.name} (${this.guilds.length} servers now mutual)${this.botLabel}`)
     } else {
       console.log(`[---] No longer seeing ${this.username} anywhere${this.botLabel}`)
       this.server.controllers.get('UserController').delete(this.id)
