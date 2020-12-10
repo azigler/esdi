@@ -22,7 +22,7 @@ Since this Hook only ever needs to interact with members of the Esdi server, onl
 
 The `method` property can be any valid HTTP method, or an array of methods. The `path` property is the relative URL endpoint for this Hook *for a corresponding channel*. This small detail is important and distinguises a channel Hook from a global Hook. Since a channel Hook is tied to a specific channel, any incoming webhook should make a corresponding request to the channel's endpoint on the Hook server. In this case, the `handler()` function is triggered by a `POST` request on the Hook server's `/hook/ko-fi/{channel}` path. The `{channel}` parameter is a [hapi path paremeter](https://hapi.dev/api/?v=20.0.3#path-parameters). In our example, `{channel}` becomes `request.params.channel` in the `handler()` function, allowing us to filter the request to the specified channel.
 
-You can easily get any channel's ID by right clicking the channel name in Discord and selecting "Copy ID" in the context menu. Like this:
+You can easily get any channel's ID by right clicking the channel name in Discord and selecting "Copy ID" in the context menu. If you don't see this in the menu, open User Settings, select Appearance, and enable Developer Mode. This will let you right click and obtain IDs from users, channels, and servers. Then you can obtain the ID like this:
 
 ![](https://user-images.githubusercontent.com/7295363/101292269-41fa3880-37c3-11eb-8bc4-0687b7ebfedc.png)
 

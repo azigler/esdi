@@ -14,10 +14,10 @@ const Command = require('./../models/Command')
  */
 module.exports = {
   name: 'reload',
-  description: 'Reloads a command from its source file. Useful for rapid development without restarting the server.',
+  description: 'Reloads a Command from its source file.',
   args: true,
   ownerOnly: true,
-  usage: '<command name>',
+  usage: '<Command name>',
   execute ({ message, args, server }) {
     const commandName = args.shift().toLowerCase()
 

@@ -18,7 +18,7 @@
  */
 module.exports = {
   name: 'guildDelete',
-  func (guild) {
+  handler (guild) {
     this.controllers.get('GuildController').removeGuild(guild)
   }
 }

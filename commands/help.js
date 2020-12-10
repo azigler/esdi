@@ -1,5 +1,5 @@
 /**
- * Lists all {@link Command|Commands} or gets help for a specific {@link Command}
+ * Lists all {@link Command|Commands} or gets help for a specific Command
  *
  * @type {Command}
  * @memberof Command
@@ -12,9 +12,9 @@
  */
 module.exports = {
   name: 'help',
-  description: 'Lists all bot commands or gets help for a specific command.',
+  description: 'Lists all Commands or gets help for a specific Command.',
   aliases: ['commands'],
-  usage: '[<command name>]',
+  usage: '[<Command name>]',
   execute ({ message, args, server }) {
     const prefix = server.controllers.get('BotController').prefix
     const data = []

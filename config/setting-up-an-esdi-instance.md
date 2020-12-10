@@ -39,4 +39,6 @@ your-project-folder/
         └── ... add your custom models here
 ```
 
+Sometimes you'll need to provide Esdi with IDs from Discord. To do this easy, open User Settings, select Appearance, and enable Developer Mode. This will let you right click and obtain IDs from users, channels, and servers.
+
 Next, let's [add a custom command]{@tutorial adding-a-custom-command} to our new Esdi bot.

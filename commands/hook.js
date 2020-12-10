@@ -1,5 +1,5 @@
 /**
- * Lists all enabled {@link Hook|Hooks} for this channel, toggles the one provided, or lists all Hooks that can be enabled
+ * Lists all enabled {@link Hook|Hooks} for this channel, toggles the Hook provided, or lists all Hooks that can be enabled
  *
  * @type {Command}
  * @memberof Command
@@ -9,9 +9,9 @@
 module.exports = {
   name: 'hook',
   ownerOnly: true,
-  usage: '[<hook name>]/[list]',
+  usage: '[<Hook name>]/[list]',
   aliases: ['hooks'],
-  description: 'Lists all enabled Hooks for this channel, toggles the one provided, or lists all Hooks that can be enabled.',
+  description: 'Lists all enabled Hooks for this channel, toggles the Hook provided, or lists all Hooks that can be enabled.',
   async execute ({ args, server, message }) {
     const prefix = server.controllers.get('BotController').prefix
 
@@ -29,6 +29,8 @@ module.exports = {
             channelHookPairs: []
           }
         })
+      } else {
+        return doc
       }
     }
 
@@ -42,16 +44,16 @@ module.exports = {
         if (h.type !== 'channel') continue
 
         // fetch this Hook's database document
-        const doc = await server.controllers.get('DatabaseController').fetchDoc({ db: 'hook', id: h.name })
+        let doc = await server.controllers.get('DatabaseController').fetchDoc({ db: 'hook', id: h.name })
 
         // if missing, initialize this Hook's database document
-        initializeIfMissing(h, doc)
+        doc = await initializeIfMissing(h, doc)
 
-        const channels = doc.channelHookPairs.map(h => h[0])
+        const channels = doc.channelHookPairs.map(p => p[0])
 
         // get all channels with this Hook enabled
         for (const c of channels) {
-          // if found, know that this Hook is enabled for this channel
+          // if found, remember that this Hook is enabled for this channel
           if (message.channel.id === c) {
             enabledHooks.push(`\`\`\`${h.name} - ${h.description}\`\`\``)
           }
@@ -77,17 +79,17 @@ module.exports = {
         if (h.type !== 'channel') continue
 
         // fetch this Hook's database document
-        const doc = await server.controllers.get('DatabaseController').fetchDoc({ db: 'hook', id: h.name })
+        let doc = await server.controllers.get('DatabaseController').fetchDoc({ db: 'hook', id: h.name })
 
         // if missing, initialize this Hook's database document
-        initializeIfMissing(h, doc)
+        doc = await initializeIfMissing(h, doc)
 
-        const channels = doc.channelHookPairs.map(h => h[0])
+        const channels = doc.channelHookPairs.map(p => p[0])
 
         let enabled = false
         // get all channels with this Hook enabled
         for (const c of channels) {
-          // if found, know that this Hook is enabled for this channel
+          // if found, remember that this Hook is enabled for this channel
           if (message.channel.id === c) {
             enabled = true
           }
@@ -125,10 +127,10 @@ module.exports = {
           channelWebhookId
 
         // fetch this Hook's database document
-        const hookData = await server.controllers.get('DatabaseController').fetchDoc({ db: 'hook', id: hook.name })
+        let hookData = await server.controllers.get('DatabaseController').fetchDoc({ db: 'hook', id: hook.name })
 
         // if missing, initialize this Hook's database document
-        initializeIfMissing(hook, hookData)
+        hookData = await initializeIfMissing(hook, hookData)
 
         // get all channels with this Hook enabled
         const channels = hookData.channelHookPairs.map(h => h[0])
@@ -154,7 +156,7 @@ module.exports = {
             db: 'hook',
             id: hook.name,
             payload: {
-              channelHookPairs: [...(payload)]
+              channelHookPairs: [...payload]
             }
           })
 
@@ -178,13 +180,13 @@ module.exports = {
             return console.log(msg)
           }
 
-          // update the database document to add this channel and webhook ID pair
+          // update the database document to add the channel and webhook ID pair
           const payload = hookData.channelHookPairs.filter(p => p[0] !== message.channel.id)
           server.controllers.get('DatabaseController').updateDoc({
             db: 'hook',
             id: hook.name,
             payload: {
-              channelHookPairs: [...(payload), [message.channel.id, newlyEnabledHook.id]]
+              channelHookPairs: [...payload, [message.channel.id, newlyEnabledHook.id]]
             }
           })
 

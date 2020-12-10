@@ -18,10 +18,10 @@
  */
 module.exports = {
   name: 'guildMemberRemove',
-  func (member) {
+  handler (member) {
     const m = this.controllers.get('UserController').get(member.user.id)
 
-    // return if User was already deleted
+    // stop if User was already deleted
     if (!m || !m.removeGuild) {
       return
     }
