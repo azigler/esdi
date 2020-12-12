@@ -102,16 +102,18 @@ If you have further questions, [join the Esdi Community on Discord](https://disc
 - [x] Implement global webhooks
 - [x] Add `github-redeploy` global Hook
 - [x] Release [`v1.1.0`](https://github.com/azigler/esdi/releases/tag/v1.1.0)
-- [x] Implement channel webhooks
-- [x] Add `ko-fi` channel Hook
-- [x] Write webhook tutorials
+- [x] Implement channel webhooks and `hook` Command
+- [x] Add `ko-fi` channel Hook 
+- [x] Write Hook tutorials
 - [x] Release [`v1.2.0`](https://github.com/azigler/esdi/releases/tag/v1.2.0)
-- [ ] Implement channel events
-- [ ] Add `victory-garden` channel Event
+- [ ] Implement channel events and `event` Command
+- [ ] Add `victory-garden` channel Event and `vg` Command
+- [ ] Write Event tutorials
 - [ ] Require command aliases to be unique
 - [ ] Expand command cooldowns
 - [ ] Expand channel event intervals
 - [ ] Expand command permissions
+- [ ] Add `kudos` and `me` Commands
 - [ ] Add more server management functionality
 
 ## Credits :horse_racing:
