@@ -178,7 +178,7 @@ class HookController {
         }
 
         // make sure this channel is filtered out of the pair array
-        const CHPs = hookData.channelHookPairs.filter(p => p[0] !== channel.id)
+        const pairs = hookData.channelHookPairs.filter(p => p[0] !== channel.id)
 
         // update database with new webhook ID
         server.controllers.get('DatabaseController').updateDoc({
@@ -186,7 +186,7 @@ class HookController {
           id: hookData._id,
           payload: {
             ...hookData.payload,
-            channelHookPairs: [...CHPs, [request.params.channel, channelHook.id]]
+            channelHookPairs: [...pairs, [request.params.channel, channelHook.id]]
           }
         })
       } catch (e) {

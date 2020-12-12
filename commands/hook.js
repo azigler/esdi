@@ -150,8 +150,10 @@ module.exports = {
             channelHook.delete()
           }
 
+          // make sure this channel is filtered out of the pair array
+          const payload = hookData.channelHookPairs.filter(p => p[0] !== message.channel.id)
+
           // update the database document to remove the channel and webhook ID pair
-          const payload = hookData.channelHookPairs.filter(p => p[1] !== channelWebhookId)
           server.controllers.get('DatabaseController').updateDoc({
             db: 'hook',
             id: hook.name,
@@ -180,8 +182,10 @@ module.exports = {
             return console.log(msg)
           }
 
-          // update the database document to add the channel and webhook ID pair
+          // make sure this channel is filtered out of the pair array
           const payload = hookData.channelHookPairs.filter(p => p[0] !== message.channel.id)
+
+          // update the database document to add the channel and webhook ID pair
           server.controllers.get('DatabaseController').updateDoc({
             db: 'hook',
             id: hook.name,

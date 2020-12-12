@@ -37,7 +37,7 @@ module.exports = {
             console.log(error)
           })
 
-          return `Redeployed from repository @ ${new Date()}`
+          return `Redeployed from repository @ ${new Date().toLocaleString()} PT`
         }
 
         // helper function that rejects unauthorized requests

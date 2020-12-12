@@ -38,7 +38,7 @@ class Esdi extends require('events') {
      */
     this.on('start', () => {
       this.startTime = new Date()
-      console.log(`[%] Starting Esdi @ ${this.startTime}`)
+      console.log(`[%] Starting Esdi @ ${this.startTime.toLocaleString()} PT`)
       this.serverLoop = setInterval(this.loop.bind(this), loopSeconds * 1000)
 
       this.controllers.forEach(controller => {
@@ -55,7 +55,7 @@ class Esdi extends require('events') {
      */
     this.on('stop', () => {
       this.stopTime = new Date()
-      console.log(`[%] Stopping Esdi @ ${this.stopTime}`)
+      console.log(`[%] Stopping Esdi @ ${this.stopTime.toLocaleString()} PT`)
       clearTimeout(this.serverLoop)
       this.serverLoop = false
     })
@@ -101,7 +101,7 @@ class Esdi extends require('events') {
    */
   loop () {
     if (process.argv.includes('--verbose')) {
-      console.log(`[#] Looping @ ${new Date()}`)
+      console.log(`[#] Looping @ ${new Date().toLocaleString()} PT`)
     }
     this.emit('loop')
   }

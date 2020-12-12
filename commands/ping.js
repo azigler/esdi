@@ -15,6 +15,6 @@ module.exports = {
   aliases: ['latency'],
   description: 'Returns the latency (in milliseconds) between when the user\'s command was sent and when the command was executed.',
   execute ({ message, args, server }) {
-    message.channel.send(`**Latency:** \`${new Date().getTime() - message.createdAt.getTime()}ms\``)
+    message.channel.send(`**Latency:** \`${Date.now() - message.createdAt.getTime()}ms\``)
   }
 }
