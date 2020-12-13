@@ -186,9 +186,6 @@ module.exports = {
             }
           })
 
-          // handle the Event immediately
-          event.handler({ server, channel: message.channel })
-
           // announce successfully enabling
           msg = `The \`${event.name}\` Event is now **enabled** for this channel.`
           message.channel.send(msg)
