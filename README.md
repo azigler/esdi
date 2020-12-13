@@ -109,10 +109,11 @@ If you have further questions, [join the Esdi Community on Discord](https://disc
 - [x] Implement channel Events and `event` Command
 - [ ] Add `victory-garden` channel Event and `vg` Command
 - [ ] Write Event tutorials
-- [ ] Require command aliases to be unique
-- [ ] Expand command cooldowns
-- [ ] Expand channel event intervals
-- [ ] Expand command permissions
+- [ ] Require Command aliases to be unique
+- [ ] Expand Command cooldowns
+- [ ] Expand channel Event intervals
+- [ ] Expand Command permissions
+- [ ] Improve prefix customization
 - [ ] Add `kudos` and `me` Commands
 - [ ] Add more server management functionality
 
