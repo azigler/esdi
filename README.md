@@ -99,14 +99,14 @@ If you have further questions, [join the Esdi Community on Discord](https://disc
 - [x] Enhance GitHub repository
 - [x] Set up JSDoc on GitHub Pages
 - [x] Configure community Discord server
-- [x] Implement global webhooks
+- [x] Implement global Hooks
 - [x] Add `github-redeploy` global Hook
 - [x] Release [`v1.1.0`](https://github.com/azigler/esdi/releases/tag/v1.1.0)
-- [x] Implement channel webhooks and `hook` Command
+- [x] Implement channel Hooks and `hook` Command
 - [x] Add `ko-fi` channel Hook 
 - [x] Write Hook tutorials
 - [x] Release [`v1.2.0`](https://github.com/azigler/esdi/releases/tag/v1.2.0)
-- [ ] Implement channel events and `event` Command
+- [x] Implement channel Events and `event` Command
 - [ ] Add `victory-garden` channel Event and `vg` Command
 - [ ] Write Event tutorials
 - [ ] Require command aliases to be unique
