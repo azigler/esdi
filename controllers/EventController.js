@@ -89,10 +89,11 @@ class EventController {
       doc = await initializeIfMissing(event, doc)
 
       // determine the Event's timing interval
+      const day = (event.interval.match(/(\d*)d/g) ? event.interval.match(/(\d*)d/g)[0].slice(0, -1) : 0)
       const hr = (event.interval.match(/(\d*)h/g) ? event.interval.match(/(\d*)h/g)[0].slice(0, -1) : 0)
       const min = (event.interval.match(/(\d*)m/g) ? event.interval.match(/(\d*)m/g)[0].slice(0, -1) : 0)
       const sec = (event.interval.match(/(\d*)s/g) ? event.interval.match(/(\d*)s/g)[0].slice(0, -1) : 0)
-      const intervalAmount = (sec * 1000) + (min * 60000) + (hr * 3600000)
+      const intervalAmount = (sec * 1000) + (min * 60000) + (hr * 3600000) + (day * 86400000)
       const now = Date.now()
 
       // iterate over each channel with this Event enabled
