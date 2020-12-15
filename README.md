@@ -26,9 +26,9 @@
 - [Setup](#setup-nut_and_bolt)
 - [Documentation](#documentation-bookmark_tabs)
 - [Features](#features-round_pushpin)
-- [Current Roadmap](#current-roadmap-chart_with_upwards_trend)
 - [Credits](#credits-horse_racing)
 - [Contributing](#contributing-inbox_tray)
+- [Roadmap](#roadmap-chart_with_upwards_trend)
 
 ## Introduction :rocket:
 
@@ -92,7 +92,17 @@ If you have further questions, [join the Esdi Community on Discord](https://disc
 - Usable for any purpose: server management, games, third-party API integration, or something totally unique!
 - Extensible with custom commands, controllers, events, hooks, and models
 
-## Current Roadmap :chart_with_upwards_trend:
+## Credits :horse_racing:
+
+Esdi is created and maintained by [Andrew Zigler](https://ko-fi.com/andrewzigler), who can be reached on [Twitter](https://twitter.com/andrewzigler) and [Discord](https://discord.gg/HTSYNQrXam).
+
+Esdi is made possible by [discord.js](https://discord.js.org/) and [project supporters](https://ko-fi.com/andrewzigler).
+
+## Contributing :inbox_tray:
+
+Feedback and contributions are encouraged! After reading our [Code of Conduct](./.github/CODE_OF_CONDUCT.md), use the [Bug Report](https://github.com/azigler/esdi/issues/new?assignees=&labels=bug&template=bug-report.md&title=) and [Feature Request](https://github.com/azigler/esdi/issues/new?assignees=&labels=enhancement&template=feature-request.md&title=) issue templates to discuss any bugs or contributions to Esdi. For more information, please read our [Contributing Guide](./.github/CONTRIBUTING.md).
+
+## Roadmap :chart_with_upwards_trend:
 
 - [x] Release [`v1.0.0`](https://github.com/azigler/esdi/releases/tag/v1.0.0)
 - [x] Publish npm package
@@ -109,20 +119,11 @@ If you have further questions, [join the Esdi Community on Discord](https://disc
 - [x] Implement channel Events and `event` Command
 - [ ] Add `victory-garden` channel Event and `vg` Command
 - [ ] Write Event tutorials
+- [ ] Add `prefix` Command and improve prefix customization
+- [ ] Release [`v1.3.0`](https://github.com/azigler/esdi/releases/tag/v1.3.0)
 - [ ] Require Command aliases to be unique
 - [ ] Expand Command cooldowns
 - [ ] Expand channel Event intervals
 - [ ] Expand Command permissions
-- [ ] Improve prefix customization
 - [ ] Add `kudos` and `me` Commands
 - [ ] Add more server management functionality
-
-## Credits :horse_racing:
-
-Esdi is created and maintained by [Andrew Zigler](https://ko-fi.com/andrewzigler), who can be reached on [Twitter](https://twitter.com/andrewzigler) and [Discord](https://discord.gg/HTSYNQrXam).
-
-Esdi is made possible by [discord.js](https://discord.js.org/) and [project supporters](https://ko-fi.com/andrewzigler).
-
-## Contributing :inbox_tray:
-
-Feedback and contributions are encouraged! After reading our [Code of Conduct](./.github/CODE_OF_CONDUCT.md), use the [Bug Report](https://github.com/azigler/esdi/issues/new?assignees=&labels=bug&template=bug-report.md&title=) and [Feature Request](https://github.com/azigler/esdi/issues/new?assignees=&labels=enhancement&template=feature-request.md&title=) issue templates to discuss any bugs or contributions to Esdi. For more information, please read our [Contributing Guide](./.github/CONTRIBUTING.md).

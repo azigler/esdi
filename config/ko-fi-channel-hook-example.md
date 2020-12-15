@@ -30,13 +30,13 @@ For example, if you had a channel with the ID `777755555555555555` then you shou
 
 ![](https://user-images.githubusercontent.com/7295363/101292221-019aba80-37c3-11eb-956c-addb5c26f7ca.png)
 
-Once your Ko-fi webhook is set up, you need to enable the channel Hook in a corresponding channel. That's why we have the {@link Command.hook|`hook`} command. This command lists all enabled Hooks for this channel (e.g., `!hook`), toggles the one provided (e.g., `!hook ko-fi`), or lists all Hooks that can be enabled (e.g., `!hook list`). In this example, in the channel with the ID `777755555555555555`, you would use the `!hook ko-fi` command to toggle on the {@link Hook.ko-fi|`ko-fi` Hook} for the channel like so:
+Once your Ko-fi webhook is set up, you need to enable the channel Hook in a corresponding channel. That's why we have the {@link Command.hook|`hook`} command. This command lists all enabled Hooks for this channel (e.g., `esdi!hook`), toggles the one provided (e.g., `esdi!hook ko-fi`), or lists all Hooks that can be enabled (e.g., `esdi!hook list`). In this example, in the channel with the ID `777755555555555555`, you would use the `esdi!hook ko-fi` command to toggle on the {@link Hook.ko-fi|`ko-fi` Hook} for the channel like so:
 
 ![](https://user-images.githubusercontent.com/7295363/101294770-8a6b2380-37ce-11eb-90d8-f6e478eca80b.png)
 
 Enabling the Hook will add a corresponding webhook on the Discord channel. But even if this webhook is deleted on Discord, if an incoming request is received then Esdi will automatically remake the webhook on demand while the Hook is enabled. When a Hook is enabled, its `enabled()` function is fired. **For a channel Hook, the `enabled()` function is required and must return a [discord.js Webhook](https://discord.js.org/#/docs/main/stable/class/Webhook).**
 
-If you want to disable the channel Hook later on, you can simply use the `!hook ko-fi` command again: 
+If you want to disable the channel Hook later on, you can simply use the `esdi!hook ko-fi` command again: 
 
 ![](https://user-images.githubusercontent.com/7295363/101294774-8c34e700-37ce-11eb-9bfb-d1a9c0fdf2a3.png)
 

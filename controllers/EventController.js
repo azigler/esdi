@@ -62,7 +62,7 @@ class EventController {
    * @memberof EventController
    */
   loop () {
-    // saves updated users to the database
+    // saves updated Users to the database
     this.server.controllers.get('UserController').forEach(user => {
       if (user.__changed) {
         this.server.controllers.get('DatabaseController').updateDoc({
@@ -82,7 +82,7 @@ class EventController {
     this.channelEvents.forEach(async (channels, eventName) => {
       const event = Array.from(this.server.events.values()).filter(e => e.name === eventName)[0]
 
-      // fetch this Events's database document
+      // fetch this Event's database document
       let doc = await this.server.controllers.get('DatabaseController').fetchDoc({ db: 'event', id: event.name })
 
       // if missing, initialize this Event's database document

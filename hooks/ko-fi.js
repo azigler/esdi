@@ -138,7 +138,7 @@ module.exports = {
               url: 'https://user-images.githubusercontent.com/7295363/99930265-49bad700-2d05-11eb-9057-1a013c45ee2c.png'
             },
             footer: {
-              icon_url: 'https://user-images.githubusercontent.com/7295363/97830418-bf410380-1c81-11eb-95cc-1b7b15d8d7eb.jpg',
+              icon_url: 'https://user-images.githubusercontent.com/7295363/101524119-6169a080-393e-11eb-8006-6816e2c5f413.gif',
               text: 'Ko-fi Hook by Esdi 🤍'
             },
             fields: embedFields

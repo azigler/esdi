@@ -14,20 +14,20 @@ class Esdi extends require('events') {
    * Initializes a new Esdi server
    *
    * @param {Object} [config] configuration object
-   * @param {Number} [config.loopSeconds = 30] loop frequency (in seconds)
+   * @param {Number} [config.loopSeconds = 5] loop frequency (in seconds)
    * @param {Boolean} [config.loadDefaultFiles = true] whether to load default files
    * @param {String} [config.dbAddress = 'local'] address of remote database, or `local` for local database
    * @param {String} [config.dbPort = 5984] port of remote database
    * @param {String} [config.dbNamespace = 'esdi_'] namespace prefix for database names
    * @param {String} [config.discordToken = process.env.DISCORD_TOKEN] token for Discord bot
-   * @param {String} [config.botPrefix = '!'] prefix for {@link Command|Commands}
+   * @param {String} [config.botPrefix = 'esdi!'] prefix for {@link Command|Commands}
    * @param {Number} [config.hookServerPort = 8587] port for {@link Hook} server
    * @param {String} [config.hookServerHost = 'localhost'] hostname for {@link Hook} server
    * @param {Object|Boolean} [config.hookServerTls = false] `false` for HTTP, or object with paths to `key` and `cert` files for TLS
    * @tutorial setting-up-an-esdi-instance
    * @constructor
    */
-  constructor ({ loopSeconds = 30, loadDefaultFiles = true, dbAddress = 'local', dbPort = 5984, dbNamespace = 'esdi_', discordToken = process.env.DISCORD_TOKEN, botPrefix = '!', hookServerPort = 8587, hookServerHost = 'localhost', hookServerTls = false } = {}) {
+  constructor ({ loopSeconds = 5, loadDefaultFiles = true, dbAddress = 'local', dbPort = 5984, dbNamespace = 'esdi_', discordToken = process.env.DISCORD_TOKEN, botPrefix = 'esdi!', hookServerPort = 8587, hookServerHost = 'localhost', hookServerTls = false } = {}) {
     super()
 
     /**
@@ -100,9 +100,6 @@ class Esdi extends require('events') {
    * @memberof Esdi
    */
   loop () {
-    if (process.argv.includes('--verbose')) {
-      console.log(`[#] Looping @ ${new Date().toLocaleString()} PT`)
-    }
     this.emit('loop')
   }
 
