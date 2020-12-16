@@ -1,5 +1,5 @@
 /**
- * Lists all enabled {@link Event|Events} for this channel, toggles the Event provided, or lists all Events that can be enabled
+ * Lists all enabled {@link Event|Events} for this {@link Guild} and channel, toggles the Event provided, or lists all Events that can be enabled
  *
  * @type {Command}
  * @memberof Command
@@ -14,23 +14,23 @@ module.exports = {
   name: 'event',
   ownerOnly: true,
   usage: '[<Event name>]/[list]',
-  description: 'Lists all enabled Events for this channel, toggles the Event provided, or lists all Events that can be enabled.',
+  description: 'Lists all enabled Events for this server and channel, toggles the Event provided, or lists all Events that can be enabled.',
   aliases: ['events'],
   async execute ({ message, args, server }) {
-    const prefix = server.controllers.get('BotController').prefix
+    const prefix = server.controllers.get('CommandController').determinePrefix(message)
 
-    const EVENT_TOGGLE_TXT = `Use \`${prefix}event <Event name>\` to toggle an Event.`
-    const EVENT_TXT = `Use \`${prefix}event\` to see all Events enabled for this channel. ${EVENT_TOGGLE_TXT}`
-    const EVENT_LIST_TXT = `Use \`${prefix}event list\` to see the Events you can enable. ${EVENT_TOGGLE_TXT}`
+    const EVENT_TOGGLE_TXT = `Use \`${prefix}event <Event name>\` to toggle an Event here.`
+    const EVENT_TXT = `Use \`${prefix}event\` to see all Events for this server and channel. ${EVENT_TOGGLE_TXT}`
+    const EVENT_LIST_TXT = `Use \`${prefix}event list\` to see the Events you can enable here. ${EVENT_TOGGLE_TXT}`
 
     // helper function that initializes the database document if missing
     const initializeIfMissing = async (event, doc) => {
-      if (doc.status === 404 || !doc.channelTimestampPairs) {
+      if (doc.status === 404 || !doc.contextTimestampPairs) {
         return await server.controllers.get('DatabaseController').updateDoc({
           db: 'event',
           id: event.name,
           payload: {
-            channelTimestampPairs: []
+            contextTimestampPairs: []
           }
         })
       } else {
@@ -38,14 +38,14 @@ module.exports = {
       }
     }
 
-    // if no arguments provided, list all Events enabled for this channel
+    // if no arguments provided, list all Events enabled for this Guild and channel
     if (args.length === 0) {
       const enabledEvents = []
 
       // get all loaded Events and their database documents
       for (const e of server.events.values()) {
-        // only consider channel type Events
-        if (e.type !== 'channel') continue
+        // only consider interval Events
+        if (e.type !== 'interval') continue
 
         // fetch this Event's database document
         let doc = await server.controllers.get('DatabaseController').fetchDoc({ db: 'event', id: e.name })
@@ -53,36 +53,51 @@ module.exports = {
         // if missing, initialize this Event's database document
         doc = await initializeIfMissing(e, doc)
 
-        const channels = doc.channelTimestampPairs.map(p => p[0])
+        const contexts = doc.contextTimestampPairs.map(p => p[0])
 
-        // get all channels with this Event enabled
-        for (const c of channels) {
+        // get all contexts with this Event enabled
+        for (const c of contexts) {
+          // keep only enabled contexts
+          const contextDoc = await server.controllers.get('DatabaseController').fetchDoc({
+            db: 'event',
+            id: `${e.name}_${c}`
+          })
+          if (!contextDoc.enabled) continue
+
           // if found, remember that this Event is enabled for this channel
           if (message.channel.id === c) {
-            const timestamp = doc.channelTimestampPairs.filter(p => p[0] === c)[0][1]
+            const timestamp = doc.contextTimestampPairs.filter(p => p[0] === c)[0][1]
             enabledEvents.push(`\`\`\`${e.name} - ${e.description}`)
-            enabledEvents.push(`\n[LAST FIRED: ${new Date(timestamp).toLocaleString() + ' PT'}]\`\`\``)
+            enabledEvents.push('\n[CHANNEL INTERVAL EVENT]')
+            enabledEvents.push(`\n[TIMESTAMP: ${new Date(timestamp).toLocaleString() + ' PT'}]\`\`\``)
+          }
+          // if found, remember that this Event is enabled for this Guild
+          if (message.guild.id === c) {
+            const timestamp = doc.contextTimestampPairs.filter(p => p[0] === c)[0][1]
+            enabledEvents.push(`\`\`\`${e.name} - ${e.description}`)
+            enabledEvents.push('\n[SERVER INTERVAL EVENT]')
+            enabledEvents.push(`\n[TIMESTAMP: ${new Date(timestamp).toLocaleString() + ' PT'}]\`\`\``)
           }
         }
       }
 
-      // if there are Events enabled for this channel, announce them
+      // if there are enabled Events, announce them
       if (enabledEvents.length > 0) {
-        enabledEvents.unshift('**Events enabled for this channel:**')
+        enabledEvents.unshift('**Enabled Events:**')
         enabledEvents.push(EVENT_LIST_TXT)
         message.channel.send(enabledEvents, { split: true })
       // otherwise, provide help about enabling Events
       } else {
-        message.channel.send(`There are no Events enabled for this channel. ${EVENT_LIST_TXT}`)
+        message.channel.send(`There are no Events enabled here. ${EVENT_LIST_TXT}`)
       }
-    // if the argument provided is 'list', show a list of Events that can be enabled for this channel
+    // if the argument provided is 'list', show a list of Events that can be enabled for this context
     } else if (args[0].toLowerCase() === 'list') {
       const availableEvents = []
 
       // get all loaded Events and their database documents
       for (const e of server.events.values()) {
-        // only consider channel type Events
-        if (e.type !== 'channel') continue
+        // only consider interval Events
+        if (e.type !== 'interval') continue
 
         // fetch this Event's database document
         let doc = await server.controllers.get('DatabaseController').fetchDoc({ db: 'event', id: e.name })
@@ -90,13 +105,17 @@ module.exports = {
         // if missing, initialize this Event's database document
         doc = await initializeIfMissing(e, doc)
 
-        const channels = doc.channelTimestampPairs.map(p => p[0])
+        const contexts = doc.contextTimestampPairs.map(p => p[0])
 
         let enabled = false
-        // get all channels with this Event enabled
-        for (const c of channels) {
+        // get all contexts with this Event enabled
+        for (const c of contexts) {
           // if found, remember that this Event is enabled for this channel
           if (message.channel.id === c) {
+            enabled = true
+          }
+          // if found, remember that this Event is enabled for this Guild
+          if (message.guild.id === c) {
             enabled = true
           }
         }
@@ -109,12 +128,12 @@ module.exports = {
 
       // if there are Events that can be enabled, announce them
       if (availableEvents.length > 0) {
-        availableEvents.unshift('**Events available for this channel:**')
+        availableEvents.unshift('**Available Events:**')
         availableEvents.push(EVENT_TXT)
         message.channel.send(availableEvents, { split: true })
       // otherwise, announce none available
       } else {
-        message.channel.send(`There are no Events available for this channel. ${EVENT_TXT}`)
+        message.channel.send(`There are no Events that can be enabled here. ${EVENT_TXT}`)
       }
     // otherwise, toggle the provided Event
     } else {
@@ -123,8 +142,8 @@ module.exports = {
       // stop if Event not found
       if (!event) return message.reply('that Event does not exist.')
 
-      // stop if Event is not a channel type
-      if (event.type !== 'channel') return message.reply('that Event cannot be enabled for a channel.')
+      // stop if Event is not an interval type
+      if (event.type !== 'interval') return message.reply('that Event cannot be enabled.')
 
       let msg
 
@@ -135,67 +154,97 @@ module.exports = {
         // if missing, initialize this Event's database document
         eventData = await initializeIfMissing(event, eventData)
 
-        // get all channels with this Event enabled
-        const channels = eventData.channelTimestampPairs.map(p => p[0])
+        // determine this Event's context
+        const context = {
+          type: event.context,
+          id: (event.context === 'guild' ? message.guild.id : message.channel.id)
+        }
 
-        // if Event is enabled for this channel, disable it
-        if (channels.find(c => c === message.channel.id)) {
-          // do any Event-specific cleanup before disabling the Event for this channel
-          await event.disable({ server, channel: message.channel })
+        // if missing, initialize the context's database document for this event
+        const contextDoc = await server.controllers.get('DatabaseController').fetchDoc({ db: 'event', id: `${event.name}_${context.id}` })
+        if (contextDoc.status === 404) {
+          await server.controllers.get('DatabaseController').updateDoc({
+            db: 'event',
+            id: `${event.name}_${context.id}`
+          })
+        }
+
+        // determine the capitalized name of this context ('Guild' or 'Channel')
+        const contextName = context.type.charAt(0).toUpperCase() + context.type.slice(1)
+
+        // if Event is enabled for this context, disable it
+        if (contextDoc.enabled) {
+          // do any Event-specific cleanup before disabling the Event for this context
+          if (context.type === 'guild') {
+            await event.disable({ server, context: await server.controllers.get('BotController').client.guilds.fetch(context.id) })
+          } else if (context.type === 'channel') {
+            await event.disable({ server, context: await server.controllers.get('BotController').client.channels.fetch(context.id) })
+          }
 
           // update locally to avoid database polling every loop
-          const local = server.controllers.get('EventController').channelEvents.get(event.name)
-          server.controllers.get('EventController').channelEvents.set(event.name, local.filter(c => !message.channel.id))
+          const local = server.controllers.get('EventController').intervalEvents.get(event.name)
+          server.controllers.get('EventController').intervalEvents.set(event.name, local.filter(c => !context.id))
 
-          // make sure this channel is filtered out of the pair array
-          const payload = eventData.channelTimestampPairs.filter(p => p[0] !== message.channel.id)
-
-          // update the database document to remove the channel and timestamp pair
-          server.controllers.get('DatabaseController').updateDoc({
+          // save the Event as disabled in the context's database document
+          await server.controllers.get('DatabaseController').updateDoc({
             db: 'event',
-            id: event.name,
+            id: `${event.name}_${context.id}`,
             payload: {
-              channelTimestampPairs: [...payload]
+              enabled: false
             }
           })
 
           // announce successfully disabling
-          msg = `The \`${event.name}\` Event is now **disabled** for this channel.`
+          msg = `The \`${event.name}\` Event is now **disabled** for this ${context.type}.`
           message.channel.send(msg)
-          msg = `${event.name} Event is now disabled for Channel<${message.channel.id}>`
+          msg = `${event.name} Event is now disabled for ${contextName}<${message.channel.id}>`
           console.log(msg)
 
-        // otherwise, enable the Event for this channel
+        // otherwise, enable the Event for this context
         } else {
-          // do any Event-specific setup before enabling the Event for this channel
-          await event.enable({ server, channel: message.channel })
+          // do any Event-specific setup before enabling the Event for this context
+          if (context.type === 'guild') {
+            await event.enable({ server, context: await server.controllers.get('BotController').client.guilds.fetch(context.id) })
+          } else if (context.type === 'channel') {
+            await event.enable({ server, context: await server.controllers.get('BotController').client.channels.fetch(context.id) })
+          }
 
           // update locally to avoid database polling every loop
-          const local = server.controllers.get('EventController').channelEvents.get(event.name)
-          server.controllers.get('EventController').channelEvents.set(event.name, [...local, message.channel.id])
+          const local = server.controllers.get('EventController').intervalEvents.get(event.name)
+          server.controllers.get('EventController').intervalEvents.set(event.name, [...local.filter(c => c !== context.id), context.id])
 
-          // make sure this channel is filtered out of the pair array
-          const payload = eventData.channelTimestampPairs.filter(p => p[0] !== message.channel.id)
+          // if this context does not have a timestamp, create one
+          if (!eventData.contextTimestampPairs.find(p => p[0] === context.id)) {
+            const payload = eventData.contextTimestampPairs
 
-          // update the database document to add the channel and timestamp pair
-          server.controllers.get('DatabaseController').updateDoc({
+            server.controllers.get('DatabaseController').updateDoc({
+              db: 'event',
+              id: event.name,
+              payload: {
+                contextTimestampPairs: [...payload, [context.id, Date.now()]]
+              }
+            })
+          }
+
+          // save the Event as enabled in the context's database document
+          await server.controllers.get('DatabaseController').updateDoc({
             db: 'event',
-            id: event.name,
+            id: `${event.name}_${context.id}`,
             payload: {
-              channelTimestampPairs: [...payload, [message.channel.id, Date.now()]]
+              enabled: true
             }
           })
 
           // announce successfully enabling
-          msg = `The \`${event.name}\` Event is now **enabled** for this channel.`
+          msg = `The \`${event.name}\` Event is now **enabled** for this ${context.type}.`
           message.channel.send(msg)
-          msg = `${event.name} Event is now enabled for Channel<${message.channel.id}>`
+          msg = `${event.name} Event is now enabled for ${contextName}<${message.channel.id}>`
           console.log(msg)
         }
       } catch (e) {
-        msg = `An error occurred while toggling \`${event.name}\` Event for this channel.`
+        msg = `An error occurred while toggling \`${event.name}\` Event.`
         message.channel.send(msg)
-        msg = `An error occurred while toggling ${event.name} Event for Channel<${message.channel.id}>`
+        msg = `An error occurred in Channel<${message.channel.id}> while toggling ${event.name}`
         console.log(msg, e)
       }
     }

@@ -13,7 +13,7 @@ class EventController {
    */
   init ({ server }) {
     this.server = server
-    this.channelEvents = new Map()
+    this.intervalEvents = new Map()
   }
 
   /**
@@ -25,22 +25,32 @@ class EventController {
   async start () {
     console.log('[#] Starting EventController...')
 
-    // get all loaded channel type Events and their database documents
+    // get all loaded interval Events and their database documents
     for (const e of this.server.events.values()) {
-      // only consider channel type Events
-      if (e.type !== 'channel') continue
+      // only consider interval Events
+      if (e.type !== 'interval') continue
 
       // fetch this Event's database document
       let doc = await this.server.controllers.get('DatabaseController').fetchDoc({ db: 'event', id: e.name })
 
       // if missing, initialize this Event's database document
-      doc = await initializeIfMissing(e, doc)
+      doc = await this.initializeIfMissing(this.server, e, doc)
 
-      // fetch the array of channels with this Event enabled
-      const channels = doc.channelTimestampPairs.map(p => p[0])
+      // fetch the array of contexts with this Event enabled
+      const allContexts = doc.contextTimestampPairs.map(p => p[0])
 
-      // remember the channel type Event and its array of enabled Channels
-      this.channelEvents.set(e.name, channels)
+      // keep only enabled contexts
+      const enabledContexts = []
+      for (const c of allContexts) {
+        const contextDoc = await this.server.controllers.get('DatabaseController').fetchDoc({
+          db: 'event',
+          id: `${e.name}_${c}`
+        })
+        if (contextDoc.enabled) enabledContexts.push(c)
+      }
+
+      // remember the interval Event and its array of enabled contexts
+      this.intervalEvents.set(e.name, enabledContexts)
     }
   }
 
@@ -52,7 +62,7 @@ class EventController {
    */
   stop () {
     console.log('[#] Stopping EventController...')
-    this.channelEvents.clear()
+    this.intervalEvents.clear()
   }
 
   /**
@@ -62,31 +72,15 @@ class EventController {
    * @memberof EventController
    */
   loop () {
-    // saves updated Users to the database
-    this.server.controllers.get('UserController').forEach(user => {
-      if (user.__changed) {
-        this.server.controllers.get('DatabaseController').updateDoc({
-          db: 'user',
-          id: user.id,
-          payload: {
-            guilds: user.guilds.map(g => { return g.id }),
-            username: user.username,
-            lastUpdated: Date.now()
-          }
-        })
-        delete user.__changed
-      }
-    })
-
-    // iterate over the loaded channel type Events and fire the handler for each enabled channel
-    this.channelEvents.forEach(async (channels, eventName) => {
+    // iterate over the loaded interval Events and fire the handler for each enabled context
+    this.intervalEvents.forEach(async (contexts, eventName) => {
       const event = Array.from(this.server.events.values()).filter(e => e.name === eventName)[0]
 
       // fetch this Event's database document
       let doc = await this.server.controllers.get('DatabaseController').fetchDoc({ db: 'event', id: event.name })
 
       // if missing, initialize this Event's database document
-      doc = await initializeIfMissing(event, doc)
+      doc = await this.initializeIfMissing(this.server, event, doc)
 
       // determine the Event's timing interval
       const day = (event.interval.match(/(\d*)d/g) ? event.interval.match(/(\d*)d/g)[0].slice(0, -1) : 0)
@@ -96,31 +90,49 @@ class EventController {
       const intervalAmount = (sec * 1000) + (min * 60000) + (hr * 3600000) + (day * 86400000)
       const now = Date.now()
 
-      // iterate over each channel with this Event enabled
-      for (const channel of channels) {
-        const timestamp = doc.channelTimestampPairs.find(pair => pair[0] === channel)[1]
+      // iterate over each context
+      for (const context of contexts) {
+        const timestamp = doc.contextTimestampPairs.find(pair => pair[0] === context)[1]
         const nextInterval = timestamp + intervalAmount
 
-        // return if it's not time yet for this Event to fire for this channel
-        if (now > nextInterval) {
-          // update this channel's timestamp in the database document for this Event
-          const payload = doc.channelTimestampPairs.filter(p => p[0] !== channel)
+        // fetch database document for each context to check if enabled
+        const { enabled } = await this.server.controllers.get('DatabaseController').fetchDoc({
+          db: 'event',
+          id: `${event.name}_${context}`
+        })
+
+        // if it's time for this Event to fire for this context and it is enabled
+        if (now > nextInterval && enabled) {
+          // update this context's timestamp in the database document for this Event
+          const payload = doc.contextTimestampPairs.filter(p => p[0] !== context)
           this.server.controllers.get('DatabaseController').updateDoc({
             db: 'event',
             id: event.name,
             payload: {
-              channelTimestampPairs: [...payload, [channel, now]]
+              contextTimestampPairs: [...payload, [context, now]]
             }
           })
 
-          // fetch the discord.js Channel for this channel
-          const ch = await this.server.controllers.get('BotController').client.channels.fetch(channel)
+          // update the timestamp in this context's database document for this Event
+          await this.server.controllers.get('DatabaseController').updateDoc({
+            db: 'event',
+            id: `${event.name}_${context}`,
+            payload: {
+              lastHandled: now
+            }
+          })
 
-          // fire the handler for this Event for this channel
-          event.handler({ server: this.server, channel: ch })
+          // determine this Event's context
+          const con = {
+            type: event.context,
+            ctx: (event.context === 'guild' ? await this.server.controllers.get('BotController').client.guilds.fetch(context) : await this.server.controllers.get('BotController').client.channels.fetch(context))
+          }
+
+          // fire the handler for this Event for this context
+          event.handler({ server: this.server, context: con.ctx })
 
           // announce handling of Event
-          console.log(`${event.name} Event was just handled for Channel<${channel}>`)
+          console.log(`${event.name} Event was just handled for ${con.type.charAt(0).toUpperCase() + con.type.slice(1)}<${con.ctx.id}>`)
         }
       }
     })
@@ -138,22 +150,29 @@ class EventController {
       client.on(event.discordEventName, event.handler.bind(client.botController.server))
     })
   }
+
+  /**
+   * Helper method that initializes the database document if missing
+   *
+   * @param {String} type framework file type to load
+   * @param {String} dir directory to load files from
+   * @memberof Esdi
+   * @private
+   */
+  async initializeIfMissing (server, event, doc) {
+    if (doc.status === 404 || !doc.contextTimestampPairs) {
+      return await server.controllers.get('DatabaseController').updateDoc({
+        db: 'event',
+        id: event.name,
+        payload: {
+          contextTimestampPairs: []
+        }
+      })
+    } else {
+      return doc
+    }
+  }
 }
 
 // factory
 module.exports = new EventController()
-
-// helper function that initializes the database document if missing
-const initializeIfMissing = async (event, doc) => {
-  if (doc.status === 404 || !doc.channelTimestampPairs) {
-    return await this.server.controllers.get('DatabaseController').updateDoc({
-      db: 'event',
-      id: event.name,
-      payload: {
-        channelTimestampPairs: []
-      }
-    })
-  } else {
-    return doc
-  }
-}
