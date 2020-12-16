@@ -54,36 +54,75 @@ class User {
    * @param {external:Guild} guild discord.js Guild
    * @memberof User
    */
-  addGuild (guild) {
+  async addGuild (guild) {
+    // if this User object is already in this Guild, return
     if (this.isInGuild(guild)) return
-    this.guilds.push(guild)
-    this.__changed = true
 
+    // fetch Guilds associated with this user from their database document
+    const { guilds } = await this.server.controllers.get('DatabaseController').fetchDoc({
+      db: 'user',
+      id: this.id
+    })
+
+    // add this Guild to this User object
+    this.guilds.push(guild)
+
+    // announce User
     if (this.guilds.length === 1) {
       console.log(`[++] Now seeing ${this.username} in ${guild.name} (1 server now mutual)${this.botLabel}`)
     } else {
       console.log(`[+++] Now also seeing ${this.username} in ${guild.name} (${this.guilds.length} servers now mutual)${this.botLabel}`)
     }
+
+    // if this Guild was already associated with this User's database document, return
+    if (guilds && guilds.find(g => g === guild.id)) {
+      return
+    }
+
+    // update database document
+    this.serialize()
   }
 
   /**
-   * Removes a Guild from this User (and deletes self if last Guild removed)
+   * Removes a Guild from this User
    *
    * @param {external:Guild} guild discord.js Guild
    * @memberof User
    */
   removeGuild (guild) {
-    this.guilds = this.guilds.filter(g => g.id !== guild.id)
-    this.__changed = true
+    // if this Guild is associated with this User, remove it
+    if (this.guilds.find(g => g.id === guild.id)) {
+      // remove this Guild from this User object
+      this.guilds = this.guilds.filter(g => g.id !== guild.id)
 
-    if (this.guilds.length === 1) {
-      console.log(`[--] No longer seeing ${this.username} in ${guild.name} (1 server now mutual)${this.botLabel}`)
-    } if (this.guilds.length > 1) {
-      console.log(`[--] No longer seeing ${this.username} in ${guild.name} (${this.guilds.length} servers now mutual)${this.botLabel}`)
-    } else {
-      console.log(`[---] No longer seeing ${this.username} anywhere${this.botLabel}`)
-      this.server.controllers.get('UserController').delete(this.id)
+      // announce User
+      if (this.guilds.length === 1) {
+        console.log(`[--] No longer seeing ${this.username} in ${guild.name} (1 server now mutual)${this.botLabel}`)
+      } if (this.guilds.length > 1) {
+        console.log(`[--] No longer seeing ${this.username} in ${guild.name} (${this.guilds.length} servers now mutual)${this.botLabel}`)
+      } else {
+        console.log(`[---] No longer seeing ${this.username} anywhere${this.botLabel}`)
+      }
+
+      // update database document
+      this.serialize()
     }
+  }
+
+  /**
+   * Serializes this User to a database document
+   *
+   * @memberof Guild
+   */
+  serialize () {
+    this.server.controllers.get('DatabaseController').updateDoc({
+      db: 'user',
+      id: this.id,
+      payload: {
+        guilds: this.guilds.map(g => { return g.id }),
+        username: this.username
+      }
+    })
   }
 }
 

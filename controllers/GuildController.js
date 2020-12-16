@@ -45,11 +45,21 @@ class GuildController extends Map {
    * @param {external:Guild} guild discord.js Guild
    * @memberof GuildController
    */
-  addGuild (guild) {
+  async addGuild (guild) {
     console.log(`[+] Joined ${guild.name}`)
 
-    this.set(guild.id, new Guild(guild))
+    // initialize this Guild
+    const newGuild = new Guild(guild)
+    newGuild.hydrate(this.server)
+    this.set(guild.id, newGuild)
 
+    // fetch the database document for this Guild
+    await this.server.controllers.get('DatabaseController').fetchDoc({
+      db: 'guild',
+      id: guild.id
+    })
+
+    // fetch the Users in this Guild
     this.server.controllers.get('UserController').fetchGuildMembers(guild)
   }
 
@@ -71,7 +81,7 @@ class GuildController extends Map {
   }
 
   /**
-   * Fetches the Guilds to which the bot is connected (and also fetches GuildMembers)
+   * Fetches the Guilds to which the bot is connected
    *
    * @param {external:Client} client discord.js Client
    * @memberof GuildController
