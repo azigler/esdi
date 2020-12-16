@@ -13,7 +13,7 @@ module.exports = {
   aliases: ['hooks'],
   description: 'Lists all enabled Hooks for this channel, toggles the Hook provided, or lists all Hooks that can be enabled.',
   async execute ({ args, server, message }) {
-    const prefix = server.controllers.get('BotController').prefix
+    const prefix = server.controllers.get('CommandController').determinePrefix(message)
 
     const HOOK_TOGGLE_TXT = `Use \`${prefix}hook <Hook name>\` to toggle a Hook.`
     const HOOK_TXT = `Use \`${prefix}hook\` to see all Hooks enabled for this channel. ${HOOK_TOGGLE_TXT}`
@@ -40,7 +40,7 @@ module.exports = {
 
       // get all loaded Hooks and their database documents
       for (const h of server.hooks.values()) {
-        // only consider channel type Hooks
+        // only consider channel Hooks
         if (h.type !== 'channel') continue
 
         // fetch this Hook's database document
@@ -75,7 +75,7 @@ module.exports = {
 
       // get all loaded Hooks and their database documents
       for (const h of server.hooks.values()) {
-        // only consider channel type Hooks
+        // only consider channel Hooks
         if (h.type !== 'channel') continue
 
         // fetch this Hook's database document

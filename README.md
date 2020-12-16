@@ -72,7 +72,7 @@ your-project-folder/
 
 To get started with your own Esdi bot instance, please read our [setup guide](https://azigler.github.io/esdi/tutorial-setting-up-an-esdi-instance.html).
 
-If you would like to add the official Esdi bot to a server instead of hosting your own instance, you will need **Manage Server** permissions on the server before visiting [this link](https://discord.com/oauth2/authorize?client_id=777680423068106754&scope=bot&permissions=8).
+If you would like to add the official Esdi bot to a server instead of hosting your own instance, you will need **Manage Server** permissions on the server before visiting [this link](https://discord.com/oauth2/authorize?client_id=777680423068106754&scope=bot+applications.commands&permissions=8).
 
 ## Documentation :bookmark_tabs:
 
@@ -117,9 +117,9 @@ Feedback and contributions are encouraged! After reading our [Code of Conduct](.
 - [x] Write Hook tutorials
 - [x] Release [`v1.2.0`](https://github.com/azigler/esdi/releases/tag/v1.2.0)
 - [x] Implement interval Events and `event` Command
+- [x] Add `prefix` Command and improve prefix customization
 - [ ] Add `process-monitor` interval Event
 - [ ] Write Event tutorials
-- [ ] Add `prefix` Command and improve prefix customization
 - [ ] Release [`v1.3.0`](https://github.com/azigler/esdi/releases/tag/v1.3.0)
 - [ ] Add `victory-garden` interval Event and `vg` Command
 - [ ] Require Command aliases to be unique

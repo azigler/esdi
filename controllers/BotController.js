@@ -13,13 +13,11 @@ class BotController extends Map {
    * @param {Object} config configuration object
    * @param {Esdi} config.server Esdi server instance
    * @param {String} [config.discordToken = process.env.DISCORD_TOKEN] token for Discord bot
-   * @param {String} [config.botPrefix = '!'] prefix for {@link Command|Commands}
    * @memberof BotController
    */
-  init ({ server, discordToken = process.env.DISCORD_TOKEN, botPrefix = '!' }) {
+  init ({ server, discordToken = process.env.DISCORD_TOKEN }) {
     this.server = server
     this.token = discordToken
-    this.prefix = botPrefix
   }
 
   /**
@@ -45,9 +43,12 @@ class BotController extends Map {
      * @see https://discord.js.org/#/docs/main/stable/class/Message
      */
     this.client.on('message', message => {
-      if (!message.content.startsWith(this.prefix) || message.author.bot) return
+      // determine command prefix
+      const prefix = this.server.controllers.get('CommandController').determinePrefix(message)
 
-      const args = message.content.slice(this.prefix.length).trim().split(/ +/)
+      if (message.author.bot || !prefix) return
+
+      const args = message.content.slice(prefix.length).trim().split(/ +/)
       const commandName = args.shift().toLowerCase()
 
       const command = this.server.controllers.get('CommandController').findCommand(commandName)

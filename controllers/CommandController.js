@@ -11,10 +11,12 @@ class CommandController {
    *
    * @param {Object} config configuration object
    * @param {Esdi} config.server Esdi server instance
+   * @param {String} [config.botPrefix = 'esdi!'] prefix for {@link Command|Commands}
    * @memberof CommandController
    */
-  init ({ server }) {
+  init ({ server, botPrefix = 'esdi!' }) {
     this.server = server
+    this.prefix = botPrefix
   }
 
   /**
@@ -53,6 +55,30 @@ class CommandController {
   }
 
   /**
+   * Determines the command prefix for a provided message
+   *
+   * @param {external:Message} message discord.js Message
+   * @returns {String|Boolean} prefix string or false
+   * @memberof CommandController
+   */
+  determinePrefix (message) {
+    let prefix = false
+    // first, check if using the primary prefix
+    if (message.content.startsWith('esdi!')) {
+      // if so, use the primary prefix
+      prefix = 'esdi!'
+      // then, check if this Guild has a custom prefix
+    } else if (this.server.controllers.get('GuildController').get(message.guild.id).prefix) {
+      // if so, use the Guild's custom prefix
+      prefix = this.server.controllers.get('GuildController').get(message.guild.id).prefix
+      // finally, check the instance prefix
+    } else if (message.content.startsWith(this.prefix)) {
+      prefix = this.prefix
+    }
+    return prefix
+  }
+
+  /**
    * Executes a Command
    *
    * @param {Object} config configuration object
@@ -75,7 +101,7 @@ class CommandController {
       let reply = `Invalid use of the \`${command.name}\` command, ${message.author}.`
 
       if (command.usage) {
-        reply += `\n**Syntax:** \`${this.server.controllers.get('BotController').prefix}${command.name} ${command.usage}\``
+        reply += `\n**Syntax:** \`${this.determinePrefix(message)}${command.name} ${command.usage}\``
       }
 
       return message.channel.send(reply)

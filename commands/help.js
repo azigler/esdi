@@ -16,7 +16,7 @@ module.exports = {
   aliases: ['commands'],
   usage: '[<Command name>]',
   execute ({ message, args, server }) {
-    const prefix = server.controllers.get('BotController').prefix
+    const prefix = server.controllers.get('CommandController').determinePrefix(message)
     const data = []
 
     // if no arguments provided, list all commands
