@@ -116,14 +116,15 @@ Feedback and contributions are encouraged! After reading our [Code of Conduct](.
 - [x] Add `ko-fi` channel Hook 
 - [x] Write Hook tutorials
 - [x] Release [`v1.2.0`](https://github.com/azigler/esdi/releases/tag/v1.2.0)
-- [x] Implement channel Events and `event` Command
-- [ ] Add `victory-garden` channel Event and `vg` Command
+- [x] Implement interval Events and `event` Command
+- [ ] Add `process-monitor` interval Event
 - [ ] Write Event tutorials
 - [ ] Add `prefix` Command and improve prefix customization
 - [ ] Release [`v1.3.0`](https://github.com/azigler/esdi/releases/tag/v1.3.0)
+- [ ] Add `victory-garden` interval Event and `vg` Command
 - [ ] Require Command aliases to be unique
 - [ ] Expand Command cooldowns
-- [ ] Expand channel Event intervals
+- [ ] Expand Event intervals
 - [ ] Expand Command permissions
 - [ ] Add `kudos` and `me` Commands
 - [ ] Add more server management functionality

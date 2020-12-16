@@ -153,7 +153,7 @@ handler: async (request, h) => {
         url: 'https://user-images.githubusercontent.com/7295363/99930265-49bad700-2d05-11eb-9057-1a013c45ee2c.png'
       },
       footer: {
-        icon_url: 'https://user-images.githubusercontent.com/7295363/97830418-bf410380-1c81-11eb-95cc-1b7b15d8d7eb.jpg',
+        icon_url: 'https://user-images.githubusercontent.com/7295363/101524119-6169a080-393e-11eb-8006-6816e2c5f413.gif',
         text: 'Ko-fi Hook by Esdi 🤍'
       },
       fields: embedFields
@@ -179,6 +179,6 @@ Ko-fi requires that donation webhooks with their `is_public` property set to `fa
 
 Finally, the handler builds the [discord.js MessageEmbed](https://discord.js.org/#/docs/main/stable/class/MessageEmbed) for the [discord.js Webhook](https://discord.js.org/#/docs/main/stable/class/Webhook) we fetched above. Once created, it posts the embed on the channel. This one looks like this:
 
-![](https://user-images.githubusercontent.com/7295363/101294768-863f0600-37ce-11eb-8ee2-1410531f6db7.png)
+![](https://user-images.githubusercontent.com/7295363/102261444-858d2a80-3ec6-11eb-821e-94e5f9075ec9.png)
 
 You can use this particular Hook to post a message embed when a [Ko-fi](https://ko-fi.com/) donation webhook is received. Otherwise, you can use this as a guide for your own channel Hook ideas!
