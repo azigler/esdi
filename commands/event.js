@@ -176,9 +176,17 @@ module.exports = {
         if (contextDoc.enabled) {
           // do any Event-specific cleanup before disabling the Event for this context
           if (context.type === 'guild') {
-            await event.disable({ server, context: await server.controllers.get('BotController').client.guilds.fetch(context.id) })
+            await event.disable({
+              server,
+              context: await server.controllers.get('BotController').client.guilds.fetch(context.id),
+              args: args.slice(1)
+            })
           } else if (context.type === 'channel') {
-            await event.disable({ server, context: await server.controllers.get('BotController').client.channels.fetch(context.id) })
+            await event.disable({
+              server,
+              context: await server.controllers.get('BotController').client.channels.fetch(context.id),
+              args: args.slice(1)
+            })
           }
 
           // update locally to avoid database polling every loop
@@ -204,9 +212,17 @@ module.exports = {
         } else {
           // do any Event-specific setup before enabling the Event for this context
           if (context.type === 'guild') {
-            await event.enable({ server, context: await server.controllers.get('BotController').client.guilds.fetch(context.id) })
+            await event.enable({
+              server,
+              context: await server.controllers.get('BotController').client.guilds.fetch(context.id),
+              args: args.slice(1)
+            })
           } else if (context.type === 'channel') {
-            await event.enable({ server, context: await server.controllers.get('BotController').client.channels.fetch(context.id) })
+            await event.enable({
+              server,
+              context: await server.controllers.get('BotController').client.channels.fetch(context.id),
+              args: args.slice(1)
+            })
           }
 
           // update locally to avoid database polling every loop

@@ -138,7 +138,11 @@ module.exports = {
         // if Hook is enabled for this channel, disable it
         if (channels.find(c => c === message.channel.id)) {
           // do any Hook-specific cleanup before disabling the Hook for this channel
-          await hook.disable({ server, channel: message.channel })
+          await hook.disable({
+            server,
+            channel: message.channel,
+            args: args.slice(1)
+          })
 
           // get the Hook's webhook ID from the document
           channelWebhookId = hookData.channelHookPairs.find(p => p[0] === message.channel.id)[1]
@@ -171,7 +175,11 @@ module.exports = {
         // otherwise, enable the Hook for this channel
         } else {
           // enable the Hook for this channel
-          const newlyEnabledHook = await hook.enable({ server, channel: message.channel })
+          const newlyEnabledHook = await hook.enable({
+            server,
+            channel: message.channel,
+            args: args.slice(1)
+          })
 
           // check if enabling returned a webhook before proceeding
           if (newlyEnabledHook.constructor.name !== 'Webhook') {
