@@ -14,14 +14,14 @@ class Event {
    * @param {Function} config.handler Event function
    * @param {String} [config.type = 'discord'] Event type
    * @param {String} [config.description = ''] Event description
-   * @param {String} [config.context = 'guild'] Event context
+   * @param {String} [config.context = 'global'] Event context
    * @param {String} [config.interval = '1d'] Event interval
    * @param {Function} [config.enable = () => {}] function that runs before enabling the Event for a discord.js Channel
    * @param {Function} [config.disable = () => {}] function that runs before disabling the Event for a discord.js Channel
    * @param {String} sourcePath full path of Event source file
    * @constructor
    */
-  constructor ({ name, discordEventName = '', handler, type = 'discord', description = '', context = 'guild', interval = '1d', enable = () => {}, disable = () => {} }, sourcePath) {
+  constructor ({ name, discordEventName = '', handler, type = 'discord', description = '', context = 'global', interval = '1d', enable = () => {}, disable = () => {} }, sourcePath) {
     this.name = name
     this.discordEventName = (discordEventName.length > 0 ? discordEventName : name)
     this.handler = handler

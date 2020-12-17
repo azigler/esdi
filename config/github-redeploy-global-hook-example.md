@@ -24,7 +24,7 @@ Now, on to examining {@link Hook.github-redeploy|`github-redeploy`}. The Hook ha
 The `init()` method can take any set of arguments that the developer (that's you) might need to have the desired result. Long story short: pass in what you need. If you need nothing, pass in nothing (e.g., `init()`). Let's look at the arguments this particular `init()` method takes:
 
 ```js
-init({ repo, secret, command, path, reset }) { // ... }
+init({ repo, secret, command, path, reset, link }) { // ... }
 ```
 
 The `repo` argument is the GitHub repository URL. If your repository is private, then you will need to include authentication in the URL (e.g., if your username is `andrew`, your password is `sunflower`, and your private repository is `my-esdi` then `repo` should be `https://andrew:sunflower@github.com/andrew/my-esdi`). If you need to escape any special characters in your password (e.g., `!`) then be sure to escape them with a slash (e.g., `\!`).
@@ -33,7 +33,11 @@ Next, if you have a secret for your GitHub webhook (recommended), include it as 
 
 The `command` argument is the terminal command you want to fire to redeploy your server (e.g., `pm2 restart esdi`).
 
-The project directory is `path` and `reset` *(optional)* decides whether or not to invoke `git reset --hard` for a force update. This is a personal preference. If you are actively developing on your live server directory files, then you should keep `reset` as `false`, which it is by default. Setting it to `true` means the repository files will reset to match the most updated version of the repository, which will overwrite any local pending changings.
+The project directory is `path`.
+
+The `reset` argument *(optional)* decides whether or not to invoke `git reset --hard` for a force update. This is a personal preference. If you are actively developing on your live server directory files, then you should keep `reset` as `false`, which it is by default. Setting it to `true` means the repository files will reset to match the most updated version of the repository, which will overwrite any local pending changings.
+
+The `link` argument *(optional)* decides whether or not to link a local copy of Esdi to this repository. This is useful if you have a custom fork of the Esdi framework locally that you would like to use instead of the [`esdi` package](https://www.npmjs.com/package/esdi).
 
 These corresponding arguments demonstrate how the `{@link HookController#configureGitHubRedeploy}` method is just a wrapper around `init()` for {@link Hook.github-redeploy|`github-redeploy`}, as mentioned above.
 
@@ -55,7 +59,7 @@ The `handler()` function is where the magic happens. This is the function that f
 handler: (request, h) => {
   // helper function that executes the redeploy
   function _exec () {
-    const proc = exec(`cd ${path} git fetch ${repo} && ${reset ? 'git reset --hard' : 'git pull'} && npm install && ${command}`)
+    const proc = exec(`cd ${path} git fetch ${repo} && ${reset ? 'git reset --hard' : 'git pull'} && npm install${link ? ' && npm link esdi' : ''} && ${command}`)
     proc.stdout.on('data', function (data) {
       console.log(data)
     })

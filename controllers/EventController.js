@@ -103,6 +103,34 @@ class EventController {
 
         // if it's time for this Event to fire for this context and it is enabled
         if (now > nextInterval && enabled) {
+          // determine the capitalized name of this context ('Guild' or 'Channel')
+          const contextName = event.context.charAt(0).toUpperCase() + event.context.slice(1)
+
+          // check if bot can see context
+          let con
+          try {
+            // determine this Event's context
+            con = {
+              type: event.context,
+              ctx: (event.context === 'guild' ? await this.server.controllers.get('BotController').client.guilds.fetch(context) : await this.server.controllers.get('BotController').client.channels.fetch(context))
+            }
+          } catch (e) {
+            // update locally to avoid handling every loop
+            const local = this.server.controllers.get('EventController').intervalEvents.get(event.name)
+            this.server.controllers.get('EventController').intervalEvents.set(event.name, [...local.filter(c => c !== context)])
+
+            // save the Event as disabled in the context's database document
+            await this.server.controllers.get('DatabaseController').updateDoc({
+              db: 'event',
+              id: `${event.name}_${context}`,
+              payload: {
+                enabled: false
+              }
+            })
+
+            return console.log(`Bot doesn't know about ${contextName}<${context}> for ${event.name} Event:`, e)
+          }
+
           // update this context's timestamp in the database document for this Event
           const payload = doc.contextTimestampPairs.filter(p => p[0] !== context)
           this.server.controllers.get('DatabaseController').updateDoc({
@@ -121,12 +149,6 @@ class EventController {
               lastHandled: now
             }
           })
-
-          // determine this Event's context
-          const con = {
-            type: event.context,
-            ctx: (event.context === 'guild' ? await this.server.controllers.get('BotController').client.guilds.fetch(context) : await this.server.controllers.get('BotController').client.channels.fetch(context))
-          }
 
           // fire the handler for this Event for this context
           event.handler({ server: this.server, context: con.ctx })

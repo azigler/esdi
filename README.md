@@ -118,7 +118,10 @@ Feedback and contributions are encouraged! After reading our [Code of Conduct](.
 - [x] Release [`v1.2.0`](https://github.com/azigler/esdi/releases/tag/v1.2.0)
 - [x] Implement interval Events and `event` Command
 - [x] Add `prefix` Command and improve prefix customization
-- [ ] Add `process-monitor` interval Event
+- [ ] Add `process-monitor` global interval Event
+- [ ] Add `autopublish` channel interval Event
+- [ ] Add `check-reddit` channel interval Event
+- [ ] Add `statcat` guild interval Event
 - [ ] Write Event tutorials
 - [ ] Release [`v1.3.0`](https://github.com/azigler/esdi/releases/tag/v1.3.0)
 - [ ] Add `victory-garden` interval Event and `vg` Command
