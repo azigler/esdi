@@ -75,7 +75,7 @@ class User {
     }
 
     // if this Guild was already associated with this User's database document, return
-    if (guilds && guilds.find(g => g === guild.id)) {
+    if (guilds && guilds.find(g => guild.id)) {
       return
     }
 

@@ -68,13 +68,17 @@ class CommandController {
       // if so, use the primary prefix
       prefix = 'esdi!'
       // then, check if this Guild has a custom prefix
-    } else if (this.server.controllers.get('GuildController').get(message.guild.id).prefix) {
+    } else if (
+      this.server.controllers.get('GuildController').get(message.guild.id).prefix &&
+      message.content.startsWith(this.server.controllers.get('GuildController').get(message.guild.id).prefix)) {
       // if so, use the Guild's custom prefix
       prefix = this.server.controllers.get('GuildController').get(message.guild.id).prefix
       // finally, check the instance prefix
-    } else if (message.content.startsWith(this.prefix)) {
+    } else if (
+      message.content.startsWith(this.prefix)) {
       prefix = this.prefix
     }
+
     return prefix
   }
 

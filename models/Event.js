@@ -16,8 +16,8 @@ class Event {
    * @param {String} [config.description = ''] Event description
    * @param {String} [config.context = 'global'] Event context
    * @param {String} [config.interval = '1d'] Event interval
-   * @param {Function} [config.enable = () => {}] function that runs before enabling the Event for a discord.js Channel
-   * @param {Function} [config.disable = () => {}] function that runs before disabling the Event for a discord.js Channel
+   * @param {Function} [config.enable = () => {}] function that runs before enabling the Event for a context
+   * @param {Function} [config.disable = () => {}] function that runs before disabling the Event for a context
    * @param {String} sourcePath full path of Event source file
    * @constructor
    */
