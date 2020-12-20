@@ -2,7 +2,7 @@ const { MessageEmbed } = require('discord.js')
 const joi = require('joi')
 
 /**
- * Converts a {@link https://ko-fi.com/|Ko-fi} webhook into a {@link https://discord.js.org/#/docs/main/stable/class/MessageEmbed|discord.js MessageEmbed} and posts it in a {@link https://discord.js.org/#/docs/main/stable/class/Channel|discord.js Channel}
+ * Converts a {@link https://ko-fi.com/|Ko-fi} webhook into a {@link https://discord.js.org/#/docs/main/stable/class/MessageEmbed|discord.js MessageEmbed} and posts it in a channel
  *
  * `POST: /hook/ko-fi/{channel}`
  *
@@ -11,14 +11,12 @@ const joi = require('joi')
  * @name ko-fi
  * @prop {Object} initConfig `init` function configuration object
  * @prop {Esdi} initConfig.server Esdi server instance
- * @prop {Object} enableConfig `enable` function configuration object
- * @prop {Esdi} enableConfig.server Esdi server instance
- * @prop {external:Channel} enableConfig.channel discord.js Channel
+ * @tutorial ko-fi-channel-hook-example
  * @static
  */
 module.exports = {
   name: 'ko-fi',
-  type: 'channel',
+  context: 'channel',
   description: 'Converts a Ko-fi webhook into a message embeds and posts it in a channel.',
   init ({ server }) {
     return {
@@ -26,42 +24,25 @@ module.exports = {
       path: '/hook/ko-fi/{channel}',
       handler: async (request, h) => {
         // check if channel exists and is enabled
-        const checkChannel = await server.controllers.get('HookController').checkHookEnabledForChannel({
+        const checkChannel = await this.checkEnabledForContext({
           h,
           server,
-          channelId: request.params.channel,
-          hookName: 'ko-fi'
+          contextId: request.params.channel,
+          contextType: 'channel'
         })
-
-        // fetch information for channel
-        let msg,
-          channel,
-          hookData,
-          channelWebhookId
-        if (Array.isArray(checkChannel)) {
-          [msg,
-            channel,
-            hookData,
-            channelWebhookId] = checkChannel
-        } else {
+        if (!checkChannel.id) {
           return checkChannel
         }
 
-        // fetch channel's webhook for Ko-fi Hook or make a new one
-        let channelHook = await server.controllers.get('HookController').fetchWebhookForChannelHook({
-          h,
-          request,
-          server,
-          channel,
-          channelWebhookId,
-          hookData,
-          enable: this.enable
-        })
-        if (Array.isArray(channelHook)) {
-          channelHook = channelHook[0]
-        } else {
-          return channelHook
-        }
+        let msg
+
+        console.log(this)
+
+        // create a webhook
+        const channelHook = await checkChannel.createWebhook(
+          'Ko-fi',
+          { avatar: 'https://user-images.githubusercontent.com/7295363/99930265-49bad700-2d05-11eb-9057-1a013c45ee2c.png' }
+        )
 
         // validate payload
         const kofiSchema = joi.object({
@@ -151,18 +132,16 @@ module.exports = {
         }
 
         // send the message embed
-        channelHook.send({ embeds: [embed] })
+        channelHook.send({ embeds: [embed] }).then(() => {
+          // deletes the webhook after use
+          channelHook.delete()
+        })
 
         // announce handling the request successfully
         console.log(msg)
         return h.response(msg).code(200)
       }
     }
-  },
-  enable ({ server, channel }) {
-    return channel.createWebhook('Ko-fi', {
-      avatar: 'https://user-images.githubusercontent.com/7295363/99930265-49bad700-2d05-11eb-9057-1a013c45ee2c.png'
-    })
   }
 }
 

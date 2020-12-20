@@ -103,16 +103,22 @@ class EventController {
 
         // if it's time for this Event to fire for this context and it is enabled
         if (now > nextInterval && enabled) {
-          // determine the capitalized name of this context ('Guild' or 'Channel')
-          const contextName = event.context.charAt(0).toUpperCase() + event.context.slice(1)
+          // determine the capitalized name of this context
+          const contextName = (event.context === 'guild' ? 'Server' : 'Channel')
 
           // check if bot can see context
           let con
           try {
             // determine this Event's context
+            let fetchedContext
+
+            if (context !== 'global') {
+              fetchedContext = await this.server.controllers.get('BotController').client.guilds.fetch(context) || await this.server.controllers.get('BotController').client.channels.fetch(context)
+            }
+
             con = {
               type: event.context,
-              ctx: (event.context === 'guild' ? await this.server.controllers.get('BotController').client.guilds.fetch(context) : await this.server.controllers.get('BotController').client.channels.fetch(context))
+              ctx: (event.context === 'global' ? 'global' : fetchedContext)
             }
           } catch (e) {
             // update locally to avoid handling every loop
@@ -154,7 +160,7 @@ class EventController {
           event.handler({ server: this.server, context: con.ctx })
 
           // announce handling of Event
-          console.log(`${event.name} Event was just handled for ${con.type.charAt(0).toUpperCase() + con.type.slice(1)}<${con.ctx.id}>`)
+          console.log(`${event.name} Event was just handled ${con.type === 'global' ? 'globally' : `for ${con.type.charAt(0).toUpperCase() + con.type.slice(1)} <${con.ctx.id}>`}`)
         }
       }
     })

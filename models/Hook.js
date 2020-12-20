@@ -26,6 +26,64 @@ class Hook {
     this.disable = disable
     this.sourcePath = sourcePath
   }
+
+  /**
+  * Returns a context if this Hook is enabled for a provided context ID, or a hapi response object if not
+  *
+  * @param {Object} config configuration object
+  * @param {Object} config.h hapi response toolkit
+  * @param {Esdi} config.server Esdi server instance
+  * @param {String} config.contextId discord.js Guild or Channel ID
+  * @param {String} config.contextType context type
+  * @returns {external:Guild|external:Channel|String|Object} hapi response object or Hook context
+  * @memberof Hook
+  */
+  async checkEnabledForContext ({ h, server, contextId, contextType }) {
+    const client = server.controllers.get('BotController').client
+
+    let msg, c, contextName
+
+    // fetch context
+    if (contextType === 'guild') {
+      c = await client.guilds.fetch(contextId)
+      contextName = 'Guild'
+    } else if (contextType === 'channel') {
+      c = await client.channels.fetch(contextId)
+      contextName = 'Channel'
+    } else if (contextType === 'global') {
+      // do nothing for now
+    } else {
+      msg = `Bot doesn't know about Context<${contextId}> for ${this.name} Hook`
+      console.log(msg)
+      return h.response(msg).code(400)
+    }
+
+    // check if Hook is enabled for context
+    if (contextType !== 'global') {
+      const contextDoc = await server.controllers.get('DatabaseController').fetchDoc({
+        db: 'hook',
+        id: `${this.name}_${contextId}`
+      })
+      if (!contextDoc.enabled) {
+        msg = `${this.name} Hook is not enabled for ${contextName}<${contextId}>`
+        console.log(msg)
+        return h.response(msg).code(400)
+      }
+    } else {
+      const contextDoc = await server.controllers.get('DatabaseController').fetchDoc({
+        db: 'hook',
+        id: `${this.name}_global`
+      })
+      if (!contextDoc.enabled) {
+        msg = `${this.name} Hook is not enabled globally`
+        console.log(msg)
+        return h.response(msg).code(400)
+      }
+      c = 'global'
+    }
+
+    return c
+  }
 }
 
 module.exports = Hook

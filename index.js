@@ -24,10 +24,11 @@ class Esdi extends require('events') {
    * @param {Number} [config.hookServerPort = 8587] port for {@link Hook} server
    * @param {String} [config.hookServerHost = 'localhost'] hostname for {@link Hook} server
    * @param {Object|Boolean} [config.hookServerTls = false] `false` for HTTP, or object with paths to `key` and `cert` files for TLS
+   * @param {String} [config.botOwner = '139293101767262208'] Discord ID of bot instance owner
    * @tutorial setting-up-an-esdi-instance
    * @constructor
    */
-  constructor ({ loopSeconds = 5, loadDefaultFiles = true, dbAddress = 'local', dbPort = 5984, dbNamespace = 'esdi_', discordToken = process.env.DISCORD_TOKEN, botPrefix = 'esdi!', hookServerPort = 8587, hookServerHost = 'localhost', hookServerTls = false } = {}) {
+  constructor ({ loopSeconds = 5, loadDefaultFiles = true, dbAddress = 'local', dbPort = 5984, dbNamespace = 'esdi_', discordToken = process.env.DISCORD_TOKEN, botPrefix = 'esdi!', hookServerPort = 8587, hookServerHost = 'localhost', hookServerTls = false, botOwner = '139293101767262208' } = {}) {
     super()
 
     /**
@@ -43,7 +44,7 @@ class Esdi extends require('events') {
 
       this.controllers.forEach(controller => {
         if (!controller.init) return
-        controller.init({ server: this, loopSeconds, loadDefaultFiles, dbAddress, dbPort, dbNamespace, discordToken, botPrefix, hookServerPort, hookServerHost, hookServerTls })
+        controller.init({ server: this, loopSeconds, loadDefaultFiles, dbAddress, dbPort, dbNamespace, discordToken, botPrefix, hookServerPort, hookServerHost, hookServerTls, botOwner })
       })
     })
 
