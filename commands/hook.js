@@ -110,7 +110,6 @@ module.exports = {
 
       // get all loaded Hooks and their database documents
       for (const h of server.hooks.values()) {
-        console.log(h)
         // fetch this Hook's database document
         let doc = await server.controllers.get('DatabaseController').fetchDoc({ db: 'hook', id: h.name })
 
@@ -152,8 +151,6 @@ module.exports = {
           server.controllers.get('BotController').buildEmbedFieldValues(globalEmbedFieldValues, `\n\`${h.name}\` - ${h.description}`)
         }
       }
-
-      console.log(globalEmbedFieldValues, channelEmbedFieldValues, guildEmbedFieldValues)
 
       // if there are Hooks that can be enabled, announce them
       if ([...globalEmbedFieldValues, ...guildEmbedFieldValues, ...channelEmbedFieldValues].length > 0) {
