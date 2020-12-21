@@ -90,7 +90,6 @@ module.exports = {
         // build message embed
         const embed = server.controllers.get('BotController').buildEmbed({
           title: HOOK_LIST_TXT,
-          footerTextName: 'Hook',
           footerTextType: 'Command',
           fields: [...globalEmbedFields, ...guildEmbedFields, ...channelEmbedFields]
         })
@@ -163,7 +162,6 @@ module.exports = {
         // build message embed
         const embed = server.controllers.get('BotController').buildEmbed({
           title: HOOK_TXT,
-          footerTextName: 'Hook',
           footerTextType: 'Command',
           fields: [...globalEmbedFields, ...guildEmbedFields, ...channelEmbedFields]
         })

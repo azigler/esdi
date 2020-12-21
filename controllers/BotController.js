@@ -90,7 +90,7 @@ class BotController extends Map {
   }
 
   /**
-   * Builds an array of EmbedField values from a string for a discord.js MessageEmbed
+   * Builds an array of {@link https://discord.js.org/#/docs/main/stable/typedef/EmbedField|EmbedField} values from a string for a {@link https://discord.js.org/#/docs/main/stable/class/MessageEmbed|discord.js MessageEmbed}
    *
    * @param {String[]} embedFieldValues array of values for EmbedFields
    * @param {String} content content for EmbedFields
@@ -110,7 +110,7 @@ class BotController extends Map {
   }
 
   /**
-   * Builds EmbedFields for a discord.js MessageEmbed
+   * Builds {@link https://discord.js.org/#/docs/main/stable/typedef/EmbedField|EmbedFields} for a {@link https://discord.js.org/#/docs/main/stable/class/MessageEmbed|discord.js MessageEmbed}
    *
    * @param {String} embedFieldName name of EmbedField
    * @param {String[]} embedFieldValues array of values for EmbedFields
@@ -129,19 +129,19 @@ class BotController extends Map {
   }
 
   /**
-   * Builds a discord.js MessageEmbed
+   * Builds a {@link https://discord.js.org/#/docs/main/stable/class/MessageEmbed|discord.js MessageEmbed}
    *
    * @param {Object} embedConfig configuration object
    * @param {String} embedConfig.title MessageEmbed title
    * @param {String} embedConfig.description MessageEmbed description
    * @param {String} [embedConfig.hexColor = '#2f9d8c'] hex color code for MessageEmbed accent
-   * @param {String} embedConfig.footerTextName name of Esdi component posting the Message Embed (e.g., Help, Ko-fi)
    * @param {String} embedConfig.footerTextType type of Esdi component posting the MessageEmbed (e.g., Command, Hook, Event)
    * @param {external:EmbedField[]} embedConfig.fields array of discord.js EmbedFields for MessageEmbed
+   * @param {external:MessageEmbedThumbnail} embedConfig.thumbnail MessageEmbedThumbnail object for MessageEmbed
    * @returns {external:MessageEmbed} discord.js MessageEmbed
    * @memberof BotController
    */
-  buildEmbed ({ title, description, hexColor = '#2f9d8c', footerTextName, footerTextType, fields }) {
+  buildEmbed ({ title, description, hexColor = '#2f9d8c', footerTextType, fields, thumbnail }) {
     // only allow up to 25 fields
     const validatedFields = fields.slice(0, 25)
 
@@ -152,9 +152,10 @@ class BotController extends Map {
       timestamp: Date.now(),
       footer: {
         icon_url: 'https://user-images.githubusercontent.com/7295363/101524119-6169a080-393e-11eb-8006-6816e2c5f413.gif',
-        text: `${footerTextName} ${footerTextType} by Esdi 🤍`
+        text: `${footerTextType} by Esdi 🤍`
       },
-      fields: validatedFields
+      fields: validatedFields,
+      thumbnail
     })
   }
 }

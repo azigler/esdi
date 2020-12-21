@@ -40,7 +40,7 @@ class HookController {
     console.log('[#] Starting HookController...')
     this.hookServer.start()
     this.server.hooks.forEach(hook => {
-      this.hookServer.route(hook.init({ server: this.server }))
+      this.hookServer.route(hook.init(this.server))
     })
   }
 

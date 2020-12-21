@@ -82,24 +82,27 @@ class EventController {
       // if missing, initialize this Event's database document
       doc = await this.initializeIfMissing(this.server, event, doc)
 
-      // determine the Event's timing interval
-      const day = (event.interval.match(/(\d*)d/g) ? event.interval.match(/(\d*)d/g)[0].slice(0, -1) : 0)
-      const hr = (event.interval.match(/(\d*)h/g) ? event.interval.match(/(\d*)h/g)[0].slice(0, -1) : 0)
-      const min = (event.interval.match(/(\d*)m/g) ? event.interval.match(/(\d*)m/g)[0].slice(0, -1) : 0)
-      const sec = (event.interval.match(/(\d*)s/g) ? event.interval.match(/(\d*)s/g)[0].slice(0, -1) : 0)
-      const intervalAmount = (sec * 1000) + (min * 60000) + (hr * 3600000) + (day * 86400000)
-      const now = Date.now()
-
       // iterate over each context
       for (const context of contexts) {
         const timestamp = doc.contextTimestampPairs.find(pair => pair[0] === context)[1]
-        const nextInterval = timestamp + intervalAmount
 
         // fetch database document for each context to check if enabled
-        const { enabled } = await this.server.controllers.get('DatabaseController').fetchDoc({
+        const { enabled, config } = await this.server.controllers.get('DatabaseController').fetchDoc({
           db: 'event',
           id: `${event.name}_${context}`
         })
+        // apply custom config for this context
+        const interval = (config && config.interval ? config.interval : event.interval)
+
+        // determine the Event's timing interval
+        const day = parseInt(interval.match(/(\d*)d/g) ? interval.match(/(\d*)d/g)[0].slice(0, -1) : 0)
+        const hr = parseInt(interval.match(/(\d*)h/g) ? interval.match(/(\d*)h/g)[0].slice(0, -1) : 0)
+        const min = parseInt(interval.match(/(\d*)m/g) ? interval.match(/(\d*)m/g)[0].slice(0, -1) : 0)
+        const sec = parseInt(interval.match(/(\d*)s/g) ? interval.match(/(\d*)s/g)[0].slice(0, -1) : 0)
+        const intervalAmount = (sec * 1000) + (min * 60000) + (hr * 3600000) + (day * 86400000)
+
+        const now = Date.now()
+        const nextInterval = timestamp + intervalAmount
 
         // if it's time for this Event to fire for this context and it is enabled
         if (now > nextInterval && enabled) {
@@ -113,7 +116,11 @@ class EventController {
             let fetchedContext
 
             if (context !== 'global') {
-              fetchedContext = await this.server.controllers.get('BotController').client.guilds.fetch(context) || await this.server.controllers.get('BotController').client.channels.fetch(context)
+              if (event.context === 'guild') {
+                fetchedContext = await this.server.controllers.get('BotController').client.guilds.fetch(context)
+              } else if (event.context === 'channel') {
+                fetchedContext = await this.server.controllers.get('BotController').client.channels.fetch(context)
+              }
             }
 
             con = {

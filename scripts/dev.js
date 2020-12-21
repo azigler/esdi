@@ -1,10 +1,10 @@
 const Esdi = require('./../index.js')
 
-// initialize Esdi bot
+// initialize Esdi
 const server = new Esdi()
 
-// load local commands, controllers, events, and models
+// load local Commands, Controllers, Events, Hooks, and Models
 server.load(__dirname)
 
-// start Esdi bot
+// start Esdi
 server.start()

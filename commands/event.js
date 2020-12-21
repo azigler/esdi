@@ -103,7 +103,6 @@ module.exports = {
         // build message embed
         const embed = server.controllers.get('BotController').buildEmbed({
           title: EVENT_LIST_TXT,
-          footerTextName: 'Event',
           footerTextType: 'Command',
           fields: [...globalEmbedFields, ...guildEmbedFields, ...channelEmbedFields]
         })
@@ -179,7 +178,6 @@ module.exports = {
         // build message embed
         const embed = server.controllers.get('BotController').buildEmbed({
           title: EVENT_TXT,
-          footerTextName: 'Event',
           footerTextType: 'Command',
           fields: [...globalEmbedFields, ...guildEmbedFields, ...channelEmbedFields]
         })
@@ -236,19 +234,22 @@ module.exports = {
             await event.disable({
               server,
               context: await server.controllers.get('BotController').client.guilds.fetch(context.id),
-              args: args.slice(1)
+              args: args.slice(1),
+              message
             })
           } else if (context.type === 'channel') {
             await event.disable({
               server,
               context: await server.controllers.get('BotController').client.channels.fetch(context.id),
-              args: args.slice(1)
+              args: args.slice(1),
+              message
             })
           } else if (context.type === 'global') {
             await event.disable({
               server,
               context: 'global',
-              args: args.slice(1)
+              args: args.slice(1),
+              message
             })
           }
 
@@ -279,19 +280,22 @@ module.exports = {
             await event.enable({
               server,
               context: await server.controllers.get('BotController').client.guilds.fetch(context.id),
-              args: args.slice(1)
+              args: args.slice(1),
+              message
             })
           } else if (context.type === 'channel') {
             await event.enable({
               server,
               context: await server.controllers.get('BotController').client.channels.fetch(context.id),
-              args: args.slice(1)
+              args: args.slice(1),
+              message
             })
           } else if (context.type === 'global') {
-            await event.disable({
+            await event.enable({
               server,
               context: 'global',
-              args: args.slice(1)
+              args: args.slice(1),
+              message
             })
           }
 

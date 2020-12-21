@@ -17,8 +17,8 @@ const joi = require('joi')
 module.exports = {
   name: 'ko-fi',
   context: 'channel',
-  description: 'Converts a Ko-fi webhook into a message embeds and posts it in a channel.',
-  init ({ server }) {
+  description: 'Converts a Ko-fi webhook into a message embed and posts it in a channel.',
+  init (server) {
     return {
       method: 'POST',
       path: '/hook/ko-fi/{channel}',
@@ -35,8 +35,6 @@ module.exports = {
         }
 
         let msg
-
-        console.log(this)
 
         // create a webhook
         const channelHook = await checkChannel.createWebhook(
@@ -108,23 +106,15 @@ module.exports = {
         }
 
         // build message embed
-        const embed = new MessageEmbed(
-          {
-            title: '☕ New Ko-fi contribution',
-            description: `${donationAmount(parsed)} from ${parsed.from_name}`,
-            url: parsed.url,
-            color: 2730976,
-            timestamp: parsed.timestamp,
-            thumbnail: {
-              url: 'https://user-images.githubusercontent.com/7295363/99930265-49bad700-2d05-11eb-9057-1a013c45ee2c.png'
-            },
-            footer: {
-              icon_url: 'https://user-images.githubusercontent.com/7295363/101524119-6169a080-393e-11eb-8006-6816e2c5f413.gif',
-              text: 'Ko-fi Hook by Esdi 🤍'
-            },
-            fields: embedFields
+        const embed = server.controllers.get('BotController').buildEmbed({
+          title: '☕ New Ko-fi contribution',
+          footerTextType: 'Hook',
+          fields: embedFields,
+          hexColor: '#29ABE0',
+          thumbnail: {
+            url: 'https://user-images.githubusercontent.com/7295363/99930265-49bad700-2d05-11eb-9057-1a013c45ee2c.png'
           }
-        )
+        })
 
         // if webhook is public, set result message
         if (!isPrivate) {

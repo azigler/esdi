@@ -12,6 +12,7 @@
  */
 module.exports = {
   name: 'help',
+  cooldown: 2,
   description: 'Lists all Commands or gets help for a specific Command.',
   aliases: ['commands'],
   usage: '[<Command name>]',
@@ -33,7 +34,6 @@ module.exports = {
       // build message embed
       const embed = server.controllers.get('BotController').buildEmbed({
         title: `Use \`${prefix}help [command]\` to get help on a Command.`,
-        footerTextName: 'Help',
         footerTextType: 'Command',
         fields: embedFields
       })
@@ -73,7 +73,6 @@ module.exports = {
     const embed = server.controllers.get('BotController').buildEmbed({
       title: `\`${command.name}\``,
       description: command.description,
-      footerTextName: 'Help',
       footerTextType: 'Command',
       fields: embedFields
     })

@@ -18,7 +18,7 @@ const crypto = require('crypto')
 module.exports = {
   name: 'github-redeploy',
   description: 'Redeploys the Esdi instance after receiving a GitHub webhook.',
-  init ({ server }) {
+  init (server) {
     return {
       method: 'POST',
       path: '/hook/github-redeploy',
