@@ -315,7 +315,39 @@ module.exports = {
               }
             })
 
-            event.handler({ server, context })
+            // check if bot can see context
+            try {
+              // determine this Event's context
+              let fetchedContext
+
+              if (context !== 'global') {
+                if (event.context === 'guild') {
+                  fetchedContext = await server.controllers.get('BotController').client.guilds.fetch(context.id)
+                } else if (event.context === 'channel') {
+                  fetchedContext = await server.controllers.get('BotController').client.channels.fetch(context.id)
+                }
+              }
+
+              event.handler({ server, context: fetchedContext })
+            } catch (e) {
+              // update locally to avoid handling every loop
+              const local = server.controllers.get('EventController').intervalEvents.get(event.name)
+              server.controllers.get('EventController').intervalEvents.set(event.name, [...local.filter(c => c !== context.id)])
+
+              // save the Event as disabled in the context's database document
+              await server.controllers.get('DatabaseController').updateDoc({
+                db: 'event',
+                id: `${event.name}_${context.id}`,
+                payload: {
+                  enabled: false
+                }
+              })
+
+              // determine the capitalized name of this context
+              const contextName = (this.context === 'guild' ? 'Guild' : 'Channel')
+
+              return console.log(`Bot doesn't know about ${contextName}<${context.id}> for ${event.name} Event:`, e)
+            }
           }
 
           // save the Event as enabled in the context's database document

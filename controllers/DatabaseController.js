@@ -80,11 +80,9 @@ class DatabaseController extends Map {
       include_docs: true
     }).on('change', function (change) {
       if (change.doc._rev.split('-')[0] === '1') {
-        console.log(`[~] "${change.id}" document in ${name} database created:`)
-        console.log(change.doc)
+        console.log(`[~] "${change.id}" document in ${name} database created (${change.doc._rev.split('-')[0]})`)
       } else {
-        console.log(`[~] "${change.id}" document in ${name} database updated:`)
-        console.log(change.doc)
+        console.log(`[~] "${change.id}" document in ${name} database updated (${change.doc._rev.split('-')[0]})`)
       }
     }).on('complete', function (info) {
       console.log(`=/= No longer syncing ${name} database!`)

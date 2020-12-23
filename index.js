@@ -14,7 +14,7 @@ class Esdi extends require('events') {
    * Initializes a new Esdi server
    *
    * @param {Object} [config] configuration object
-   * @param {Number} [config.loopSeconds = 5] loop frequency (in seconds)
+   * @param {Number} [config.loopInterval = 15] loop interval (in seconds)
    * @param {Boolean} [config.loadDefaultFiles = true] whether to load default files
    * @param {String} [config.dbAddress = 'local'] address of remote database, or `local` for local database
    * @param {String} [config.dbPort = 5984] port of remote database
@@ -28,7 +28,7 @@ class Esdi extends require('events') {
    * @tutorial setting-up-an-esdi-instance
    * @constructor
    */
-  constructor ({ loopSeconds = 5, loadDefaultFiles = true, dbAddress = 'local', dbPort = 5984, dbNamespace = 'esdi_', discordToken = process.env.DISCORD_TOKEN, botPrefix = 'esdi!', hookServerPort = 8587, hookServerHost = 'localhost', hookServerTls = false, botOwner = '139293101767262208' } = {}) {
+  constructor ({ loopInterval = 15, loadDefaultFiles = true, dbAddress = 'local', dbPort = 5984, dbNamespace = 'esdi_', discordToken = process.env.DISCORD_TOKEN, botPrefix = 'esdi!', hookServerPort = 8587, hookServerHost = 'localhost', hookServerTls = false, botOwner = '139293101767262208' } = {}) {
     super()
 
     /**
@@ -40,11 +40,11 @@ class Esdi extends require('events') {
     this.on('start', () => {
       this.startTime = new Date()
       console.log(`[%] Starting Esdi @ ${this.startTime.toLocaleString()} PT`)
-      this.serverLoop = setInterval(this.loop.bind(this), loopSeconds * 1000)
+      this.serverLoop = setInterval(this.loop.bind(this), loopInterval * 1000)
 
       this.controllers.forEach(controller => {
         if (!controller.init) return
-        controller.init({ server: this, loopSeconds, loadDefaultFiles, dbAddress, dbPort, dbNamespace, discordToken, botPrefix, hookServerPort, hookServerHost, hookServerTls, botOwner })
+        controller.init({ server: this, loopInterval, loadDefaultFiles, dbAddress, dbPort, dbNamespace, discordToken, botPrefix, hookServerPort, hookServerHost, hookServerTls, botOwner })
       })
     })
 

@@ -146,7 +146,7 @@ class EventController {
 
           // update this context's timestamp in the database document for this Event
           const payload = doc.contextTimestampPairs.filter(p => p[0] !== context)
-          this.server.controllers.get('DatabaseController').updateDoc({
+          await this.server.controllers.get('DatabaseController').updateDoc({
             db: 'event',
             id: event.name,
             payload: {

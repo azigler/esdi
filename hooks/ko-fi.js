@@ -1,4 +1,3 @@
-const { MessageEmbed } = require('discord.js')
 const joi = require('joi')
 
 /**
@@ -109,6 +108,7 @@ module.exports = {
         const embed = server.controllers.get('BotController').buildEmbed({
           title: '☕ New Ko-fi contribution',
           footerTextType: 'Hook',
+          url: parsed.url,
           fields: embedFields,
           hexColor: '#29ABE0',
           thumbnail: {
