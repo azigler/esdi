@@ -2,6 +2,7 @@ require('dotenv').config()
 const path = require('path')
 const fs = require('fs')
 const discordJs = require('discord.js')
+const ZigUtils = require('./lib/utils')
 
 /**
  * ES6 Discord bot framework
@@ -62,7 +63,7 @@ class Esdi extends require('events') {
     })
 
     // initialize framework
-    this.utils = require('./lib/utils')
+    this.utils = ZigUtils
     this.controllers = new Map()
     this.commands = new discordJs.Collection()
     this.models = new Map()
