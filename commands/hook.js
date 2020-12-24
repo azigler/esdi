@@ -244,7 +244,7 @@ module.exports = {
           const contextNameFixed = (context.type === 'guild' ? 'server' : 'channel')
           msg = `The \`${hook.name}\` Hook is now **disabled** ${context.type === 'global' ? 'globally' : 'for this ' + contextNameFixed}.`
           message.channel.send(msg)
-          msg = `${hook.name} Hook is now disabled ${context.type === 'global' ? 'globally' : `for ${context.type.charAt(0).toUpperCase() + context.type.slice(1)}<${context.id}>`}`
+          msg = `${hook.name} Hook is now disabled ${context.type === 'global' ? 'globally' : `for ${server.utils.capitalize(context.type)}<${context.id}>`}`
           console.log(msg)
 
         // otherwise, enable the Hook for this channel
@@ -296,7 +296,7 @@ module.exports = {
           const contextNameFixed = (context.type === 'guild' ? 'server' : 'channel')
           msg = `The \`${hook.name}\` Hook is now **enabled** ${context.type === 'global' ? 'globally' : 'for this ' + contextNameFixed}.`
           message.channel.send(msg)
-          msg = `${hook.name} Hook is now enabled ${context.type === 'global' ? 'globally' : `for ${context.type.charAt(0).toUpperCase() + context.type.slice(1)}<${context.id}>`}`
+          msg = `${hook.name} Hook is now enabled ${context.type === 'global' ? 'globally' : `for ${server.utils.capitalize(context.type)}<${context.id}>`}`
           console.log(msg)
         }
       } catch (e) {

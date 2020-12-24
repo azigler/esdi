@@ -90,7 +90,7 @@ class BotController extends Map {
   }
 
   /**
-   * Builds an array of {@link https://discord.js.org/#/docs/main/stable/typedef/EmbedField|EmbedField} values from a string for a {@link https://discord.js.org/#/docs/main/stable/class/MessageEmbed|discord.js MessageEmbed}
+   * Returns an array of {@link https://discord.js.org/#/docs/main/stable/typedef/EmbedField|EmbedField} values from a string for a {@link https://discord.js.org/#/docs/main/stable/class/MessageEmbed|discord.js MessageEmbed}
    *
    * @param {String[]} embedFieldValues array of values for EmbedFields
    * @param {String} content content for EmbedFields
@@ -110,7 +110,7 @@ class BotController extends Map {
   }
 
   /**
-   * Builds {@link https://discord.js.org/#/docs/main/stable/typedef/EmbedField|EmbedFields} for a {@link https://discord.js.org/#/docs/main/stable/class/MessageEmbed|discord.js MessageEmbed}
+   * Returns {@link https://discord.js.org/#/docs/main/stable/typedef/EmbedField|EmbedFields} for a {@link https://discord.js.org/#/docs/main/stable/class/MessageEmbed|discord.js MessageEmbed}
    *
    * @param {String} embedFieldName name of EmbedField
    * @param {String[]} embedFieldValues array of values for EmbedFields
@@ -129,33 +129,117 @@ class BotController extends Map {
   }
 
   /**
-   * Builds a {@link https://discord.js.org/#/docs/main/stable/class/MessageEmbed|discord.js MessageEmbed}
+   * Returns a {@link https://discord.js.org/#/docs/main/stable/class/MessageEmbed|discord.js MessageEmbed}
    *
    * @param {Object} embedConfig configuration object
    * @param {String} embedConfig.title MessageEmbed title
    * @param {String} embedConfig.description MessageEmbed description
    * @param {String} [embedConfig.hexColor = '#2f9d8c'] hex color code for MessageEmbed accent
    * @param {String} embedConfig.footerTextType type of Esdi component posting the MessageEmbed (e.g., Command, Hook, Event)
-   * @param {external:EmbedField[]} embedConfig.fields array of discord.js EmbedFields for MessageEmbed
+   * @param {external:EmbedField[]} [embedConfig.fields = []] array of discord.js EmbedFields for MessageEmbed
    * @param {external:MessageEmbedThumbnail} embedConfig.thumbnail MessageEmbedThumbnail object for MessageEmbed
+   * @param {Date} embedConfig.timestamp timestamp for for MessageEmbed
+   * @param {external:MessageEmbedAuthor} embedConfig.author MessageEmbedAuthor for MessageEmbed
    * @returns {external:MessageEmbed} discord.js MessageEmbed
    * @memberof BotController
    */
-  buildEmbed ({ title, description, hexColor = '#2f9d8c', footerTextType, fields, thumbnail }) {
+  buildEmbed ({ title, description, url, hexColor = '#2f9d8c', footerTextType, fields = [], thumbnail, timestamp, author }) {
     // only allow up to 25 fields
     const validatedFields = fields.slice(0, 25)
 
     return new Discord.MessageEmbed({
+      author,
       title,
       description,
+      url,
       color: Discord.Util.resolveColor(hexColor),
-      timestamp: Date.now(),
+      timestamp: timestamp || Date.now(),
       footer: {
         icon_url: 'https://user-images.githubusercontent.com/7295363/101524119-6169a080-393e-11eb-8006-6816e2c5f413.gif',
         text: `${footerTextType} by Esdi 🤍`
       },
       fields: validatedFields,
       thumbnail
+    })
+  }
+
+  /**
+   * Returns a {@link https://discord.js.org/#/docs/main/stable/class/MessageEmbed|discord.js MessageEmbed} that reports the memory and processor usage of the server's process along with its uptime and Discord stats
+   *
+   * @param {Object} statusEmbedConfig configuration object
+   * @param {String} statusEmbedConfig.title MessageEmbed title
+   * @param {String} statusEmbedConfig.footerTextType type of Esdi component calling this method (e.g., Command, Event)
+   * @returns {external:MessageEmbed} discord.js MessageEmbed
+   * @memberof BotController
+   */
+  buildStatusEmbed ({ title, footerTextType }) {
+    const fields = []
+
+    const uptime = this.server.determineUptime()
+    fields.push({
+      name: '__Uptime__',
+      value: `\`${uptime}\``,
+      inline: true
+    })
+
+    const rss = this.server.determineMemory()
+    fields.push({
+      name: '__Memory__',
+      value: `\`${rss}\``,
+      inline: true
+    })
+
+    const processor = this.server.determineProcessor()
+    fields.push({
+      name: '__Processor__',
+      value: `\`${processor}\``,
+      inline: true
+    })
+
+    fields.push({
+      name: '__Servers__',
+      value: `\`${this.server.controllers.get('GuildController').size}\``,
+      inline: true
+    })
+
+    fields.push({
+      name: '__Users__',
+      value: `\`${this.server.controllers.get('UserController').size}\``,
+      inline: true
+    })
+
+    const colors = ['blue', 'gray', 'green', 'pink', 'brown', 'yellow']
+
+    const hexColors = {
+      blue: '#788eb7',
+      gray: '#808080',
+      green: '#77bb74',
+      pink: '#c78c9f',
+      brown: '#aa8a85',
+      yellow: '#bd9e73'
+    }
+
+    const images = {
+      blue: 'https://cdn.discordapp.com/attachments/777738026901045288/791106445412270080/im-tired-blue.gif',
+      gray: 'https://cdn.discordapp.com/attachments/777738026901045288/791106449752981524/im-tired-gray.gif',
+      green: 'https://cdn.discordapp.com/attachments/777738026901045288/791106451459932160/im-tired-green.gif',
+      pink: 'https://cdn.discordapp.com/attachments/777738026901045288/791106452977876992/im-tired-pink.gif',
+      brown: 'https://cdn.discordapp.com/attachments/777738026901045288/791106454492545035/im-tired-red.gif',
+      yellow: 'https://cdn.discordapp.com/attachments/777738026901045288/791106460775612476/im-tired-yellow.gif'
+    }
+
+    const random = Math.floor(Math.random() * colors.length)
+    const color = colors[random]
+
+    // build message embed
+    return this.buildEmbed({
+      title,
+      footerTextType,
+      fields,
+      hexColor: hexColors[color],
+      thumbnail: {
+        url: images[color]
+      }
     })
   }
 }

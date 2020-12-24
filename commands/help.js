@@ -49,21 +49,21 @@ module.exports = {
     // prepare fields for message embed
     const embedFields = [
       {
-        name: '**Cooldown:**',
+        name: '__Cooldown__',
         value: `\`${command.cooldown} seconds\``,
         inline: true
       }
     ]
     if (command.aliases.length) {
       embedFields.push({
-        name: `**Alias${command.aliases.length > 1 ? 'es' : ''}:**`,
+        name: `__Alias${command.aliases.length > 1 ? 'es' : ''}__`,
         value: '`' + command.aliases.join('`, `') + '`',
         inline: true
       })
     }
     if (command.usage.length) {
       embedFields.unshift({
-        name: '**Syntax**',
+        name: '__Syntax__',
         value: `\`${prefix}${command.name} ${command.usage}\``,
         inline: true
       })
@@ -71,7 +71,7 @@ module.exports = {
 
     // build message embed
     const embed = server.controllers.get('BotController').buildEmbed({
-      title: `\`${command.name}\``,
+      title: `Help: \`${command.name}\``,
       description: command.description,
       footerTextType: 'Command',
       fields: embedFields

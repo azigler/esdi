@@ -270,7 +270,7 @@ module.exports = {
           const contextNameFixed = (context.type === 'guild' ? 'server' : 'channel')
           msg = `The \`${event.name}\` Event is now **disabled** ${context.type === 'global' ? 'globally' : 'for this ' + contextNameFixed}.`
           message.channel.send(msg)
-          msg = `${event.name} Event is now disabled ${context.type === 'global' ? 'globally' : `for ${context.type.charAt(0).toUpperCase() + context.type.slice(1)}<${context.id}>`}`
+          msg = `${event.name} Event is now disabled ${context.type === 'global' ? 'globally' : `for ${server.utils.capitalize(context.type)}<${context.id}>`}`
           console.log(msg)
 
         // otherwise, enable the Event for this context
@@ -363,7 +363,7 @@ module.exports = {
           const contextNameFixed = (context.type === 'guild' ? 'server' : 'channel')
           msg = `The \`${event.name}\` Event is now **enabled** ${context.type === 'global' ? 'globally' : 'for this ' + contextNameFixed}.`
           message.channel.send(msg)
-          msg = `${event.name} Event is now enabled ${context.type === 'global' ? 'globally' : `for ${context.type.charAt(0).toUpperCase() + context.type.slice(1)}<${context.id}>`}`
+          msg = `${event.name} Event is now enabled ${context.type === 'global' ? 'globally' : `for ${server.utils.capitalize(context.type)}<${context.id}>`}`
           console.log(msg)
         }
       } catch (e) {

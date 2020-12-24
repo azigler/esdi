@@ -95,10 +95,8 @@ class EventController {
         const interval = (config && config.interval ? config.interval : event.interval)
 
         // determine the Event's timing interval
-        const day = parseInt(interval.match(/(\d*)d/g) ? interval.match(/(\d*)d/g)[0].slice(0, -1) : 0)
-        const hr = parseInt(interval.match(/(\d*)h/g) ? interval.match(/(\d*)h/g)[0].slice(0, -1) : 0)
-        const min = parseInt(interval.match(/(\d*)m/g) ? interval.match(/(\d*)m/g)[0].slice(0, -1) : 0)
-        const sec = parseInt(interval.match(/(\d*)s/g) ? interval.match(/(\d*)s/g)[0].slice(0, -1) : 0)
+        const { day, hr, min, sec } = this.server.utils.parseIntervalString(interval)
+
         const intervalAmount = (sec * 1000) + (min * 60000) + (hr * 3600000) + (day * 86400000)
 
         const now = Date.now()
@@ -167,7 +165,7 @@ class EventController {
           event.handler({ server: this.server, context: con.ctx })
 
           // announce handling of Event
-          console.log(`${event.name} Event was just handled ${con.type === 'global' ? 'globally' : `for ${con.type.charAt(0).toUpperCase() + con.type.slice(1)} <${con.ctx.id}>`}`)
+          console.log(`${event.name} Event was just handled ${con.type === 'global' ? 'globally' : `for ${this.server.utils.capitalize(con.type)} <${con.ctx.id}>`}`)
         }
       }
     })

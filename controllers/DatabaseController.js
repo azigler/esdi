@@ -101,12 +101,13 @@ class DatabaseController extends Map {
    * @param {Object} config configuration object
    * @param {String} config.db database name
    * @param {String} config.id document `_id`
+   * @param {Object} [config.options = {}] PouchDB config object
    * @returns {Object|Error}
    * @memberof DatabaseController
    */
-  fetchDoc ({ db, id }) {
+  fetchDoc ({ db, id, options = {} }) {
     return this.get(db).DB
-      .get(id)
+      .get(id, options)
       .then(data => { return data })
       .catch(er => { return er })
   }

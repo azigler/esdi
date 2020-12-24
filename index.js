@@ -62,6 +62,7 @@ class Esdi extends require('events') {
     })
 
     // initialize framework
+    this.utils = require('./lib/utils')
     this.controllers = new Map()
     this.commands = new discordJs.Collection()
     this.models = new Map()
@@ -122,6 +123,61 @@ class Esdi extends require('events') {
    */
   stop () {
     this.emit('stop')
+  }
+
+  /**
+   * Returns formatted uptime of process
+   *
+   * @returns {String} formatted timestamp
+   * @memberof Esdi
+   */
+  determineUptime () {
+    const formatUptime = (sec) => {
+      const pad = (s) => {
+        return (s < 10 ? '0' : '') + s
+      }
+
+      const days = Math.floor(sec / (60 * 60 * 24))
+      const hours = Math.floor(sec / (60 * 60))
+      const minutes = Math.floor(sec % (60 * 60) / 60)
+      const seconds = Math.floor(sec % 60)
+
+      const ending = (minutes > 0 || hours > 0 ? (hours > 0 ? 'h' : 'm') : 's')
+
+      return `${days ? days + 'd ' : ''}${pad(hours)}:${pad(minutes)}:${pad(seconds)}${ending}`
+    }
+
+    return formatUptime(process.uptime())
+  }
+
+  /**
+   * Returns formatted memory usage of process
+   *
+   * @returns {String} formatted memory usage (in megabytes)
+   * @memberof Esdi
+   */
+  determineMemory () {
+    const formatMemory = (data) => `${(data / 1024 / 1024).toFixed(2)} MB`
+
+    const memoryData = process.memoryUsage()
+    return formatMemory(memoryData.rss)
+  }
+
+  /**
+   * Returns formatted processor usage of process
+   *
+   * @returns {String} formatted processor use percentage
+   * @memberof Esdi
+   */
+  determineProcessor () {
+    const determineProcessor = () => {
+      const usage = Object.assign({}, process.cpuUsage())
+      usage.time = process.uptime() * 1000 // seconds to milliseconds
+      usage.percent = (usage.system + usage.user) / (usage.time * 10) // microseconds to milliseconds
+      return usage
+    }
+
+    return determineProcessor().percent.toFixed(2) + '%'
   }
 
   /**
