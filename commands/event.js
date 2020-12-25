@@ -1,5 +1,5 @@
 /**
- * Lists all {@link Event|Events} enabled here, toggles the Event provided, or lists all Events that can be enabled
+ * Lists all {@link Event|Events} enabled in the context, toggles the Event provided, or lists all Events that can be enabled
  *
  * @type {Command}
  * @memberof Command

@@ -3,7 +3,7 @@
  *
  * @type {Event}
  * @memberof Event
- * @name monitor
+ * @name process-monitor
  * @prop {Object} handlerConfig `handler` function configuration object
  * @prop {Esdi} handlerConfig.server Esdi server instance
  * @prop {external:Guild|external:Channel|String} handlerConfig.context Event context

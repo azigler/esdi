@@ -1,5 +1,5 @@
 /**
- * Lists all {@link Hook|Hooks} enabeld here, toggles the Hook provided, or lists all Hooks that can be enabled
+ * Lists all {@link Hook|Hooks} enabled in the context, toggles the Hook provided, or lists all Hooks that can be enabled
  *
  * @type {Command}
  * @memberof Command
