@@ -208,6 +208,12 @@ class BotController extends Map {
       inline: true
     })
 
+    fields.push({
+      name: '__Version__',
+      value: '`' + require('./../package').version + '`',
+      inline: true
+    })
+
     const colors = ['blue', 'gray', 'green', 'pink', 'brown', 'yellow']
 
     const hexColors = {
