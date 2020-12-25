@@ -229,7 +229,7 @@ class EventController {
    * @param {Esdi} server Esdi server instance
    * @param {Event} event Event for which to initialize database document
    * @param {Object} doc database document to check before starting
-   * @memberof Esdi
+   * @memberof EventController
    */
   async initializeIfMissing (server, event, doc) {
     if (doc.status === 404 || !doc.contextTimestampPairs) {
