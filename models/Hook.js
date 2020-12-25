@@ -53,7 +53,7 @@ class Hook {
     } else if (contextType === 'global') {
       // do nothing for now
     } else {
-      msg = `Bot doesn't know about Context<${contextId}> for ${this.name} Hook`
+      msg = `Bot doesn't know about Context<${contextId}> for ${this.name} Hook @ ${new Date().toLocaleString()} PT`
       console.log(msg)
       return h.response(msg).code(400)
     }
@@ -65,7 +65,7 @@ class Hook {
         id: `${this.name}_${contextId}`
       })
       if (!contextDoc.enabled) {
-        msg = `${this.name} Hook is not enabled for ${contextName}<${contextId}>`
+        msg = `${this.name} Hook is not enabled for ${contextName}<${contextId}> @ ${new Date().toLocaleString()} PT`
         console.log(msg)
         return h.response(msg).code(400)
       }
@@ -75,7 +75,7 @@ class Hook {
         id: `${this.name}_global`
       })
       if (!contextDoc.enabled) {
-        msg = `${this.name} Hook is not enabled globally`
+        msg = `${this.name} Hook is not enabled globally @ ${new Date().toLocaleString()} PT`
         console.log(msg)
         return h.response(msg).code(400)
       }

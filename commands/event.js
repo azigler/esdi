@@ -67,11 +67,13 @@ module.exports = {
           })
           if (!contextDoc.enabled) continue
 
+          const args = (contextDoc.args && contextDoc.args.length) ? `- *argument${contextDoc.args.length > 1 ? 's' : ''}:* \`${contextDoc.args.join(' ')}\`\n` : ''
+
           // if found, remember that this Event is enabled globally
           if (e.context === 'global' && server.controllers.get('BotController').botOwner === message.author.id) {
             const timestamp = doc.contextTimestampPairs.filter(p => p[0] === c)[0][1]
 
-            server.controllers.get('BotController').buildEmbedFieldValues(globalEmbedFieldValues, `\n\`${e.name}\` - ${e.description}\n*(handled: ${new Date(timestamp).toLocaleString() + ' PT'})*`)
+            server.controllers.get('BotController').buildEmbedFieldValues(globalEmbedFieldValues, `\n\`${e.name}\` - ${e.description}\n${args}- *handled:* \`${new Date(timestamp).toLocaleString() + ' PT'}\``)
 
             continue
           }
@@ -80,14 +82,14 @@ module.exports = {
           if (message.guild.id === c) {
             const timestamp = doc.contextTimestampPairs.filter(p => p[0] === c)[0][1]
 
-            server.controllers.get('BotController').buildEmbedFieldValues(guildEmbedFieldValues, `\n\`${e.name}\` - ${e.description} \n*(handled: ${new Date(timestamp).toLocaleString() + ' PT'})*`)
+            server.controllers.get('BotController').buildEmbedFieldValues(guildEmbedFieldValues, `\n\`${e.name}\` - ${e.description}\n${args}- *handled:* \`${new Date(timestamp).toLocaleString() + ' PT'}\``)
           }
 
           // if found, remember that this Event is enabled for this channel
           if (message.channel.id === c) {
             const timestamp = doc.contextTimestampPairs.filter(p => p[0] === c)[0][1]
 
-            server.controllers.get('BotController').buildEmbedFieldValues(channelEmbedFieldValues, `\n\`${e.name}\` - ${e.description} \n*(handled: ${new Date(timestamp).toLocaleString() + ' PT'})*`)
+            server.controllers.get('BotController').buildEmbedFieldValues(channelEmbedFieldValues, `\n\`${e.name}\` - ${e.description}\n${args}- *handled:* \`${new Date(timestamp).toLocaleString() + ' PT'}\``)
           }
         }
       }
@@ -254,15 +256,18 @@ module.exports = {
           }
 
           // update locally to avoid database polling every loop
-          const local = server.controllers.get('EventController').intervalEvents.get(event.name)
-          server.controllers.get('EventController').intervalEvents.set(event.name, local.filter(c => !context.id))
+          server.controllers.get('EventController').updateLocalEventContexts({
+            event,
+            filterFunc: c => !context.id
+          })
 
           // save the Event as disabled in the context's database document
           await server.controllers.get('DatabaseController').updateDoc({
             db: 'event',
             id: `${event.name}_${context.id}`,
             payload: {
-              enabled: false
+              enabled: false,
+              args: undefined
             }
           })
 
@@ -270,7 +275,7 @@ module.exports = {
           const contextNameFixed = (context.type === 'guild' ? 'server' : 'channel')
           msg = `The \`${event.name}\` Event is now **disabled** ${context.type === 'global' ? 'globally' : 'for this ' + contextNameFixed}.`
           message.channel.send(msg)
-          msg = `${event.name} Event is now disabled ${context.type === 'global' ? 'globally' : `for ${server.utils.capitalize(context.type)}<${context.id}>`}`
+          msg = `${event.name} Event is now disabled ${context.type === 'global' ? 'globally' : `for ${server.utils.capitalize(context.type)}<${context.id}>`} @ ${new Date().toLocaleString()} PT`
           console.log(msg)
 
         // otherwise, enable the Event for this context
@@ -300,6 +305,12 @@ module.exports = {
           }
 
           // update locally to avoid database polling every loop
+          server.controllers.get('EventController').updateLocalEventContexts({
+            event,
+            filterFunc: c => !context.id,
+            newContext: context.id
+          })
+
           const local = server.controllers.get('EventController').intervalEvents.get(event.name)
           server.controllers.get('EventController').intervalEvents.set(event.name, [...local.filter(c => c !== context.id), context.id])
 
@@ -318,35 +329,31 @@ module.exports = {
             // check if bot can see context
             try {
               // determine this Event's context
-              let fetchedContext
-
-              if (context !== 'global') {
-                if (event.context === 'guild') {
-                  fetchedContext = await server.controllers.get('BotController').client.guilds.fetch(context.id)
-                } else if (event.context === 'channel') {
-                  fetchedContext = await server.controllers.get('BotController').client.channels.fetch(context.id)
-                }
-              }
+              const fetchedContext = await server.controllers.get('EventController').fetchEventContext({ context, event })
 
               event.handler({ server, context: fetchedContext })
             } catch (e) {
-              // update locally to avoid handling every loop
-              const local = server.controllers.get('EventController').intervalEvents.get(event.name)
-              server.controllers.get('EventController').intervalEvents.set(event.name, [...local.filter(c => c !== context.id)])
+              // update locally to avoid database polling every loop
+              server.controllers.get('EventController').updateLocalEventContexts({
+                event,
+                filterFunc: c => !context.id,
+                newContext: context.id
+              })
 
               // save the Event as disabled in the context's database document
               await server.controllers.get('DatabaseController').updateDoc({
                 db: 'event',
                 id: `${event.name}_${context.id}`,
                 payload: {
-                  enabled: false
+                  enabled: false,
+                  args: undefined
                 }
               })
 
               // determine the capitalized name of this context
               const contextName = (this.context === 'guild' ? 'Guild' : 'Channel')
 
-              return console.log(`Bot doesn't know about ${contextName}<${context.id}> for ${event.name} Event:`, e)
+              return console.log(`Bot doesn't know about ${contextName}<${context.id}> for ${event.name} Event @ ${new Date().toLocaleString()} PT:`, e)
             }
           }
 
@@ -355,7 +362,8 @@ module.exports = {
             db: 'event',
             id: `${event.name}_${context.id}`,
             payload: {
-              enabled: true
+              enabled: true,
+              args: args.slice(1)
             }
           })
 
@@ -363,13 +371,13 @@ module.exports = {
           const contextNameFixed = (context.type === 'guild' ? 'server' : 'channel')
           msg = `The \`${event.name}\` Event is now **enabled** ${context.type === 'global' ? 'globally' : 'for this ' + contextNameFixed}.`
           message.channel.send(msg)
-          msg = `${event.name} Event is now enabled ${context.type === 'global' ? 'globally' : `for ${server.utils.capitalize(context.type)}<${context.id}>`}`
+          msg = `${event.name} Event is now enabled ${context.type === 'global' ? 'globally' : `for ${server.utils.capitalize(context.type)}<${context.id}>`} @ ${new Date().toLocaleString()} PT`
           console.log(msg)
         }
       } catch (e) {
         msg = `An error occurred while toggling \`${event.name}\` Event.`
         message.channel.send(msg)
-        msg = `An error occurred in Channel<${message.channel.id}> while toggling ${event.name}`
+        msg = `An error occurred in Channel<${message.channel.id}> while toggling ${event.name} @ ${new Date().toLocaleString()} PT`
         console.log(msg, e)
       }
     }

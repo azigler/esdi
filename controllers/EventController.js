@@ -111,15 +111,12 @@ class EventController {
           let con
           try {
             // determine this Event's context
-            let fetchedContext
-
-            if (context !== 'global') {
-              if (event.context === 'guild') {
-                fetchedContext = await this.server.controllers.get('BotController').client.guilds.fetch(context)
-              } else if (event.context === 'channel') {
-                fetchedContext = await this.server.controllers.get('BotController').client.channels.fetch(context)
-              }
-            }
+            const fetchedContext = await this.fetchEventContext({
+              context: {
+                id: context
+              },
+              event
+            })
 
             con = {
               type: event.context,
@@ -165,7 +162,7 @@ class EventController {
           event.handler({ server: this.server, context: con.ctx })
 
           // announce handling of Event
-          console.log(`${event.name} Event was just handled ${con.type === 'global' ? 'globally' : `for ${this.server.utils.capitalize(con.type)} <${con.ctx.id}>`}`)
+          console.log(`${event.name} Event was just handled ${con.type === 'global' ? 'globally' : `for ${this.server.utils.capitalize(con.type)}<${con.ctx.id}>`} @ ${new Date().toLocaleString()} PT`)
         }
       }
     })
@@ -185,12 +182,54 @@ class EventController {
   }
 
   /**
+   * Fetches the discord.js object representing the provided context
+   *
+   * @param {Object} config configuration object
+   * @param {Object} config.context context configuration object
+   * @param {Event} config.event Event for context
+   * @returns {Object|String} context object or 'global' for global context
+   * @memberof EventController
+   */
+  async fetchEventContext ({ context, event }) {
+    if (event.context !== 'global') {
+      if (event.context === 'guild') {
+        const result = await this.server.controllers.get('BotController').client.guilds.fetch(context.id)
+        return result
+      } else if (event.context === 'channel') {
+        const result = await this.server.controllers.get('BotController').client.channels.fetch(context.id)
+        return result
+      }
+    } else {
+      return 'global'
+    }
+  }
+
+  /**
+   * Updates the interval Event contexts stored on the local Esdi server instance
+   *
+   * @param {Object} config configuration object
+   * @param {Event} config.event Event for which to update available contexts
+   * @param {Function} config.filterFunc function that filters the context array
+   * @param {String} config.newContext ID of new context to add to array
+   * @memberof EventController
+   */
+  updateLocalEventContexts ({ event, filterFunc, newContext }) {
+    const local = this.server.controllers.get('EventController').intervalEvents.get(event.name)
+
+    if (newContext) {
+      this.server.controllers.get('EventController').intervalEvents.set(event.name, [...local.filter(c => filterFunc(c)), newContext])
+    } else {
+      this.server.controllers.get('EventController').intervalEvents.set(event.name, local.filter(c => filterFunc(c)))
+    }
+  }
+
+  /**
    * Helper method that initializes the database document if missing
    *
-   * @param {String} type framework file type to load
-   * @param {String} dir directory to load files from
+   * @param {Esdi} server Esdi server instance
+   * @param {Event} event Event for which to initialize database document
+   * @param {Object} doc database document to check before starting
    * @memberof Esdi
-   * @private
    */
   async initializeIfMissing (server, event, doc) {
     if (doc.status === 404 || !doc.contextTimestampPairs) {

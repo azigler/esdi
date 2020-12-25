@@ -34,43 +34,41 @@ module.exports = {
   },
   async enable ({ server, context, args, message }) {
     // determine the Event's timing interval
-    const { day, hr, min, sec } = server.utils.parseIntervalString(args[0])
+    const { day, hr, min, sec } = server.utils.parseIntervalString(args[0] || '')
 
     if ((day + hr + min + sec) === 0) {
       switch (args[0]) {
         case 'hourly':
-        case 'hour':
-        case '1h':
-        case '1hr': {
+        case 'hour': {
           this.interval = '1h'
           break
         }
         case 'weekly':
         case 'week':
-        case '1w':
-        case '7d': {
+        case '1w': {
           this.interval = '7d'
           break
         }
         case 'monthly':
-        case 'month':
-        case '30d': {
+        case 'month': {
           this.interval = '30d'
           break
         }
         case 'daily':
-        case 'day':
-        case '1d':
-        default: {
+        case 'day': {
           this.interval = '1d'
           break
         }
       }
     } else {
-      this.interval = args[0]
+      const dayStr = day ? `${day}d` : ''
+      const hrStr = hr ? `${hr}h` : ''
+      const minStr = min ? `${min}m` : ''
+      const secStr = sec ? `${sec}s` : ''
+      this.interval = `${dayStr}${hrStr}${minStr}${secStr}`
     }
 
-    message.channel.send(`\`interval\` was set to: \`${this.interval}\``)
+    message.channel.send(`Using interval: \`${this.interval}\``)
 
     await server.controllers.get('DatabaseController').updateDoc({
       db: 'event',

@@ -66,7 +66,7 @@ module.exports = {
         if (!request.payload ||
               !request.payload.data ||
               kofiSchema.validate(JSON.parse(request.payload.data)).error) {
-          msg = `Ko-fi Hook for Channel<${request.params.channel}> was rejected due to invalid payload`
+          msg = `Ko-fi Hook for Channel<${request.params.channel}> was rejected due to invalid payload @ ${new Date().toLocaleString()} PT`
           console.log(msg, kofiSchema.validate(JSON.parse(request.payload.data)))
           return h.response(msg).code(400)
         }
@@ -80,7 +80,7 @@ module.exports = {
           parsed.from_name = 'Anonymous'
           parsed.message = ''
 
-          msg = `Private ko-fi Hook for Channel<${request.params.channel}> was handled`
+          msg = `Private ko-fi Hook for Channel<${request.params.channel}> was handled @ ${new Date().toLocaleString()} PT`
           isPrivate = true
         }
 
@@ -118,7 +118,7 @@ module.exports = {
 
         // if webhook is public, set result message
         if (!isPrivate) {
-          msg = `Ko-fi Hook for Channel<${request.params.channel}> was handled`
+          msg = `Ko-fi Hook for Channel<${request.params.channel}> was handled @ ${new Date().toLocaleString()} PT`
         }
 
         // send the message embed

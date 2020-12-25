@@ -60,21 +60,23 @@ module.exports = {
           })
           if (!contextDoc.enabled) continue
 
+          const args = (contextDoc.args && contextDoc.args.length) ? `- *argument${contextDoc.args.length > 1 ? 's' : ''}:* \`${contextDoc.args.join(' ')}\`` : ''
+
           // if found, remember that this Hook is enabled globally
           if (h.context === 'global' && server.controllers.get('BotController').botOwner === message.author.id) {
-            server.controllers.get('BotController').buildEmbedFieldValues(globalEmbedFieldValues, `\n\`${h.name}\` - ${h.description}`)
+            server.controllers.get('BotController').buildEmbedFieldValues(globalEmbedFieldValues, `\n\`${h.name}\` - ${h.description}\n${args}`)
 
             continue
           }
 
           // if found, remember that this Hook is enabled for this Guild
           if (message.guild.id === c) {
-            server.controllers.get('BotController').buildEmbedFieldValues(guildEmbedFieldValues, `\n\`${h.name}\` - ${h.description}`)
+            server.controllers.get('BotController').buildEmbedFieldValues(guildEmbedFieldValues, `\n\`${h.name}\` - ${h.description}\n${args}`)
           }
 
           // if found, remember that this Hook is enabled for this channel
           if (message.channel.id === c) {
-            server.controllers.get('BotController').buildEmbedFieldValues(channelEmbedFieldValues, `\n\`${h.name}\` - ${h.description}`)
+            server.controllers.get('BotController').buildEmbedFieldValues(channelEmbedFieldValues, `\n\`${h.name}\` - ${h.description}\n${args}`)
           }
         }
       }
@@ -236,15 +238,29 @@ module.exports = {
             db: 'hook',
             id: `${hook.name}_${context.id}`,
             payload: {
-              enabled: false
+              enabled: false,
+              args: undefined
             }
           })
+
+          // remove the context from the Hook's database document
+          if (hookData.contexts.find(p => context.id)) {
+            const payload = hookData.contexts
+
+            server.controllers.get('DatabaseController').updateDoc({
+              db: 'hook',
+              id: hook.name,
+              payload: {
+                contexts: payload.filter(p => !context.id)
+              }
+            })
+          }
 
           // announce successfully disabling
           const contextNameFixed = (context.type === 'guild' ? 'server' : 'channel')
           msg = `The \`${hook.name}\` Hook is now **disabled** ${context.type === 'global' ? 'globally' : 'for this ' + contextNameFixed}.`
           message.channel.send(msg)
-          msg = `${hook.name} Hook is now disabled ${context.type === 'global' ? 'globally' : `for ${server.utils.capitalize(context.type)}<${context.id}>`}`
+          msg = `${hook.name} Hook is now disabled ${context.type === 'global' ? 'globally' : `for ${server.utils.capitalize(context.type)}<${context.id}>`} @ ${new Date().toLocaleString()} PT`
           console.log(msg)
 
         // otherwise, enable the Hook for this channel
@@ -288,7 +304,8 @@ module.exports = {
             db: 'hook',
             id: `${hook.name}_${context.id}`,
             payload: {
-              enabled: true
+              enabled: true,
+              args: args.slice(1)
             }
           })
 
@@ -296,13 +313,13 @@ module.exports = {
           const contextNameFixed = (context.type === 'guild' ? 'server' : 'channel')
           msg = `The \`${hook.name}\` Hook is now **enabled** ${context.type === 'global' ? 'globally' : 'for this ' + contextNameFixed}.`
           message.channel.send(msg)
-          msg = `${hook.name} Hook is now enabled ${context.type === 'global' ? 'globally' : `for ${server.utils.capitalize(context.type)}<${context.id}>`}`
+          msg = `${hook.name} Hook is now enabled ${context.type === 'global' ? 'globally' : `for ${server.utils.capitalize(context.type)}<${context.id}>`} @ ${new Date().toLocaleString()} PT`
           console.log(msg)
         }
       } catch (e) {
         msg = `An error occurred while toggling \`${hook.name}\` Hook.`
         message.channel.send(msg)
-        msg = `An error occurred in Channel<${message.channel.id}> while toggling ${hook.name}`
+        msg = `An error occurred in Channel<${message.channel.id}> while toggling ${hook.name} @ ${new Date().toLocaleString()} PT`
         console.log(msg, e)
       }
     }
