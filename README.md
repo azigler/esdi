@@ -26,7 +26,7 @@
 - [Setup](#setup-nut_and_bolt)
 - [Documentation](#documentation-bookmark_tabs)
 - [Features](#features-round_pushpin)
-- [Functionality](#current-functionality_toolbox)
+- [Functionality](#functionality-toolbox)
 - [Credits](#credits-horse_racing)
 - [Contributing](#contributing-inbox_tray)
 - [Roadmap](#roadmap-chart_with_upwards_trend)
