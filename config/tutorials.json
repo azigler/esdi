@@ -1,14 +1,17 @@
 {
   "setting-up-an-esdi-instance": {
-      "title": "Setting up an Esdi instance"
+    "title": "Setting up an Esdi instance"
   },
   "adding-a-custom-command": {
     "title": "Adding a custom command"
   },
   "github-redeploy-global-hook-example": {
-    "title": "GitHub redeploy global Hook example"
+    "title": "github-redeploy global Hook example"
   },
   "ko-fi-channel-hook-example": {
-    "title": "Ko-fi channel Hook example"
+    "title": "ko-fi channel Hook example"
+  },
+  "process-monitor-global-interval-event-example": {
+    "title": "process-monitor global interval Event example"
   }
 }

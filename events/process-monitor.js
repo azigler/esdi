@@ -10,9 +10,13 @@
  * @prop {Object} enableConfig `enable` function configuration object
  * @prop {Esdi} enableConfig.server Esdi server instance
  * @prop {external:Guild|external:Channel|String} enableConfig.context Event context
+ * @prop {String[]} enableConfig.args arguments provided following Event name
+ * @prop {external:Message} enableConfig.message discord.js Message
  * @prop {Object} disableConfig `disable` function configuration object
  * @prop {Esdi} disableConfig.server Esdi server instance
  * @prop {external:Guild|external:Channel|String} disableConfig.context Event context
+ * @prop {String[]} disableConfig.args arguments provided following Event name
+ * @prop {external:Message} disableConfig.message discord.js Message
  * @tutorial process-monitor-global-interval-event-example
  * @static
  */
@@ -86,7 +90,7 @@ module.exports = {
       db: 'event',
       id: `${this.name}_${context}`,
       payload: {
-        config: undefined
+        config: {}
       }
     })
   }

@@ -3,7 +3,7 @@
 <head>
     
     <meta charset="utf-8">
-    <title>commands/ping.js - Esdi Documentation</title>
+    <title>Tutorial: process-monitor global interval Event example - Esdi Documentation</title>
     
     <meta name="description" content="ES6 Discord bot framework" />
     
@@ -43,42 +43,40 @@
 
 <div id="main">
     
-    <h1 class="page-title">commands/ping.js</h1>
+    <h1 class="page-title">Tutorial: process-monitor global interval Event example</h1>
     
 
-    
-
-
-
-    
     <section>
-        <article>
-            <pre class="prettyprint source linenums"><code>/**
- * Returns the latency (in milliseconds) between when the {@link Command} was sent and when the {@link Command} was executed
- *
- * @type {Command}
- * @memberof Command
- * @name ping
- * @prop {Object} executeConfig `execution` function configuration object
- * @prop {external:Message} executeConfig.message discord.js Message
- * @prop {String[]} executeConfig.args Array of space-separated strings following the command
- * @prop {Esdi} executeConfig.server Esdi server instance
- * @static
- */
-module.exports = {
-  name: 'ping',
-  aliases: ['latency'],
-  description: 'Returns the latency (in milliseconds) between when the user\'s command was sent and when the command was executed.',
-  execute ({ message, args, server }) {
-    message.channel.send(`**Latency:** \`${Date.now() - message.createdAt.getTime()}ms\``)
-  }
-}
-</code></pre>
-        </article>
-    </section>
 
+<header>
+    
 
+    <h2>process-monitor global interval Event example</h2>
+</header>
 
+<article>
+    <p>We can use interval Events when we want Esdi to handle regular routines and scheduled processes.</p>
+<p>Like Hooks, interval Events are tied to a specific context that the Esdi bot can see. For this example, we're going to look at an interval Event that posts a message embed to a channel at a regular interval. This embed has information about the server process, like it's processor and memory usage, uptime, and Esdi version.</p>
+<p>The <a href="Event.html#.process-monitor"><code>process-monitor</code> Event</a> is included in <a href="https://github.com/azigler/esdi/releases/tag/v1.3.0"><code>v1.3.0</code></a> and higher and you can see the code for it <a href="events_process-monitor.js.html">here</a>. Please refer to this code as we look at the different parts of the global interval Event.</p>
+<p><strong>By the way, if you just want to use the pre-existing <a href="Event.html#.process-monitor"><code>process-monitor</code> global interval Event</a>, use the <code>esdi!event process-monitor</code> Command to enable it in the channel where you want it to post.</strong></p>
+<p>An interval Event has a <code>handler()</code> function that will fire every designated <code>interval</code>, and it can also have <code>enable()</code> and <code>disable()</code> functions that handle the toggling of the Event for the specified context. The <code>process-monitor</code> Event has a global context, since it outputs information related to the actual process on its host machine. But an interval Event can be contextually linked to guilds and channels, as well.</p>
+<p>The <code>interval</code> is a string defined on the Event. If the <code>interval</code> is omitted, it defaults to 24 hours (<code>1d</code>). The interval string is parsed to determine the interval. For example, <code>30m</code> will fire every thirty minutes, <code>1h20m</code> will fire every hour and twenty minutes (the same as <code>80m</code>). And <code>1d2h3m4s</code> will fire every day, two hours, three minutes, and four seconds. So if it fires at 12:00:00pm then the next time it fires will be 2:03:04pm the following day. <strong>With this flexibility, you can set virtually any interval.</strong></p>
+<p>For the interval Event to fire, you need to enable it. That's why we have the <a href="Command.html#.event"><code>event</code></a> command. This command lists all enabled Events for this context (e.g., <code>esdi!event</code>), toggles the one provided (e.g., <code>esdi!event process-monitor</code>), or lists all Events that can be enabled (e.g., <code>esdi!event list</code>).</p>
+<p>When an interval Event is enabled, its <code>enable()</code> function is fired if it has one. Any provided arguments are also passed to this function.</p>
+<p>If you want to disable the interval Event later on, you can simply use the <code>esdi!event process-monitor</code> command again. This also triggers the optional <code>disable()</code> function.</p>
+<p><strong>If the interval Event isn't enabled, then the <code>handler()</code> function will not fire when the interval elapses. Don't forget to enable your Event!</strong></p>
+<p>If an interval Event has <em>never</em> fired before for the context when it's enabled, it will fire on the next server loop. If an interval Event is enabled and its interval has passed since it last fired (even if it was disabled for some or all of that time), then it will fire on the next server loop. For example, if an interval Event has an interval of <code>1h</code> and it's turned off for two hours, when it's turned back on it will fire the next server loop.</p>
+<p>You can see when an interval Event was last fired by checking the information provided by the <code>esdi!event</code> Command. This will tell you what arguments were provided when the interval Event was enabled and the last time it has fired.</p>
+<p>For our example, the <code>process-monitor</code> interval Event can handle a custom interval provided as an argument, so you can set a custom interval for it to post its message embed:</p>
+<p><img src="https://cdn.discordapp.com/attachments/777738026901045288/792541047880024064/process-monitor-custom-interval.png" alt=""></p>
+<p>And if you wanted to check the arguments you provided to enable the interval Event, you can review them with <code>esdi!event</code>:</p>
+<p><img src="https://cdn.discordapp.com/attachments/777738026901045288/792541041466015824/event-list.png" alt=""></p>
+<p>This particular interval Event posts a message embed that looks like this:</p>
+<p><img src="https://cdn.discordapp.com/attachments/777738026901045288/792541617402675211/process-monitor-embed.png" alt=""></p>
+<p>You can use this as a guide for your own interval Event ideas!</p>
+</article>
+
+</section>
 
     
     

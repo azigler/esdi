@@ -12,7 +12,7 @@
  */
 module.exports = {
   name: 'status',
-  aliases: ['stat', 'stats', 'statistics', 'metrics'],
+  aliases: ['stat', 'stats', 'statistics', 'metrics', 'metric', 'process', 'processes'],
   ownerOnly: true,
   description: 'Reports the memory and processor usage of the server\'s process along with its uptime and Discord stats.',
   execute ({ message, args, server }) {

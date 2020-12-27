@@ -3,7 +3,7 @@
 <head>
     
     <meta charset="utf-8">
-    <title>commands/ping.js - Esdi Documentation</title>
+    <title>lib/utils.js - Esdi Documentation</title>
     
     <meta name="description" content="ES6 Discord bot framework" />
     
@@ -43,7 +43,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">commands/ping.js</h1>
+    <h1 class="page-title">lib/utils.js</h1>
     
 
     
@@ -54,25 +54,43 @@
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>/**
- * Returns the latency (in milliseconds) between when the {@link Command} was sent and when the {@link Command} was executed
+ * General utility methods for ES6
  *
- * @type {Command}
- * @memberof Command
- * @name ping
- * @prop {Object} executeConfig `execution` function configuration object
- * @prop {external:Message} executeConfig.message discord.js Message
- * @prop {String[]} executeConfig.args Array of space-separated strings following the command
- * @prop {Esdi} executeConfig.server Esdi server instance
- * @static
+ * @class
+ * @namespace
  */
-module.exports = {
-  name: 'ping',
-  aliases: ['latency'],
-  description: 'Returns the latency (in milliseconds) between when the user\'s command was sent and when the command was executed.',
-  execute ({ message, args, server }) {
-    message.channel.send(`**Latency:** \`${Date.now() - message.createdAt.getTime()}ms\``)
+class ZigUtils {
+  /**
+   * Determines the days, hours, minutes, and seconds represented in a provided string (e.g., `'1d2h3m4s'`, `'10h15s'`, `'5m'`)
+   *
+   * @static
+   * @param {String} str
+   * @returns {Object} object of properties for each unit of time: `day`, `hr`, `min`, and `sec`
+   * @memberof ZigUtils
+   */
+  static parseIntervalString (str) {
+    const day = parseInt(str.match(/(\d+)d/g) ? str.match(/(\d+)d/g)[0].slice(0, -1) : 0)
+    const hr = parseInt(str.match(/(\d+)h/g) ? str.match(/(\d+)h/g)[0].slice(0, -1) : 0)
+    const min = parseInt(str.match(/(\d+)m/g) ? str.match(/(\d+)m/g)[0].slice(0, -1) : 0)
+    const sec = parseInt(str.match(/(\d+)s/g) ? str.match(/(\d+)s/g)[0].slice(0, -1) : 0)
+
+    return { day, hr, min, sec }
+  }
+
+  /**
+   * Capitalizes the first character of the provided string
+   *
+   * @static
+   * @param {String} str string to capitalize
+   * @returns {String} capitalized string
+   * @memberof ZigUtils
+   */
+  static capitalize (str) {
+    return str.charAt(0).toUpperCase() + str.slice(1)
   }
 }
+
+module.exports = ZigUtils
 </code></pre>
         </article>
     </section>

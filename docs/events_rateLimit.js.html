@@ -3,7 +3,7 @@
 <head>
     
     <meta charset="utf-8">
-    <title>commands/ping.js - Esdi Documentation</title>
+    <title>events/rateLimit.js - Esdi Documentation</title>
     
     <meta name="description" content="ES6 Discord bot framework" />
     
@@ -43,7 +43,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">commands/ping.js</h1>
+    <h1 class="page-title">events/rateLimit.js</h1>
     
 
     
@@ -54,23 +54,20 @@
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>/**
- * Returns the latency (in milliseconds) between when the {@link Command} was sent and when the {@link Command} was executed
+ * Logs rate limiting from Discord to the console when it occurs
  *
- * @type {Command}
- * @memberof Command
- * @name ping
- * @prop {Object} executeConfig `execution` function configuration object
- * @prop {external:Message} executeConfig.message discord.js Message
- * @prop {String[]} executeConfig.args Array of space-separated strings following the command
- * @prop {Esdi} executeConfig.server Esdi server instance
+ * @type {Event}
+ * @listens external:Client#event:"Client#rateLimit"
+ * @see external:Client
+ * @memberof Event
+ * @name rateLimit
+ * @prop {Object} info discord.js rateLimitInfo object
  * @static
  */
 module.exports = {
-  name: 'ping',
-  aliases: ['latency'],
-  description: 'Returns the latency (in milliseconds) between when the user\'s command was sent and when the command was executed.',
-  execute ({ message, args, server }) {
-    message.channel.send(`**Latency:** \`${Date.now() - message.createdAt.getTime()}ms\``)
+  name: 'rateLimit',
+  async handler (info) {
+    console.log('!!! RATE LIMITING IN EFFECT !!!\n', info)
   }
 }
 </code></pre>

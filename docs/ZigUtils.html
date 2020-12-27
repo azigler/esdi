@@ -3,7 +3,7 @@
 <head>
     
     <meta charset="utf-8">
-    <title>commands/ping.js - Esdi Documentation</title>
+    <title>ZigUtils - Esdi Documentation</title>
     
     <meta name="description" content="ES6 Discord bot framework" />
     
@@ -43,39 +43,425 @@
 
 <div id="main">
     
-    <h1 class="page-title">commands/ping.js</h1>
+    <h1 class="page-title">ZigUtils</h1>
     
 
     
 
 
 
+
+<section>
+
+<header>
     
-    <section>
-        <article>
-            <pre class="prettyprint source linenums"><code>/**
- * Returns the latency (in milliseconds) between when the {@link Command} was sent and when the {@link Command} was executed
- *
- * @type {Command}
- * @memberof Command
- * @name ping
- * @prop {Object} executeConfig `execution` function configuration object
- * @prop {external:Message} executeConfig.message discord.js Message
- * @prop {String[]} executeConfig.args Array of space-separated strings following the command
- * @prop {Esdi} executeConfig.server Esdi server instance
- * @static
- */
-module.exports = {
-  name: 'ping',
-  aliases: ['latency'],
-  description: 'Returns the latency (in milliseconds) between when the user\'s command was sent and when the command was executed.',
-  execute ({ message, args, server }) {
-    message.channel.send(`**Latency:** \`${Date.now() - message.createdAt.getTime()}ms\``)
-  }
-}
-</code></pre>
-        </article>
-    </section>
+        <h2>
+        ZigUtils
+        </h2>
+        
+            <div class="class-description usertext"><p>General utility methods for ES6</p></div>
+        
+    
+</header>
+
+<article>
+    
+        <div class="container-overview">
+        
+            
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lib_utils.js.html">lib/utils.js</a>, <a href="lib_utils.js.html#line7">line 7</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+            
+
+            
+        
+        </div>
+    
+
+    
+
+    
+
+    
+    
+    
+
+     
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        
+            
+
+    
+
+    <h4 class="name" id=".capitalize"><span class="type-signature">(static) </span>capitalize<span class="signature">(str)</span><span class="type-signature"> &rarr; {String}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lib_utils.js.html">lib/utils.js</a>, <a href="lib_utils.js.html#line33">line 33</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    <p>Capitalizes the first character of the provided string</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>str</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>string to capitalize</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>capitalized string</p>
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">String</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".parseIntervalString"><span class="type-signature">(static) </span>parseIntervalString<span class="signature">(str)</span><span class="type-signature"> &rarr; {Object}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lib_utils.js.html">lib/utils.js</a>, <a href="lib_utils.js.html#line16">line 16</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    <p>Determines the days, hours, minutes, and seconds represented in a provided string (e.g., <code>'1d2h3m4s'</code>, <code>'10h15s'</code>, <code>'5m'</code>)</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>str</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>object of properties for each unit of time: <code>day</code>, <code>hr</code>, <code>min</code>, and <code>sec</code></p>
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Object</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+    
+
+    
+
+    
+</article>
+
+</section>
 
 
 

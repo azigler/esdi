@@ -26,6 +26,7 @@
 - [Setup](#setup-nut_and_bolt)
 - [Documentation](#documentation-bookmark_tabs)
 - [Features](#features-round_pushpin)
+- [Functionality](#current-functionality-toolbox)
 - [Credits](#credits-horse_racing)
 - [Contributing](#contributing-inbox_tray)
 - [Roadmap](#roadmap-chart_with_upwards_trend)
@@ -34,21 +35,21 @@
 
 **[JOIN THE ESDI COMMUNITY (AND MEET THE OFFICIAL BOT) ON DISCORD!](https://discord.gg/HTSYNQrXam)**
 
-Esdi is a "plug and play" framework for building extensible Discord bots in ES6. Esdi can be added as an npm dependency to your Node.js project and implemented with just a few lines of code. The example below will load up any local extension files for Esdi available in your project, uses a local PouchDB database for all data storage, and connects to your [Discord application bot user](https://discord.com/developers/applications) via the provided token.
+Esdi is a "plug-and-play" framework for building extensible Discord bots in ES6. Esdi can be added as an npm dependency to your Node.js project and implemented with just a few lines of code. The example below will load up any local extension files for Esdi available in your project, uses a local PouchDB database for all data storage, and connects to your [Discord application bot user](https://discord.com/developers/applications) via the provided token.
 
 ```js
 // import Esdi package
 const Esdi = require('esdi')
 
-// initialize Esdi bot
+// initialize Esdi
 const server = new Esdi({
   discordToken: 'YOUR-DISCORD-BOT-TOKEN'
 })
 
-// load local commands, controllers, events, hooks, and models
+// load local Commands, Controllers, Events, Hooks, and Models
 server.load(__dirname)
 
-// start Esdi bot
+// start Esdi
 server.start()
 ```
 
@@ -78,19 +79,30 @@ If you would like to add the official Esdi bot to a server instead of hosting yo
 
 You can read the latest Esdi documentation [here](https://azigler.github.io/esdi/).
 
-There are also tutorials available. For example, you can learn how to [add a custom commands](https://azigler.github.io/esdi/tutorial-adding-a-custom-command.html). There are also resources for handling webhooks from third-party services like [GitHub](https://azigler.github.io/esdi/tutorial-github-redeploy-global-hook-example.html) and [Ko-fi](https://azigler.github.io/esdi/tutorial-ko-fi-channel-hook-example.html).
+There are also tutorials available. For example, you can learn how to [add a custom command](https://azigler.github.io/esdi/tutorial-adding-a-custom-command.html). There are also resources for handling webhooks from third-party services like [GitHub](https://azigler.github.io/esdi/tutorial-github-redeploy-global-hook-example.html) and [Ko-fi](https://azigler.github.io/esdi/tutorial-ko-fi-channel-hook-example.html).
+
+It is recommended to start with the [first tutorial](https://azigler.github.io/esdi/tutorial-setting-up-an-esdi-instance.html) and work through each one in the provided order to build your understanding of the framework.
 
 If you have further questions, [join the Esdi Community on Discord](https://discord.gg/HTSYNQrXam)!
 
 ## Features :round_pushpin:
 
 - Obeys a multitude of commands
-- Listens to common Discord events (e.g., someone joining a server)
+- Listens to Discord events (e.g., someone joining a server)
 - Supports local (PouchDB) and remote (CouchDB) databases
 - Serves as middleware for webhooks
+- Handles regular routines and scheduled processes
 - Stands alone or integrates with pre-existing applications
 - Usable for any purpose: server management, games, third-party API integration, or something totally unique!
 - Extensible with custom commands, controllers, events, hooks, and models
+
+## Functionality :toolbox:
+
+New "out-of-the-box" functionality is constantly being added to Esdi. Below is a curated list of Esdi's standout functionality:
+
+- `github-redeploy` global Hook - redeploys the Esdi server after receiving a GitHub webhook ([learn more](https://azigler.github.io/esdi/Hook.html#.github-redeploy))
+- `ko-fi` channel Hook - converts a Ko-fi webhook into a message embed and posts it in a channel ([learn more](https://azigler.github.io/esdi/Hook.html#.ko-fi))
+- `process-monitor` global interval Event and `status` Command - reports the memory and processor usage of the server's Node.js process along with its uptime and Discord stats ([learn more about Event](https://azigler.github.io/esdi/Event.html#.process-monitor)) ([learn more about Command](https://azigler.github.io/esdi/Command.html#.status))
 
 ## Credits :horse_racing:
 
@@ -118,13 +130,14 @@ Feedback and contributions are encouraged! After reading our [Code of Conduct](.
 - [x] Release [`v1.2.0`](https://github.com/azigler/esdi/releases/tag/v1.2.0)
 - [x] Implement interval Events and `event` Command
 - [x] Add `prefix` Command and improve prefix customization
-- [ ] Add `process-monitor` global interval Event
-- [ ] Add `auto-publish` channel interval Event
-- [ ] Add `check-reddit` channel interval Event
+- [x] Add `process-monitor` global interval Event and `status` Command
+- [x] Release [`v1.3.0`](https://github.com/azigler/esdi/releases/tag/v1.3.0)
 - [ ] Add `stat-cat` guild interval Event
+- [ ] Add `check-reddit` and `check-rss` channel interval Events
 - [ ] Write Event tutorials
-- [ ] Release [`v1.3.0`](https://github.com/azigler/esdi/releases/tag/v1.3.0)
+- [ ] Add `auto-publish` channel interval Event
 - [ ] Add `victory-garden` interval Event and `vg` Command
+- [ ] Add `support`, `donate`, and `invite` Commands
 - [ ] Require Command aliases to be unique
 - [ ] Expand Command cooldowns
 - [ ] Expand Event intervals
