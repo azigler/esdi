@@ -1,3 +1,4 @@
+require('dotenv').config()
 const exec = require('child_process').exec
 const crypto = require('crypto')
 
@@ -10,24 +11,38 @@ const crypto = require('crypto')
  * @memberof Hook
  * @name github-redeploy
  * @prop {Object} initConfig `init` function configuration object
- * @prop {String} initConfig.repo GitHub repository URL
- * @prop {String|Boolean} [initConfig.secret = false] `false` for no secret (unrecommended), or string for GitHub webhook secret
- * @prop {String} initConfig.command command to invoke after rebuild (e.g., `pm2 restart esdi`)
- * @prop {String} initConfig.path project directory
- * @prop {Boolean} [initConfig.reset = false] invoke `git reset --hard` to force update
+ * @prop {Esdi} initConfig.server Esdi server instance
+ * @tutorial github-redeploy-global-hook-example
  * @static
  */
 module.exports = {
   name: 'github-redeploy',
   description: 'Redeploys the Esdi instance after receiving a GitHub webhook.',
-  init ({ repo, secret = false, command, path, reset = false } = {}) {
+  init (server) {
     return {
       method: 'POST',
       path: '/hook/github-redeploy',
-      handler: (request, h) => {
+      handler: async (request, h) => {
+        // check if Hook is enabled globally
+        const checkGlobal = await this.checkEnabledForContext({
+          h,
+          server,
+          contextType: 'global'
+        })
+        if (checkGlobal !== 'global') {
+          return checkGlobal
+        }
+
+        const path = process.env.GITHUB_PATH
+        const repo = process.env.GITHUB_REPO
+        const command = process.env.GITHUB_COMMAND
+        const reset = (process.env.GITHUB_RESET === 'true')
+        const link = (process.env.GITHUB_LINK === 'true')
+        const secret = process.env.GITHUB_SECRET
+
         // helper function that executes the redeploy
         function _exec () {
-          const proc = exec(`cd ${path} git fetch ${repo} && ${reset ? 'git reset --hard' : 'git pull'} && npm install && ${command}`)
+          const proc = exec(`cd ${path} && git fetch ${repo} && ${reset ? 'git reset --hard' : 'git pull'} && npm install${link ? ' && npm link esdi' : ''} && ${command}`)
 
           proc.stdout.on('data', function (data) {
             console.log(data)
@@ -37,7 +52,7 @@ module.exports = {
             console.log(error)
           })
 
-          return `Redeployed from repository @ ${new Date()}`
+          return `Redeployed from repository @ ${new Date().toLocaleString()} PT`
         }
 
         // helper function that rejects unauthorized requests

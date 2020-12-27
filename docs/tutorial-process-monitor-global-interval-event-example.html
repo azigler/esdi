@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8">
+    <title>Tutorial: process-monitor global interval Event example - Esdi Documentation</title>
+    
+    <meta name="description" content="ES6 Discord bot framework" />
+    
+    
+    
+    <meta property="og:title" content="Esdi Documentation"/>
+    <meta property="og:type" content="website"/>
+    <meta property="og:image" content="https://user-images.githubusercontent.com/7295363/97830418-bf410380-1c81-11eb-95cc-1b7b15d8d7eb.jpg"/>
+    <meta property="og:site_name" content="Esdi Documentation"/>
+    <meta property="og:url" content="https://azigler.github.io/esdi"/>
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <script src="scripts/nav.js" defer></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    <input type="text" id="nav-search" placeholder="Search" />
+    
+    <h2><a href="index.html">Home</a></h2><h2><a href="https://www.github.com/azigler/esdi" target="_blank" >GitHub</a></h2><h2><a href="https://www.npmjs.com/package/esdi" target="_blank" >npm</a></h2><h2><a href="https://discord.gg/HTSYNQrXam" target="_blank" >Discord</a></h2><h2><a href="https://ko-fi.com/andrewzigler" target="_blank" >Ko-fi</a></h2><h3>Classes</h3><ul><li><a href="BotController.html">BotController</a><ul class='methods'><li data-type='method'><a href="BotController.html#buildEmbed">buildEmbed</a></li><li data-type='method'><a href="BotController.html#buildEmbedFields">buildEmbedFields</a></li><li data-type='method'><a href="BotController.html#buildEmbedFieldValues">buildEmbedFieldValues</a></li><li data-type='method'><a href="BotController.html#buildStatusEmbed">buildStatusEmbed</a></li><li data-type='method'><a href="BotController.html#init">init</a></li><li data-type='method'><a href="BotController.html#login">login</a></li><li data-type='method'><a href="BotController.html#start">start</a></li><li data-type='method'><a href="BotController.html#stop">stop</a></li></ul></li><li><a href="Command.html">Command</a><ul class='members'><li data-type='member'><a href="Command.html#.clean">clean</a></li><li data-type='member'><a href="Command.html#.event">event</a></li><li data-type='member'><a href="Command.html#.help">help</a></li><li data-type='member'><a href="Command.html#.hook">hook</a></li><li data-type='member'><a href="Command.html#.ping">ping</a></li><li data-type='member'><a href="Command.html#.prefix">prefix</a></li><li data-type='member'><a href="Command.html#.reload">reload</a></li><li data-type='member'><a href="Command.html#.status">status</a></li></ul></li><li><a href="CommandController.html">CommandController</a><ul class='methods'><li data-type='method'><a href="CommandController.html#determinePrefix">determinePrefix</a></li><li data-type='method'><a href="CommandController.html#executeCommand">executeCommand</a></li><li data-type='method'><a href="CommandController.html#findCommand">findCommand</a></li><li data-type='method'><a href="CommandController.html#init">init</a></li><li data-type='method'><a href="CommandController.html#start">start</a></li><li data-type='method'><a href="CommandController.html#stop">stop</a></li></ul></li><li><a href="DatabaseController.html">DatabaseController</a><ul class='methods'><li data-type='method'><a href="DatabaseController.html#fetchDoc">fetchDoc</a></li><li data-type='method'><a href="DatabaseController.html#init">init</a></li><li data-type='method'><a href="DatabaseController.html#loadDb">loadDb</a></li><li data-type='method'><a href="DatabaseController.html#start">start</a></li><li data-type='method'><a href="DatabaseController.html#stop">stop</a></li><li data-type='method'><a href="DatabaseController.html#stopSyncing">stopSyncing</a></li><li data-type='method'><a href="DatabaseController.html#updateDoc">updateDoc</a></li></ul></li><li><a href="Esdi.html">Esdi</a><ul class='methods'><li data-type='method'><a href="Esdi.html#determineMemory">determineMemory</a></li><li data-type='method'><a href="Esdi.html#determineProcessor">determineProcessor</a></li><li data-type='method'><a href="Esdi.html#determineUptime">determineUptime</a></li><li data-type='method'><a href="Esdi.html#load">load</a></li><li data-type='method'><a href="Esdi.html#start">start</a></li><li data-type='method'><a href="Esdi.html#stop">stop</a></li></ul></li><li><a href="Event.html">Event</a><ul class='members'><li data-type='member'><a href="Event.html#.guildCreate">guildCreate</a></li><li data-type='member'><a href="Event.html#.guildDelete">guildDelete</a></li><li data-type='member'><a href="Event.html#.guildMemberAdd">guildMemberAdd</a></li><li data-type='member'><a href="Event.html#.guildMemberRemove">guildMemberRemove</a></li><li data-type='member'><a href="Event.html#.process-monitor">process-monitor</a></li><li data-type='member'><a href="Event.html#.rateLimit">rateLimit</a></li><li data-type='member'><a href="Event.html#.ready">ready</a></li></ul></li><li><a href="EventController.html">EventController</a><ul class='methods'><li data-type='method'><a href="EventController.html#fetchEventContext">fetchEventContext</a></li><li data-type='method'><a href="EventController.html#init">init</a></li><li data-type='method'><a href="EventController.html#initializeIfMissing">initializeIfMissing</a></li><li data-type='method'><a href="EventController.html#loop">loop</a></li><li data-type='method'><a href="EventController.html#registerDiscordEvents">registerDiscordEvents</a></li><li data-type='method'><a href="EventController.html#start">start</a></li><li data-type='method'><a href="EventController.html#stop">stop</a></li><li data-type='method'><a href="EventController.html#updateLocalEventContexts">updateLocalEventContexts</a></li></ul></li><li><a href="Guild.html">Guild</a><ul class='methods'><li data-type='method'><a href="Guild.html#.User#serialize">User#serialize</a></li><li data-type='method'><a href="Guild.html#hydrate">hydrate</a></li></ul></li><li><a href="GuildController.html">GuildController</a><ul class='methods'><li data-type='method'><a href="GuildController.html#addGuild">addGuild</a></li><li data-type='method'><a href="GuildController.html#fetchInitialGuilds">fetchInitialGuilds</a></li><li data-type='method'><a href="GuildController.html#init">init</a></li><li data-type='method'><a href="GuildController.html#removeGuild">removeGuild</a></li><li data-type='method'><a href="GuildController.html#start">start</a></li><li data-type='method'><a href="GuildController.html#stop">stop</a></li></ul></li><li><a href="Hook.html">Hook</a><ul class='members'><li data-type='member'><a href="Hook.html#.github-redeploy">github-redeploy</a></li><li data-type='member'><a href="Hook.html#.ko-fi">ko-fi</a></li></ul><ul class='methods'><li data-type='method'><a href="Hook.html#checkEnabledForContext">checkEnabledForContext</a></li></ul></li><li><a href="HookController.html">HookController</a><ul class='methods'><li data-type='method'><a href="HookController.html#init">init</a></li><li data-type='method'><a href="HookController.html#start">start</a></li><li data-type='method'><a href="HookController.html#stop">stop</a></li></ul></li><li><a href="User.html">User</a><ul class='methods'><li data-type='method'><a href="User.html#addGuild">addGuild</a></li><li data-type='method'><a href="User.html#isInGuild">isInGuild</a></li><li data-type='method'><a href="User.html#removeGuild">removeGuild</a></li></ul></li><li><a href="UserController.html">UserController</a><ul class='methods'><li data-type='method'><a href="UserController.html#fetchGuildMembers">fetchGuildMembers</a></li><li data-type='method'><a href="UserController.html#init">init</a></li><li data-type='method'><a href="UserController.html#start">start</a></li><li data-type='method'><a href="UserController.html#stop">stop</a></li></ul></li></ul><h3>Externals</h3><ul><li><a href="external-Client.html">Client</a></li><li><a href="external-Guild.html">Guild</a></li><li><a href="external-GuildMember.html">GuildMember</a></li><li><a href="external-Message.html">Message</a></li><li><a href="external-User.html">User</a></li></ul><h3>Events</h3><ul><li><a href="Esdi.html#event:loop">loop</a></li><li><a href="Esdi.html#event:start">start</a></li><li><a href="Esdi.html#event:stop">stop</a></li><li><a href="external-Client.html#event:event:Client#guildCreate">Client#guildCreate</a></li><li><a href="external-Client.html#event:event:Client#guildDelete">Client#guildDelete</a></li><li><a href="external-Client.html#event:event:Client#guildMemberAdd">Client#guildMemberAdd</a></li><li><a href="external-Client.html#event:event:Client#guildMemberRemove">Client#guildMemberRemove</a></li><li><a href="external-Client.html#event:event:Client#ready">Client#ready</a></li></ul><h3>Namespaces</h3><ul><li><a href="ZigUtils.html">ZigUtils</a><ul class='methods'><li data-type='method'><a href="ZigUtils.html#.capitalize">capitalize</a></li><li data-type='method'><a href="ZigUtils.html#.parseIntervalString">parseIntervalString</a></li></ul></li></ul><h3>Tutorials</h3><ul><li><a href="tutorial-adding-a-custom-command.html">Adding a custom command</a></li><li><a href="tutorial-github-redeploy-global-hook-example.html">github-redeploy global Hook example</a></li><li><a href="tutorial-ko-fi-channel-hook-example.html">ko-fi channel Hook example</a></li><li><a href="tutorial-process-monitor-global-interval-event-example.html">process-monitor global interval Event example</a></li><li><a href="tutorial-setting-up-an-esdi-instance.html">Setting up an Esdi instance</a></li></ul>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">Tutorial: process-monitor global interval Event example</h1>
+    
+
+    <section>
+
+<header>
+    
+
+    <h2>process-monitor global interval Event example</h2>
+</header>
+
+<article>
+    <p>We can use interval Events when we want Esdi to handle regular routines and scheduled processes.</p>
+<p>Like Hooks, interval Events are tied to a specific context that the Esdi bot can see. For this example, we're going to look at an interval Event that posts a message embed to a channel at a regular interval. This embed has information about the server process, like it's processor and memory usage, uptime, and Esdi version.</p>
+<p>The <a href="Event.html#.process-monitor"><code>process-monitor</code> Event</a> is included in <a href="https://github.com/azigler/esdi/releases/tag/v1.3.0"><code>v1.3.0</code></a> and higher and you can see the code for it <a href="events_process-monitor.js.html">here</a>. Please refer to this code as we look at the different parts of the global interval Event.</p>
+<p><strong>By the way, if you just want to use the pre-existing <a href="Event.html#.process-monitor"><code>process-monitor</code> global interval Event</a>, use the <code>esdi!event process-monitor</code> Command to enable it in the channel where you want it to post.</strong></p>
+<p>An interval Event has a <code>handler()</code> function that will fire every designated <code>interval</code>, and it can also have <code>enable()</code> and <code>disable()</code> functions that handle the toggling of the Event for the specified context. The <code>process-monitor</code> Event has a global context, since it outputs information related to the actual process on its host machine. But an interval Event can be contextually linked to guilds and channels, as well.</p>
+<p>The <code>interval</code> is a string defined on the Event. If the <code>interval</code> is omitted, it defaults to 24 hours (<code>1d</code>). The interval string is parsed to determine the interval. For example, <code>30m</code> will fire every thirty minutes, <code>1h20m</code> will fire every hour and twenty minutes (the same as <code>80m</code>). And <code>1d2h3m4s</code> will fire every day, two hours, three minutes, and four seconds. So if it fires at 12:00:00pm then the next time it fires will be 2:03:04pm the following day. <strong>With this flexibility, you can set virtually any interval.</strong></p>
+<p>For the interval Event to fire, you need to enable it. That's why we have the <a href="Command.html#.event"><code>event</code></a> command. This command lists all enabled Events for this context (e.g., <code>esdi!event</code>), toggles the one provided (e.g., <code>esdi!event process-monitor</code>), or lists all Events that can be enabled (e.g., <code>esdi!event list</code>).</p>
+<p>When an interval Event is enabled, its <code>enable()</code> function is fired if it has one. Any provided arguments are also passed to this function.</p>
+<p>If you want to disable the interval Event later on, you can simply use the <code>esdi!event process-monitor</code> command again. This also triggers the optional <code>disable()</code> function.</p>
+<p><strong>If the interval Event isn't enabled, then the <code>handler()</code> function will not fire when the interval elapses. Don't forget to enable your Event!</strong></p>
+<p>If an interval Event has <em>never</em> fired before for the context when it's enabled, it will fire on the next server loop. If an interval Event is enabled and its interval has passed since it last fired (even if it was disabled for some or all of that time), then it will fire on the next server loop. For example, if an interval Event has an interval of <code>1h</code> and it's turned off for two hours, when it's turned back on it will fire the next server loop.</p>
+<p>You can see when an interval Event was last fired by checking the information provided by the <code>esdi!event</code> Command. This will tell you what arguments were provided when the interval Event was enabled and the last time it has fired.</p>
+<p>For our example, the <code>process-monitor</code> interval Event can handle a custom interval provided as an argument, so you can set a custom interval for it to post its message embed:</p>
+<p><img src="https://cdn.discordapp.com/attachments/777738026901045288/792541047880024064/process-monitor-custom-interval.png" alt=""></p>
+<p>And if you wanted to check the arguments you provided to enable the interval Event, you can review them with <code>esdi!event</code>:</p>
+<p><img src="https://cdn.discordapp.com/attachments/777738026901045288/792541041466015824/event-list.png" alt=""></p>
+<p>This particular interval Event posts a message embed that looks like this:</p>
+<p><img src="https://cdn.discordapp.com/attachments/777738026901045288/792541617402675211/process-monitor-embed.png" alt=""></p>
+<p>You can use this as a guide for your own interval Event ideas!</p>
+</article>
+
+</section>
+
+    
+    
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a> on Sun Dec 27 2020 10:51:48 GMT-0800 (Pacific Standard Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+<script src="scripts/search.js" defer></script>
+
+
+
+    <script src="./jsdoc.js"></script>
+    
+    <link type="text/css" rel="stylesheet" href="./jsdoc.css">
+    
+</body>
+</html>

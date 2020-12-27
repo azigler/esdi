@@ -18,7 +18,7 @@
  */
 module.exports = {
   name: 'guildCreate',
-  func (guild) {
+  handler (guild) {
     this.controllers.get('GuildController').addGuild(guild)
   }
 }

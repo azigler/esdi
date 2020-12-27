@@ -2,6 +2,7 @@ require('dotenv').config()
 const path = require('path')
 const fs = require('fs')
 const discordJs = require('discord.js')
+const ZigUtils = require('./lib/utils')
 
 /**
  * ES6 Discord bot framework
@@ -14,20 +15,21 @@ class Esdi extends require('events') {
    * Initializes a new Esdi server
    *
    * @param {Object} [config] configuration object
-   * @param {Number} [config.loopSeconds = 30] loop frequency (in seconds)
+   * @param {Number} [config.loopInterval = 15] loop interval (in seconds)
    * @param {Boolean} [config.loadDefaultFiles = true] whether to load default files
    * @param {String} [config.dbAddress = 'local'] address of remote database, or `local` for local database
    * @param {String} [config.dbPort = 5984] port of remote database
    * @param {String} [config.dbNamespace = 'esdi_'] namespace prefix for database names
    * @param {String} [config.discordToken = process.env.DISCORD_TOKEN] token for Discord bot
-   * @param {String} [config.botPrefix = '!'] prefix for {@link Command|Commands}
+   * @param {String} [config.botPrefix = 'esdi!'] prefix for {@link Command|Commands}
    * @param {Number} [config.hookServerPort = 8587] port for {@link Hook} server
    * @param {String} [config.hookServerHost = 'localhost'] hostname for {@link Hook} server
    * @param {Object|Boolean} [config.hookServerTls = false] `false` for HTTP, or object with paths to `key` and `cert` files for TLS
+   * @param {String} [config.botOwner = '139293101767262208'] Discord ID of bot instance owner
    * @tutorial setting-up-an-esdi-instance
    * @constructor
    */
-  constructor ({ loopSeconds = 30, loadDefaultFiles = true, dbAddress = 'local', dbPort = 5984, dbNamespace = 'esdi_', discordToken = process.env.DISCORD_TOKEN, botPrefix = '!', hookServerPort = 8587, hookServerHost = 'localhost', hookServerTls = false } = {}) {
+  constructor ({ loopInterval = 15, loadDefaultFiles = true, dbAddress = 'local', dbPort = 5984, dbNamespace = 'esdi_', discordToken = process.env.DISCORD_TOKEN, botPrefix = 'esdi!', hookServerPort = 8587, hookServerHost = 'localhost', hookServerTls = false, botOwner = '139293101767262208' } = {}) {
     super()
 
     /**
@@ -38,12 +40,12 @@ class Esdi extends require('events') {
      */
     this.on('start', () => {
       this.startTime = new Date()
-      console.log(`[%] Starting Esdi @ ${this.startTime}`)
-      this.serverLoop = setInterval(this.loop.bind(this), loopSeconds * 1000)
+      console.log(`[%] Starting Esdi @ ${this.startTime.toLocaleString()} PT`)
+      this.serverLoop = setInterval(this.loop.bind(this), loopInterval * 1000)
 
       this.controllers.forEach(controller => {
         if (!controller.init) return
-        controller.init({ server: this, loopSeconds, loadDefaultFiles, dbAddress, dbPort, dbNamespace, discordToken, botPrefix, hookServerPort, hookServerHost, hookServerTls })
+        controller.init({ server: this, loopInterval, loadDefaultFiles, dbAddress, dbPort, dbNamespace, discordToken, botPrefix, hookServerPort, hookServerHost, hookServerTls, botOwner })
       })
     })
 
@@ -55,12 +57,13 @@ class Esdi extends require('events') {
      */
     this.on('stop', () => {
       this.stopTime = new Date()
-      console.log(`[%] Stopping Esdi @ ${this.stopTime}`)
+      console.log(`[%] Stopping Esdi @ ${this.stopTime.toLocaleString()} PT`)
       clearTimeout(this.serverLoop)
       this.serverLoop = false
     })
 
     // initialize framework
+    this.utils = ZigUtils
     this.controllers = new Map()
     this.commands = new discordJs.Collection()
     this.models = new Map()
@@ -100,9 +103,6 @@ class Esdi extends require('events') {
    * @memberof Esdi
    */
   loop () {
-    if (process.argv.includes('--verbose')) {
-      console.log(`[#] Looping @ ${new Date()}`)
-    }
     this.emit('loop')
   }
 
@@ -124,6 +124,61 @@ class Esdi extends require('events') {
    */
   stop () {
     this.emit('stop')
+  }
+
+  /**
+   * Returns formatted uptime of process
+   *
+   * @returns {String} formatted timestamp
+   * @memberof Esdi
+   */
+  determineUptime () {
+    const formatUptime = (sec) => {
+      const pad = (s) => {
+        return (s < 10 ? '0' : '') + s
+      }
+
+      const days = Math.floor(sec / (60 * 60 * 24))
+      const hours = Math.floor(sec / (60 * 60))
+      const minutes = Math.floor(sec % (60 * 60) / 60)
+      const seconds = Math.floor(sec % 60)
+
+      const ending = (minutes > 0 || hours > 0 ? (hours > 0 ? 'h' : 'm') : 's')
+
+      return `${days ? days + 'd ' : ''}${pad(hours % (days * 24 || 1))}:${pad(minutes)}:${pad(seconds)}${ending}`
+    }
+
+    return formatUptime(process.uptime())
+  }
+
+  /**
+   * Returns formatted memory usage of process
+   *
+   * @returns {String} formatted memory usage (in megabytes)
+   * @memberof Esdi
+   */
+  determineMemory () {
+    const formatMemory = (data) => `${(data / 1024 / 1024).toFixed(2)} MB`
+
+    const memoryData = process.memoryUsage()
+    return formatMemory(memoryData.rss)
+  }
+
+  /**
+   * Returns formatted processor usage of process
+   *
+   * @returns {String} formatted processor use percentage
+   * @memberof Esdi
+   */
+  determineProcessor () {
+    const determineProcessor = () => {
+      const usage = Object.assign({}, process.cpuUsage())
+      usage.time = process.uptime() * 1000 // seconds to milliseconds
+      usage.percent = (usage.system + usage.user) / (usage.time * 10) // microseconds to milliseconds
+      return usage
+    }
+
+    return determineProcessor().percent.toFixed(2) + '%'
   }
 
   /**
