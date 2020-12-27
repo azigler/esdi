@@ -162,7 +162,7 @@ class EventController {
           event.handler({ server: this.server, context: con.ctx })
 
           // announce handling of Event
-          console.log(`${event.name} Event was just handled ${con.type === 'global' ? 'globally' : `for ${this.server.utils.capitalize(con.type)}<${con.ctx.id}>`} @ ${new Date().toLocaleString()} PT`)
+          console.log(`${event.name} Event was handled ${con.type === 'global' ? 'globally' : `for ${this.server.utils.capitalize(con.type)}<${con.ctx.id}>`} @ ${new Date().toLocaleString()} PT`)
         }
       }
     })
