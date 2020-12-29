@@ -143,9 +143,7 @@ class Esdi extends require('events') {
       const minutes = Math.floor(sec % (60 * 60) / 60)
       const seconds = Math.floor(sec % 60)
 
-      const ending = (minutes > 0 || hours > 0 ? (hours > 0 ? 'h' : 'm') : 's')
-
-      return `${days ? days + 'd ' : ''}${pad(hours % ((days || 1) * 24))}:${pad(minutes)}:${pad(seconds)}${ending}`
+      return `${days ? days + 'd ' : ''}${pad(hours % ((days || 1) * 24))}:${pad(minutes)}:${pad(seconds)}s`
     }
 
     return formatUptime(process.uptime())
