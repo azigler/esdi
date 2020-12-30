@@ -48,7 +48,7 @@ class UserController extends Map {
   fetchGuildMembers (guild) {
     guild.members.fetch()
       .then(members => members.map(member => {
-        if (member.user.id === this.server.controllers.get('BotController').id) return
+        if (member.user.id === this.server.controllers.get('DiscordController').id) return
         if (!this.has(member.user.id)) {
           this.set(member.user.id, new User(this.server, member))
         } else {

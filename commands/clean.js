@@ -28,7 +28,7 @@ module.exports = {
               let i = 0
               for (const msg of messages) {
                 // can't delete the other person's messages in a DM
-                if (msg[1].channel.type === 'dm' && (msg[1].author.id !== server.controllers.get('BotController').client.user.id)) {
+                if (msg[1].channel.type === 'dm' && (msg[1].author.id !== server.controllers.get('DiscordController').client.user.id)) {
                   continue
                 }
 
@@ -60,7 +60,7 @@ module.exports = {
           let i = 0
           for (const msg of messages) {
             // can't delete the other person's messages in a DM
-            if (msg[1].channel.type === 'dm' && (msg[1].author.id !== server.controllers.get('BotController').client.user.id)) {
+            if (msg[1].channel.type === 'dm' && (msg[1].author.id !== server.controllers.get('DiscordController').client.user.id)) {
               continue
             }
 

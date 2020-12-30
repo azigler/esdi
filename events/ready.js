@@ -6,7 +6,7 @@
  */
 
 /**
- * Sets the `id` for {@link BotController} and initializes the {@link Guild|Guilds} to which the bot is currently connected
+ * Sets the `id` for {@link DiscordController} and initializes the {@link Guild|Guilds} to which the bot is currently connected
  *
  * @type {Event}
  * @listens external:Client#event:"Client#ready"
@@ -18,7 +18,7 @@
 module.exports = {
   name: 'ready',
   handler () {
-    this.controllers.get('BotController').id = this.controllers.get('BotController').client.user.id
-    this.controllers.get('GuildController').fetchInitialGuilds(this.controllers.get('BotController').client)
+    this.controllers.get('DiscordController').id = this.controllers.get('DiscordController').client.user.id
+    this.controllers.get('GuildController').fetchInitialGuilds(this.controllers.get('DiscordController').client)
   }
 }

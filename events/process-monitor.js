@@ -25,14 +25,14 @@ module.exports = {
   type: 'interval',
   description: 'Reports the memory and processor usage of the server\'s process along with its uptime and Discord stats.',
   async handler ({ server, context }) {
-    const bot = server.controllers.get('BotController').client
+    const bot = server.controllers.get('DiscordController').client
     const doc = await server.controllers.get('DatabaseController').fetchDoc({
       db: 'event',
       id: `${this.name}_${context}`
     })
     const channel = await bot.channels.fetch(doc.config.channel)
 
-    const embed = bot.botController.buildStatusEmbed({ title: `\`process-monitor\` Event *(${doc.config.interval})*`, footerTextType: 'Event' })
+    const embed = bot.discordController.buildStatusEmbed({ title: `\`process-monitor\` Event *(${doc.config.interval})*`, footerTextType: 'Event' })
 
     channel.send(embed)
   },

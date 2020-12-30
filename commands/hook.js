@@ -63,34 +63,34 @@ module.exports = {
           const args = (contextDoc.args && contextDoc.args.length) ? `- *argument${contextDoc.args.length > 1 ? 's' : ''}:* \`${contextDoc.args.join(' ')}\`` : ''
 
           // if found, remember that this Hook is enabled globally
-          if (h.context === 'global' && server.controllers.get('BotController').botOwner === message.author.id) {
-            server.controllers.get('BotController').buildEmbedFieldValues(globalEmbedFieldValues, `\n\`${h.name}\` - ${h.description}\n${args}`)
+          if (h.context === 'global' && server.controllers.get('DiscordController').botOwner === message.author.id) {
+            server.controllers.get('DiscordController').buildEmbedFieldValues(globalEmbedFieldValues, `\n\`${h.name}\` - ${h.description}\n${args}`)
 
             continue
           }
 
           // if found, remember that this Hook is enabled for this Guild
           if (message.guild.id === c) {
-            server.controllers.get('BotController').buildEmbedFieldValues(guildEmbedFieldValues, `\n\`${h.name}\` - ${h.description}\n${args}`)
+            server.controllers.get('DiscordController').buildEmbedFieldValues(guildEmbedFieldValues, `\n\`${h.name}\` - ${h.description}\n${args}`)
           }
 
           // if found, remember that this Hook is enabled for this channel
           if (message.channel.id === c) {
-            server.controllers.get('BotController').buildEmbedFieldValues(channelEmbedFieldValues, `\n\`${h.name}\` - ${h.description}\n${args}`)
+            server.controllers.get('DiscordController').buildEmbedFieldValues(channelEmbedFieldValues, `\n\`${h.name}\` - ${h.description}\n${args}`)
           }
         }
       }
 
       // if there are enabled Hooks, announce them
       if ([...globalEmbedFieldValues, ...guildEmbedFieldValues, ...channelEmbedFieldValues].length > 0) {
-        const globalEmbedFields = server.controllers.get('BotController').buildEmbedFields('Enabled Global Hooks', globalEmbedFieldValues)
+        const globalEmbedFields = server.controllers.get('DiscordController').buildEmbedFields('Enabled Global Hooks', globalEmbedFieldValues)
 
-        const guildEmbedFields = server.controllers.get('BotController').buildEmbedFields('Enabled Server Hooks', guildEmbedFieldValues)
+        const guildEmbedFields = server.controllers.get('DiscordController').buildEmbedFields('Enabled Server Hooks', guildEmbedFieldValues)
 
-        const channelEmbedFields = server.controllers.get('BotController').buildEmbedFields('Enabled Channel Hooks', channelEmbedFieldValues)
+        const channelEmbedFields = server.controllers.get('DiscordController').buildEmbedFields('Enabled Channel Hooks', channelEmbedFieldValues)
 
         // build message embed
-        const embed = server.controllers.get('BotController').buildEmbed({
+        const embed = server.controllers.get('DiscordController').buildEmbed({
           title: HOOK_LIST_TXT,
           footerTextType: 'Command',
           fields: [...globalEmbedFields, ...guildEmbedFields, ...channelEmbedFields]
@@ -126,7 +126,7 @@ module.exports = {
           if (contextDoc.enabled) continue
 
           // if the Guild Hook is not already enabled, add it to the embed
-          server.controllers.get('BotController').buildEmbedFieldValues(guildEmbedFieldValues, `\n\`${h.name}\` - ${h.description}`)
+          server.controllers.get('DiscordController').buildEmbedFieldValues(guildEmbedFieldValues, `\n\`${h.name}\` - ${h.description}`)
         }
 
         if (h.context === 'channel') {
@@ -138,10 +138,10 @@ module.exports = {
           if (contextDoc.enabled) continue
 
           // if the channel Hook is not already enabled, add it to the embed
-          server.controllers.get('BotController').buildEmbedFieldValues(channelEmbedFieldValues, `\n\`${h.name}\` - ${h.description}`)
+          server.controllers.get('DiscordController').buildEmbedFieldValues(channelEmbedFieldValues, `\n\`${h.name}\` - ${h.description}`)
         }
 
-        if (h.context === 'global' && server.controllers.get('BotController').botOwner === message.author.id) {
+        if (h.context === 'global' && server.controllers.get('DiscordController').botOwner === message.author.id) {
           const contextDoc = await server.controllers.get('DatabaseController').fetchDoc({
             db: 'hook',
             id: `${h.name}_global`
@@ -149,20 +149,20 @@ module.exports = {
           if (contextDoc.enabled) continue
 
           // if the global Hook is not already enabled, add it to the embed
-          server.controllers.get('BotController').buildEmbedFieldValues(globalEmbedFieldValues, `\n\`${h.name}\` - ${h.description}`)
+          server.controllers.get('DiscordController').buildEmbedFieldValues(globalEmbedFieldValues, `\n\`${h.name}\` - ${h.description}`)
         }
       }
 
       // if there are Hooks that can be enabled, announce them
       if ([...globalEmbedFieldValues, ...guildEmbedFieldValues, ...channelEmbedFieldValues].length > 0) {
-        const globalEmbedFields = server.controllers.get('BotController').buildEmbedFields('Available Global Hooks', globalEmbedFieldValues)
+        const globalEmbedFields = server.controllers.get('DiscordController').buildEmbedFields('Available Global Hooks', globalEmbedFieldValues)
 
-        const guildEmbedFields = server.controllers.get('BotController').buildEmbedFields('Available Server Hooks', guildEmbedFieldValues)
+        const guildEmbedFields = server.controllers.get('DiscordController').buildEmbedFields('Available Server Hooks', guildEmbedFieldValues)
 
-        const channelEmbedFields = server.controllers.get('BotController').buildEmbedFields('Available Channel Hooks', channelEmbedFieldValues)
+        const channelEmbedFields = server.controllers.get('DiscordController').buildEmbedFields('Available Channel Hooks', channelEmbedFieldValues)
 
         // build message embed
-        const embed = server.controllers.get('BotController').buildEmbed({
+        const embed = server.controllers.get('DiscordController').buildEmbed({
           title: HOOK_TXT,
           footerTextType: 'Command',
           fields: [...globalEmbedFields, ...guildEmbedFields, ...channelEmbedFields]
@@ -183,7 +183,7 @@ module.exports = {
       if (!hook) return message.reply('that Hook does not exist.')
 
       // stop if global Hook is not being toggled by bot owner
-      if (server.controllers.get('BotController').botOwner !== message.author.id && hook.context === 'global') return message.reply('you cannot do that.')
+      if (server.controllers.get('DiscordController').botOwner !== message.author.id && hook.context === 'global') return message.reply('you cannot do that.')
 
       let msg
 
@@ -216,13 +216,13 @@ module.exports = {
           if (context.type === 'guild') {
             await hook.disable({
               server,
-              context: await server.controllers.get('BotController').client.guilds.fetch(context.id),
+              context: await server.controllers.get('DiscordController').client.guilds.fetch(context.id),
               args: args.slice(1)
             })
           } else if (context.type === 'channel') {
             await hook.disable({
               server,
-              context: await server.controllers.get('BotController').client.channels.fetch(context.id),
+              context: await server.controllers.get('DiscordController').client.channels.fetch(context.id),
               args: args.slice(1)
             })
           } else if (context.type === 'global') {
@@ -269,13 +269,13 @@ module.exports = {
           if (context.type === 'guild') {
             await hook.enable({
               server,
-              context: await server.controllers.get('BotController').client.guilds.fetch(context.id),
+              context: await server.controllers.get('DiscordController').client.guilds.fetch(context.id),
               args: args.slice(1)
             })
           } else if (context.type === 'channel') {
             await hook.enable({
               server,
-              context: await server.controllers.get('BotController').client.channels.fetch(context.id),
+              context: await server.controllers.get('DiscordController').client.channels.fetch(context.id),
               args: args.slice(1)
             })
           } else if (context.type === 'global') {

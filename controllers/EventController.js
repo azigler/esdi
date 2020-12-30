@@ -177,7 +177,7 @@ class EventController {
   registerDiscordEvents (client) {
     this.server.events.forEach(event => {
       if (!event.discordEventName || !event.handler || event.type !== 'discord') return
-      client.on(event.discordEventName, event.handler.bind(client.botController.server))
+      client.on(event.discordEventName, event.handler.bind(client.discordController.server))
     })
   }
 
@@ -193,10 +193,10 @@ class EventController {
   async fetchEventContext ({ context, event }) {
     if (event.context !== 'global') {
       if (event.context === 'guild') {
-        const result = await this.server.controllers.get('BotController').client.guilds.fetch(context.id)
+        const result = await this.server.controllers.get('DiscordController').client.guilds.fetch(context.id)
         return result
       } else if (event.context === 'channel') {
-        const result = await this.server.controllers.get('BotController').client.channels.fetch(context.id)
+        const result = await this.server.controllers.get('DiscordController').client.channels.fetch(context.id)
         return result
       }
     } else {

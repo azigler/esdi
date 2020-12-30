@@ -17,7 +17,7 @@ module.exports = {
   description: 'Reports the memory and processor usage of the server\'s process along with its uptime and Discord stats.',
   execute ({ message, args, server }) {
     message.channel.send(
-      server.controllers.get('BotController').buildStatusEmbed({ footerTextType: 'Command' })
+      server.controllers.get('DiscordController').buildStatusEmbed({ footerTextType: 'Command' })
     )
   }
 }

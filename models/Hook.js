@@ -39,7 +39,7 @@ class Hook {
   * @memberof Hook
   */
   async checkEnabledForContext ({ h, server, contextId, contextType }) {
-    const client = server.controllers.get('BotController').client
+    const client = server.controllers.get('DiscordController').client
 
     let msg, c, contextName
 
