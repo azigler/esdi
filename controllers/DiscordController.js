@@ -227,12 +227,12 @@ class DiscordController extends Map {
     }
 
     const images = {
-      blue: 'https://cdn.discordapp.com/attachments/777738026901045288/791106445412270080/im-tired-blue.gif',
-      gray: 'https://cdn.discordapp.com/attachments/777738026901045288/791106449752981524/im-tired-gray.gif',
-      green: 'https://cdn.discordapp.com/attachments/777738026901045288/791106451459932160/im-tired-green.gif',
-      pink: 'https://cdn.discordapp.com/attachments/777738026901045288/791106452977876992/im-tired-pink.gif',
-      brown: 'https://cdn.discordapp.com/attachments/777738026901045288/791106454492545035/im-tired-red.gif',
-      yellow: 'https://cdn.discordapp.com/attachments/777738026901045288/791106460775612476/im-tired-yellow.gif'
+      blue: 'https://user-images.githubusercontent.com/7295363/103381612-22dc8700-4aa1-11eb-940e-ef27d9cc9ea2.gif',
+      gray: 'https://user-images.githubusercontent.com/7295363/103381613-23751d80-4aa1-11eb-818d-6696a6f67b4f.gif',
+      green: 'https://user-images.githubusercontent.com/7295363/103381614-240db400-4aa1-11eb-8435-1976ec95dd9a.gif',
+      pink: 'https://user-images.githubusercontent.com/7295363/103381617-240db400-4aa1-11eb-9579-6fd6f5ace65e.gif',
+      brown: 'https://user-images.githubusercontent.com/7295363/103381618-24a64a80-4aa1-11eb-9206-8916473d9a5f.gif',
+      yellow: 'https://user-images.githubusercontent.com/7295363/103381620-24a64a80-4aa1-11eb-99e6-db45b15a1c40.gif'
     }
 
     const random = Math.floor(Math.random() * colors.length)
