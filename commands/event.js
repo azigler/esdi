@@ -70,10 +70,10 @@ module.exports = {
           const args = (contextDoc.args && contextDoc.args.length) ? `- *argument${contextDoc.args.length > 1 ? 's' : ''}:* \`${contextDoc.args.join(' ')}\`\n` : ''
 
           // if found, remember that this Event is enabled globally
-          if (e.context === 'global' && server.controllers.get('BotController').botOwner === message.author.id) {
+          if (e.context === 'global' && server.controllers.get('DiscordController').botOwner === message.author.id) {
             const timestamp = doc.contextTimestampPairs.filter(p => p[0] === c)[0][1]
 
-            server.controllers.get('BotController').buildEmbedFieldValues(globalEmbedFieldValues, `\n\`${e.name}\` - ${e.description}\n${args}- *handled:* \`${new Date(timestamp).toLocaleString() + ' PT'}\``)
+            server.controllers.get('DiscordController').buildEmbedFieldValues(globalEmbedFieldValues, `\n\`${e.name}\` - ${e.description}\n${args}- *handled:* \`${new Date(timestamp).toLocaleString() + ' PT'}\``)
 
             continue
           }
@@ -82,28 +82,28 @@ module.exports = {
           if (message.guild.id === c) {
             const timestamp = doc.contextTimestampPairs.filter(p => p[0] === c)[0][1]
 
-            server.controllers.get('BotController').buildEmbedFieldValues(guildEmbedFieldValues, `\n\`${e.name}\` - ${e.description}\n${args}- *handled:* \`${new Date(timestamp).toLocaleString() + ' PT'}\``)
+            server.controllers.get('DiscordController').buildEmbedFieldValues(guildEmbedFieldValues, `\n\`${e.name}\` - ${e.description}\n${args}- *handled:* \`${new Date(timestamp).toLocaleString() + ' PT'}\``)
           }
 
           // if found, remember that this Event is enabled for this channel
           if (message.channel.id === c) {
             const timestamp = doc.contextTimestampPairs.filter(p => p[0] === c)[0][1]
 
-            server.controllers.get('BotController').buildEmbedFieldValues(channelEmbedFieldValues, `\n\`${e.name}\` - ${e.description}\n${args}- *handled:* \`${new Date(timestamp).toLocaleString() + ' PT'}\``)
+            server.controllers.get('DiscordController').buildEmbedFieldValues(channelEmbedFieldValues, `\n\`${e.name}\` - ${e.description}\n${args}- *handled:* \`${new Date(timestamp).toLocaleString() + ' PT'}\``)
           }
         }
       }
 
       // if there are enabled Events, announce them
       if ([...globalEmbedFieldValues, ...guildEmbedFieldValues, ...channelEmbedFieldValues].length > 0) {
-        const globalEmbedFields = server.controllers.get('BotController').buildEmbedFields('Enabled Global Events', globalEmbedFieldValues)
+        const globalEmbedFields = server.controllers.get('DiscordController').buildEmbedFields('Enabled Global Events', globalEmbedFieldValues)
 
-        const guildEmbedFields = server.controllers.get('BotController').buildEmbedFields('Enabled Server Events', guildEmbedFieldValues)
+        const guildEmbedFields = server.controllers.get('DiscordController').buildEmbedFields('Enabled Server Events', guildEmbedFieldValues)
 
-        const channelEmbedFields = server.controllers.get('BotController').buildEmbedFields('Enabled Channel Events', channelEmbedFieldValues)
+        const channelEmbedFields = server.controllers.get('DiscordController').buildEmbedFields('Enabled Channel Events', channelEmbedFieldValues)
 
         // build message embed
-        const embed = server.controllers.get('BotController').buildEmbed({
+        const embed = server.controllers.get('DiscordController').buildEmbed({
           title: EVENT_LIST_TXT,
           footerTextType: 'Command',
           fields: [...globalEmbedFields, ...guildEmbedFields, ...channelEmbedFields]
@@ -142,7 +142,7 @@ module.exports = {
           if (contextDoc.enabled) continue
 
           // if the Guild Event is not already enabled, add it to the embed
-          server.controllers.get('BotController').buildEmbedFieldValues(guildEmbedFieldValues, `\n\`${e.name}\` - ${e.description}`)
+          server.controllers.get('DiscordController').buildEmbedFieldValues(guildEmbedFieldValues, `\n\`${e.name}\` - ${e.description}`)
         }
 
         if (e.context === 'channel') {
@@ -154,10 +154,10 @@ module.exports = {
           if (contextDoc.enabled) continue
 
           // if the channel Event is not already enabled, add it to the embed
-          server.controllers.get('BotController').buildEmbedFieldValues(channelEmbedFieldValues, `\n\`${e.name}\` - ${e.description}`)
+          server.controllers.get('DiscordController').buildEmbedFieldValues(channelEmbedFieldValues, `\n\`${e.name}\` - ${e.description}`)
         }
 
-        if (e.context === 'global' && server.controllers.get('BotController').botOwner === message.author.id) {
+        if (e.context === 'global' && server.controllers.get('DiscordController').botOwner === message.author.id) {
           const contextDoc = await server.controllers.get('DatabaseController').fetchDoc({
             db: 'event',
             id: `${e.name}_global`
@@ -165,20 +165,20 @@ module.exports = {
           if (contextDoc.enabled) continue
 
           // if the global Event is not already enabled, add it to the embed
-          server.controllers.get('BotController').buildEmbedFieldValues(globalEmbedFieldValues, `\n\`${e.name}\` - ${e.description}`)
+          server.controllers.get('DiscordController').buildEmbedFieldValues(globalEmbedFieldValues, `\n\`${e.name}\` - ${e.description}`)
         }
       }
 
       // if there are Events that can be enabled, announce them
       if ([...globalEmbedFieldValues, ...guildEmbedFieldValues, ...channelEmbedFieldValues].length > 0) {
-        const globalEmbedFields = server.controllers.get('BotController').buildEmbedFields('Available Global Events', globalEmbedFieldValues)
+        const globalEmbedFields = server.controllers.get('DiscordController').buildEmbedFields('Available Global Events', globalEmbedFieldValues)
 
-        const guildEmbedFields = server.controllers.get('BotController').buildEmbedFields('Available Server Events', guildEmbedFieldValues)
+        const guildEmbedFields = server.controllers.get('DiscordController').buildEmbedFields('Available Server Events', guildEmbedFieldValues)
 
-        const channelEmbedFields = server.controllers.get('BotController').buildEmbedFields('Available Channel Events', channelEmbedFieldValues)
+        const channelEmbedFields = server.controllers.get('DiscordController').buildEmbedFields('Available Channel Events', channelEmbedFieldValues)
 
         // build message embed
-        const embed = server.controllers.get('BotController').buildEmbed({
+        const embed = server.controllers.get('DiscordController').buildEmbed({
           title: EVENT_TXT,
           footerTextType: 'Command',
           fields: [...globalEmbedFields, ...guildEmbedFields, ...channelEmbedFields]
@@ -202,7 +202,7 @@ module.exports = {
       if (event.type !== 'interval') return message.reply('that Event cannot be enabled.')
 
       // stop if global interval Event is not being toggled by bot owner
-      if (server.controllers.get('BotController').botOwner !== message.author.id && event.context === 'global') return message.reply('you cannot do that.')
+      if (server.controllers.get('DiscordController').botOwner !== message.author.id && event.context === 'global') return message.reply('you cannot do that.')
 
       let msg
 
@@ -235,14 +235,14 @@ module.exports = {
           if (context.type === 'guild') {
             await event.disable({
               server,
-              context: await server.controllers.get('BotController').client.guilds.fetch(context.id),
+              context: await server.controllers.get('DiscordController').client.guilds.fetch(context.id),
               args: args.slice(1),
               message
             })
           } else if (context.type === 'channel') {
             await event.disable({
               server,
-              context: await server.controllers.get('BotController').client.channels.fetch(context.id),
+              context: await server.controllers.get('DiscordController').client.channels.fetch(context.id),
               args: args.slice(1),
               message
             })
@@ -284,14 +284,14 @@ module.exports = {
           if (context.type === 'guild') {
             await event.enable({
               server,
-              context: await server.controllers.get('BotController').client.guilds.fetch(context.id),
+              context: await server.controllers.get('DiscordController').client.guilds.fetch(context.id),
               args: args.slice(1),
               message
             })
           } else if (context.type === 'channel') {
             await event.enable({
               server,
-              context: await server.controllers.get('BotController').client.channels.fetch(context.id),
+              context: await server.controllers.get('DiscordController').client.channels.fetch(context.id),
               args: args.slice(1),
               message
             })

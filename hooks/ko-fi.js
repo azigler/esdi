@@ -105,7 +105,7 @@ module.exports = {
         }
 
         // build message embed
-        const embed = server.controllers.get('BotController').buildEmbed({
+        const embed = server.controllers.get('DiscordController').buildEmbed({
           title: '☕ New Ko-fi contribution',
           footerTextType: 'Hook',
           url: parsed.url,

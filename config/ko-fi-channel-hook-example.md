@@ -32,11 +32,11 @@ For example, if you had a channel with the ID `777755555555555555` then you shou
 
 Once your Ko-fi webhook is set up, you need to enable the channel Hook in a corresponding channel. That's why we have the {@link Command.hook|`hook`} command. This command lists all enabled Hooks for this context (e.g., `esdi!hook`), toggles the one provided (e.g., `esdi!hook ko-fi`), or lists all Hooks that can be enabled (e.g., `esdi!hook list`). For this example, in the channel with the ID `777755555555555555`, you would use the `esdi!hook ko-fi` command to toggle on the {@link Hook.ko-fi|`ko-fi` Hook} for the channel like so:
 
-![](https://cdn.discordapp.com/attachments/777738026901045288/792539229703766076/ko-fi-enabled.png)
+![](https://user-images.githubusercontent.com/7295363/103381437-9d58d700-4aa0-11eb-8167-48aa3d432393.png)
 
 When a Hook is enabled, its `enable()` function is fired, if it has one. Any provided arguments are also passed to this function. If you want to disable the channel Hook later on, you can simply use the `esdi!hook ko-fi` command again: 
 
-![](https://cdn.discordapp.com/attachments/777738026901045288/792539227485241344/ko-fi-disabled.png)
+![](https://user-images.githubusercontent.com/7295363/103381433-9af67d00-4aa0-11eb-838d-c75a97e94d26.png)
 
 The {@link Hook.ko-fi|`ko-fi` Hook} also doesn't have a `disable()` because there is no further clean-up to do in this case, but Hooks may also have a `disable()` function that would fire in this case.
 
@@ -50,7 +50,7 @@ Ko-fi requires that donation webhooks with their `is_public` property set to `fa
 
 Finally, the handler builds the [discord.js MessageEmbed](https://discord.js.org/#/docs/main/stable/class/MessageEmbed) for the [discord.js Webhook](https://discord.js.org/#/docs/main/stable/class/Webhook) we created above. Once created, it posts the embed on the channel and deletes the leftover webhook. This one looks like this:
 
-![](https://cdn.discordapp.com/attachments/777738026901045288/792539519462670346/ko-fi-embed.png)
+![](https://user-images.githubusercontent.com/7295363/103381434-9cc04080-4aa0-11eb-9b20-f87dad5c4b4b.png)
 
 You can use this particular Hook to post a message embed when a [Ko-fi](https://ko-fi.com/) donation webhook is received. Otherwise, you can use this as a guide for your own channel Hook ideas!
 

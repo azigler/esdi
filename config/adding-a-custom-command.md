@@ -46,7 +46,7 @@ To learn more about the command configuration options, check out the [`Command` 
 3. Restart your Esdi server.
 4. In your server, fire the command. Use the bot prefix (e.g., `esdi!`) together with the `hello` command or `greeting` alias to see your new custom command in action:
 
-![](https://cdn.discordapp.com/attachments/777738026901045288/792447287968268358/hello-command.png)
+![](https://user-images.githubusercontent.com/7295363/103381359-61be0d00-4aa0-11eb-8899-4707c35429f3.png)
 
 5. Continue developing your command, or make a brand new one! You can use anything from the [discord.js Message object](https://discord.js.org/#/docs/main/stable/class/Message) (which has access to everything about your [discord.js Client](https://discord.js.org/#/docs/main/stable/class/Client)) and the [`Esdi` instance]{@link Esdi}. You can also implement functionality from own your applications or third-party APIs. You don't even have to restart your server while building. Use the `reload` command (e.g., `esdi!reload <command>`) to reload your command file on the fly once it's initially loaded. Your creativity is the limit!
 

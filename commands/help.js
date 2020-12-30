@@ -26,13 +26,13 @@ module.exports = {
 
       // split resulting field contents into chunks for embed
       server.commands.forEach(command => {
-        server.controllers.get('BotController').buildEmbedFieldValues(embedFieldValues, `\n\`${command.name}\` - ${command.description}`)
+        server.controllers.get('DiscordController').buildEmbedFieldValues(embedFieldValues, `\n\`${command.name}\` - ${command.description}`)
       })
 
-      const embedFields = server.controllers.get('BotController').buildEmbedFields('Commands', embedFieldValues)
+      const embedFields = server.controllers.get('DiscordController').buildEmbedFields('Commands', embedFieldValues)
 
       // build message embed
-      const embed = server.controllers.get('BotController').buildEmbed({
+      const embed = server.controllers.get('DiscordController').buildEmbed({
         title: `Use \`${prefix}help [command]\` to get help on a Command.`,
         footerTextType: 'Command',
         fields: embedFields
@@ -70,7 +70,7 @@ module.exports = {
     }
 
     // build message embed
-    const embed = server.controllers.get('BotController').buildEmbed({
+    const embed = server.controllers.get('DiscordController').buildEmbed({
       title: `Help: \`${command.name}\``,
       description: command.description,
       footerTextType: 'Command',

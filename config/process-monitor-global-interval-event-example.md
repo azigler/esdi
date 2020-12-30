@@ -24,14 +24,14 @@ You can see when an interval Event was last fired by checking the information pr
 
 For our example, the `process-monitor` interval Event can handle a custom interval provided as an argument, so you can set a custom interval for it to post its message embed:
 
-![](https://cdn.discordapp.com/attachments/777738026901045288/792541047880024064/process-monitor-custom-interval.png)
+![](https://user-images.githubusercontent.com/7295363/103381516-e27d0900-4aa0-11eb-8241-41c86e2aaff7.png)
 
 And if you wanted to check the arguments you provided to enable the interval Event, you can review them with `esdi!event`:
 
-![](https://cdn.discordapp.com/attachments/777738026901045288/792541041466015824/event-list.png)
+![](https://user-images.githubusercontent.com/7295363/103381510-e0b34580-4aa0-11eb-88be-99f6d1b1d40f.png)
 
 This particular interval Event posts a message embed that looks like this:
 
-![](https://cdn.discordapp.com/attachments/777738026901045288/792541617402675211/process-monitor-embed.png)
+![](https://user-images.githubusercontent.com/7295363/103381834-c75ec900-4aa1-11eb-955d-cb7d0129ce18.png)
 
 You can use this as a guide for your own interval Event ideas!

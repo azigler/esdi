@@ -6,30 +6,31 @@ const Discord = require('discord.js')
  * @class
  * @extends Map
  */
-class BotController extends Map {
+class DiscordController extends Map {
   /**
-   * Initializes a new BotController
+   * Initializes a new DiscordController
    *
    * @param {Object} config configuration object
    * @param {Esdi} config.server Esdi server instance
    * @param {String} [config.discordToken = process.env.DISCORD_TOKEN] token for Discord bot
    * @param {String} [config.botOwner = '139293101767262208'] Discord ID of bot instance owner
-   * @memberof BotController
+   * @memberof DiscordController
    */
   init ({ server, discordToken = process.env.DISCORD_TOKEN, botOwner = '139293101767262208' }) {
     this.server = server
     this.token = discordToken
     this.botOwner = botOwner
+    this.discordJs = Discord
   }
 
   /**
-   * Starts the BotController
+   * Starts the DiscordController
    *
    * @listens Esdi#start
-   * @memberof BotController
+   * @memberof DiscordController
    */
   start () {
-    console.log('[#] Starting BotController...')
+    console.log('[#] Starting DiscordController...')
 
     /**
      * discord.js Client
@@ -37,7 +38,7 @@ class BotController extends Map {
      * @see https://discord.js.org/#/docs/main/stable/class/Client
      */
     this.client = new Discord.Client()
-    this.client.botController = this
+    this.client.discordController = this
 
     /**
      * discord.js Message
@@ -66,13 +67,13 @@ class BotController extends Map {
   }
 
   /**
-   * Stops the BotController
+   * Stops the DiscordController
    *
    * @listens Esdi#stop
-   * @memberof BotController
+   * @memberof DiscordController
    */
   stop () {
-    console.log('[#] Stopping BotController...')
+    console.log('[#] Stopping DiscordController...')
 
     delete this.id
     this.client.destroy()
@@ -81,7 +82,7 @@ class BotController extends Map {
   /**
    * Logs in the {@link external:Client|Client} with a token
    *
-   * @memberof BotController
+   * @memberof DiscordController
    */
   login () {
     this.client.login(this.token)
@@ -94,7 +95,7 @@ class BotController extends Map {
    *
    * @param {String[]} embedFieldValues array of values for EmbedFields
    * @param {String} content content for EmbedFields
-   * @memberof BotController
+   * @memberof DiscordController
    */
   buildEmbedFieldValues (embedFieldValues, content) {
     if (!embedFieldValues[0]) embedFieldValues[0] = ''
@@ -115,7 +116,7 @@ class BotController extends Map {
    * @param {String} embedFieldName name of EmbedField
    * @param {String[]} embedFieldValues array of values for EmbedFields
    * @returns {external:EmbedField[]} array of discord.js EmbedFields
-   * @memberof BotController
+   * @memberof DiscordController
    */
   buildEmbedFields (embedFieldName, embedFieldValues) {
     const embedFields = []
@@ -141,7 +142,7 @@ class BotController extends Map {
    * @param {Date} embedConfig.timestamp timestamp for for MessageEmbed
    * @param {external:MessageEmbedAuthor} embedConfig.author MessageEmbedAuthor for MessageEmbed
    * @returns {external:MessageEmbed} discord.js MessageEmbed
-   * @memberof BotController
+   * @memberof DiscordController
    */
   buildEmbed ({ title, description, url, hexColor = '#2f9d8c', footerTextType, fields = [], thumbnail, timestamp, author }) {
     // only allow up to 25 fields
@@ -170,7 +171,7 @@ class BotController extends Map {
    * @param {String} statusEmbedConfig.title MessageEmbed title
    * @param {String} statusEmbedConfig.footerTextType type of Esdi component calling this method (e.g., Command, Event)
    * @returns {external:MessageEmbed} discord.js MessageEmbed
-   * @memberof BotController
+   * @memberof DiscordController
    */
   buildStatusEmbed ({ title, footerTextType }) {
     const fields = []
@@ -226,12 +227,12 @@ class BotController extends Map {
     }
 
     const images = {
-      blue: 'https://cdn.discordapp.com/attachments/777738026901045288/791106445412270080/im-tired-blue.gif',
-      gray: 'https://cdn.discordapp.com/attachments/777738026901045288/791106449752981524/im-tired-gray.gif',
-      green: 'https://cdn.discordapp.com/attachments/777738026901045288/791106451459932160/im-tired-green.gif',
-      pink: 'https://cdn.discordapp.com/attachments/777738026901045288/791106452977876992/im-tired-pink.gif',
-      brown: 'https://cdn.discordapp.com/attachments/777738026901045288/791106454492545035/im-tired-red.gif',
-      yellow: 'https://cdn.discordapp.com/attachments/777738026901045288/791106460775612476/im-tired-yellow.gif'
+      blue: 'https://user-images.githubusercontent.com/7295363/103381612-22dc8700-4aa1-11eb-940e-ef27d9cc9ea2.gif',
+      gray: 'https://user-images.githubusercontent.com/7295363/103381613-23751d80-4aa1-11eb-818d-6696a6f67b4f.gif',
+      green: 'https://user-images.githubusercontent.com/7295363/103381614-240db400-4aa1-11eb-8435-1976ec95dd9a.gif',
+      pink: 'https://user-images.githubusercontent.com/7295363/103381617-240db400-4aa1-11eb-9579-6fd6f5ace65e.gif',
+      brown: 'https://user-images.githubusercontent.com/7295363/103381618-24a64a80-4aa1-11eb-9206-8916473d9a5f.gif',
+      yellow: 'https://user-images.githubusercontent.com/7295363/103381620-24a64a80-4aa1-11eb-99e6-db45b15a1c40.gif'
     }
 
     const random = Math.floor(Math.random() * colors.length)
@@ -251,4 +252,4 @@ class BotController extends Map {
 }
 
 // factory
-module.exports = new BotController()
+module.exports = new DiscordController()

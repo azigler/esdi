@@ -22,7 +22,7 @@ module.exports = {
     const commandName = args.shift().toLowerCase()
 
     const command = server.controllers.get('CommandController').findCommand(commandName)
-    if (!command) return message.channel.send(`There is no command with a name or alias matching \`${commandName}\`, ${message.author}.`)
+    if (!command) return message.channel.send(`There is no Command with a name or alias matching \`${commandName}\`, ${message.author}.`)
 
     const sourcePath = command.sourcePath
     delete require.cache[require.resolve(sourcePath)]
@@ -30,10 +30,10 @@ module.exports = {
     try {
       const newCommand = new Command(require(sourcePath), command.sourcePath)
       server.commands.set(newCommand.name, newCommand)
-      message.channel.send(`Command \`${command.name}\` was successfully reloaded, ${message.author}.`)
+      message.channel.send(`The \`${command.name}\` Command was successfully reloaded, ${message.author}.`)
     } catch (error) {
       console.error(error)
-      message.channel.send(`There was an error while reloading the \`${command.name}\` command, ${message.author}.`)
+      message.channel.send(`There was an error while reloading the \`${command.name}\` Command, ${message.author}.`)
     }
   }
 }
