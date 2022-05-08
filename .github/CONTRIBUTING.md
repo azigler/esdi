@@ -2,7 +2,7 @@
 
 > Become an Esdi contributor!
 
-**[JOIN THE ESDI COMMUNITY (AND MEET THE OFFICIAL BOT) ON DISCORD!](https://discord.gg/HTSYNQrXam)**
+**[JOIN THE ESDI COMMUNITY ON DISCORD!](https://discord.gg/HTSYNQrXam)**
 
 Please use the [Bug Report](https://github.com/azigler/esdi/issues/new?assignees=&labels=bug&template=bug-report.md&title=) and [Feature Request](https://github.com/azigler/esdi/issues/new?assignees=&labels=enhancement&template=feature-request.md&title=) issue templates to discuss any bugs or contributions to Esdi.
 
