@@ -33,7 +33,7 @@
 
 ## Introduction :rocket:
 
-**[JOIN THE ESDI COMMUNITY (AND MEET THE OFFICIAL BOT) ON DISCORD!](https://discord.gg/HTSYNQrXam)**
+**[JOIN THE ESDI COMMUNITY ON DISCORD!](https://discord.gg/HTSYNQrXam)**
 
 Esdi is a "plug-and-play" framework for building extensible Discord bots in ES6. Esdi can be added as an npm dependency to your Node.js project and implemented with just a few lines of code. The example below will load up any local extension files for Esdi available in your project, uses a local PouchDB database for all data storage, and connects to your [Discord application bot user](https://discord.com/developers/applications) via the provided token.
 
